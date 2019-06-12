@@ -8,14 +8,8 @@ const koa = require('koa')
 const bodyParser = require('koa-bodyparser')
 const mongoose = require('mongoose')
 
-if (process.env.NODE_ENV !== 'production') {
-  const config = require('dotenv').config()
-  if (config.error) {
-    throw config.error
-  }
-}
-
 const config = require('./config')
+
 // Connect to MongoDB
 mongoose.connect(config.mongo.uri, {
   useNewUrlParser: true,

@@ -6,14 +6,10 @@ if (!process.env.NODE_ENV) {
     throw new Error('NODE_ENV not set')
 }
 
-if (process.env.NODE_ENV !== 'production') {
-  const config = dotenv.config()
-  if (config.error) {
-    throw config.error
-  }
+const config = dotenv.config()
+if (config.error) {
+  throw config.error
 }
-
-console.log('=======================' + process.env.DB_URI)
 
 module.exports = {
   // Server port
