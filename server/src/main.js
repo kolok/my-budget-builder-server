@@ -34,3 +34,6 @@ require('./config/security')(app)
 require('./routes')(app)
 
 http.createServer(app.callback()).listen(config.port)
+console.log('===== Running ' + process.env.NODE_ENV + ' mode =====')
+console.log('DB_URI: ' + config.mongo.uri)
+console.log('PORT: ' + config.port)
