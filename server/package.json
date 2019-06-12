@@ -4,12 +4,12 @@
   "description": "A snapshot of server dev using node, koa, and mongoose",
   "author": "Yunhan",
   "license": "ISC",
-  "main": "src/entry.js",
+  "main": "src/server.js",
   "scripts": {
     "eslint": "./node_modules/.bin/eslint src/",
     "eslint-fix": "./node_modules/.bin/eslint src/ --fix",
-    "start": "NODE_ENV=development nodemon src/entry.js",
-    "build": "NODE_ENV=production nodemon src/entry.js"
+    "start": "NODE_ENV=development nodemon src/server.js",
+    "build": "NODE_ENV=production nodemon src/server.js"
   },
   "dependencies": {
     "@koa/cors": "^2.2.1",

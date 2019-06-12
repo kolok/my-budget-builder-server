@@ -8,14 +8,12 @@ services:
     restart: always
     ports:
       - "3000:3000" # container port: server port
-    environment:
-      - DB_URI=mongodb://mongo:27017/snapshot
     volumes:
       - .:/server
       - /server/node_modules
-    links:
+    depends_on:
       - mongo
-    command: ["./wait-for-it.sh", "mongo:27017", "--", "npm", "run", "start"]
+    command: ["npm", "run", "start"]
   mongo:
     container_name: mongo
     image: mongo
