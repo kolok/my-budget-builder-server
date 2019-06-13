@@ -13,6 +13,7 @@ services:
       - /server/node_modules
     depends_on:
       - mongo
+    #command: ["./wait-for-it.sh", "mongo:27017", "--", "npm", "run", "start"]
     command: ["npm", "run", "start"]
   mongo:
     container_name: mongo
