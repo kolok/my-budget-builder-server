@@ -8,6 +8,10 @@ const Common = () => import(
   /* webpackChunkName: "group-common" */
   './views/Common.vue'
 )
+const CommonCompany = () => import(
+  /* webpackChunkName: "group-common" */
+  './views/CommonCompany.vue'
+)
 
 /** Router **/
 Vue.use(VueRouter)
@@ -48,6 +52,23 @@ let router = new VueRouter({
           next()
         }
       }
+    },
+    {
+      path: '/company',
+      component: CommonCompany,
+      children: [
+        {
+          path: '/company',
+          name: 'Company',
+          component: () => import(
+            /* webpackChunkName: "group-common" */
+            './views/company/Company.vue'
+          ),
+          meta: {
+            requiresAuth: true
+          }
+        }
+      ]
     },
     {
       path: '/',
