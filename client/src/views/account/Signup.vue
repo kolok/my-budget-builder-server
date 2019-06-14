@@ -124,7 +124,7 @@ export default {
           this.signup(this.signupForm)
             .then(() => {
               this.$Message.success(this.signupForm.email + ' Added')
-              this.$router.push('/home')
+              this.$router.push('/teamDashboard')
             }).catch(err => {
               this.$Message.error('Error')
             })

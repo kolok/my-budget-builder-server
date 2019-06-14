@@ -1,9 +1,6 @@
 <template>
   <div>
-    <p> Homepage </p>
-    <router-link to="/things">
-      Demo: Things
-    </router-link>
+  <p> Reporting </p>
   </div>
 </template>
 

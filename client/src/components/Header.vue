@@ -15,7 +15,7 @@
           <Icon type="ios-speedometer"></Icon>
           Execution
         </MenuItem>
-        <MenuItem name="4">
+        <MenuItem name="company">
           <Icon type="ios-settings"></Icon>
           Settings
         </MenuItem>
@@ -27,8 +27,8 @@
             <Icon type="arrow-down-b" />
           </a>
           <DropdownMenu slot="list">
-            <DropdownItem name="settings">
-              Settings
+            <DropdownItem name="account">
+              Account
             </DropdownItem>
             <DropdownItem name="logout">
               Logout
@@ -66,12 +66,13 @@ export default {
       if (name === 'logout') {
         this.logout()
       } else {
+        this.UpdateMenuItemsBy(name)
         this.$router.push(name)
       }
     },
     handleClickHeader: function(name) {
-      this.$router.push(name)
       this.UpdateMenuItemsBy(name)
+      this.$router.push(name)
     }
   }
 }

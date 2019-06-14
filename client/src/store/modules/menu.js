@@ -1,73 +1,55 @@
+var menuTeam = [
+  {
+    title: 'Dashboard',
+    path: '/teamDashboard',
+    icon: 'ios-pulse'
+  },
+  {
+    title: 'Teams',
+    path: '/teams',
+    icon: 'ios-people'
+  },
+  {
+    title: 'Positions',
+    path: '/positions',
+    icon: 'ios-contact'
+  },
+  {
+    title: 'Employees',
+    path: '/employees',
+    icon: 'ios-person'
+  }
+]
+
 export default {
   state: {
-    menuItems: [
-      {
-        title: 'Dashboard',
-        path: '/teamDashboard',
-        icon: 'ios-pulse'
-      },
-      {
-        title: 'Teams',
-        path: '/teams',
-        icon: 'ios-people'
-      },
-      {
-        title: 'Positions',
-        path: '/positions',
-        icon: 'ios-contact'
-      },
-      {
-        title: 'Employees',
-        path: '/employees',
-        icon: 'ios-person'
-      }
-    ]
+    menuItems: menuTeam,
+    menuActive: 'teamDashboard'
   },
   getters: {
     getMenuItems: state => {
       return state.menuItems
+    },
+    getMenuActive: state => {
+      return state.menuActive
     }
   },
   mutations: {
     UpdateMenuItemsBy: (state, mainMenu) => {
       switch (mainMenu) {
         case 'teamDashboard':
-          state.menuItems = [
-            {
-              title: 'Dashboard',
-              path: '/teamDashboard',
-              icon: 'ios-pulse'
-            },
-            {
-              title: 'Teams',
-              path: '/teams',
-              icon: 'ios-people'
-            },
-            {
-              title: 'Positions',
-              path: '/positions',
-              icon: 'ios-contact'
-            },
-            {
-              title: 'Employees',
-              path: '/employees',
-              icon: 'ios-person'
-            }
-          ];
+          state.menuItems = menuTeam;
+          state.menuActive = 'teamDashboard'
           break;
         case 'planning':
           state.menuItems = [
             {
               title: 'Planning',
-              path: '/planing',
+              path: '/planning',
               icon: 'ios-keypad'
-            },
-            {
-              title: 'Result',
-              path: '/result',
-              icon: 'ios-person'
             }
           ];
+          state.menuActive = 'planning'
           break;
         case 'execution':
           state.menuItems = [
@@ -78,7 +60,7 @@ export default {
             }
           ];
           break;
-        case 'settings':
+        case 'company':
           state.menuItems = [
             {
               title: 'Company',
@@ -92,7 +74,7 @@ export default {
             }
           ];
           break;
-        case 'adminsettings':
+        case 'account':
           state.menuItems = [
             {
               title: 'Your profile',
@@ -100,10 +82,20 @@ export default {
               icon: 'ios-keypad'
             },
             {
+              title: 'Credentials',
+              path: '/settings',
+              icon: 'ios-keypad'
+            },
+            {
               title: 'Users',
               path: '/users',
               icon: 'ios-person',
               roles: ['admin']
+            },
+            {
+              path: '/things',
+              title: 'Things',
+              icon: 'ios-keypad'
             }
           ];
           break;

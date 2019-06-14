@@ -84,7 +84,7 @@ export default {
         if (valid) {
           this.login(this.loginForm)
             .then(() => {
-              this.$router.push('/home')
+              this.$router.push('/teamDashboard')
             })
             .catch(err => {
               this.$Message.error(err.message)

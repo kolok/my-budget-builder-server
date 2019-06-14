@@ -43,28 +43,11 @@ let router = new VueRouter({
       ),
       beforeEnter: (to, from, next) => {
         if (store.getters.isAuthenticated) {
-          next('/home')
+          next('/teamDashboard')
         } else {
           next()
         }
       }
-    },
-    {
-      path: '/company',
-      component: Common,
-      children: [
-        {
-          path: '/company',
-          name: 'Company',
-          component: () => import(
-            /* webpackChunkName: "group-common" */
-            './views/company/Company.vue'
-          ),
-          meta: {
-            requiresAuth: true
-          }
-        }
-      ]
     },
     {
       path: '/',
@@ -118,15 +101,84 @@ let router = new VueRouter({
       ]
     },
     {
-      path: '/home',
+      path: '/planning',
       component: Common,
       children: [
         {
-          path: '/home',
-          name: 'Home',
+          path: '/planning',
+          name: 'Planning',
           component: () => import(
             /* webpackChunkName: "group-common" */
-            './views/Home.vue'
+            './views/planning/Planning.vue'
+          ),
+          meta: {
+            requiresAuth: true
+          }
+        }
+      ]
+    },
+    {
+      path: '/execution',
+      redirect: '/reporting',
+      component: Common,
+      children: [
+        {
+          path: '/reporting',
+          name: 'Reporting',
+          component: () => import(
+            /* webpackChunkName: "group-common" */
+            './views/execution/Reporting.vue'
+          ),
+          meta: {
+            requiresAuth: true
+          }
+        }
+      ]
+    },
+    {
+      path: '/settings',
+      redirect: '/company',
+      component: Common,
+      children: [
+        {
+          path: '/company',
+          name: 'Company',
+          component: () => import(
+            /* webpackChunkName: "group-common" */
+            './views/company/Company.vue'
+          ),
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
+          path: '/entities',
+          name: 'Entities',
+          component: () => import(
+            /* webpackChunkName: "group-common" */
+            './views/company/Entities.vue'
+          ),
+          meta: {
+            requiresAuth: true
+          }
+        }
+      ]
+    },
+
+
+
+
+    {
+      path: '/account',
+      redirect: 'profile',
+      component: Common,
+      children: [
+        {
+          path: '/profile',
+          name: 'Your Profile',
+          component: () => import(
+            /* webpackChunkName: "group-account" */
+            './views/account/Profile.vue'
           ),
           meta: {
             requiresAuth: true
@@ -134,7 +186,7 @@ let router = new VueRouter({
         },
         {
           path: '/settings',
-          name: 'Settings',
+          name: 'Credentials',
           component: () => import(
             /* webpackChunkName: "group-account" */
             './views/account/Settings.vue'
