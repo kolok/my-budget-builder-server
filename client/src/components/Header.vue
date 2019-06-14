@@ -1,22 +1,22 @@
 <template>
   <Header>
-    <Menu mode="horizontal" theme="dark" active-name="1">
+    <Menu mode="horizontal" theme="dark" active-name="team" @on-select="handleClickHeader">
       <div class="layout-logo"></div>
       <div class="layout-nav" v-if="isAuthenticated">
         <MenuItem name="team">
-          <Icon type="ios-navigate"></Icon>
+          <Icon type="ios-body"></Icon>
           Team
-        </MenuItem>
+          </MenuItem>
         <MenuItem name="planning">
-          <Icon type="ios-keypad"></Icon>
+        <Icon type="ios-calculator"></Icon>
           Planning
         </MenuItem>
         <MenuItem name="execution">
-          <Icon type="ios-analytics"></Icon>
+          <Icon type="ios-speedometer"></Icon>
           Execution
         </MenuItem>
         <MenuItem name="4">
-          <Icon type="ios-paper"></Icon>
+          <Icon type="ios-settings"></Icon>
           Settings
         </MenuItem>
       </div>
@@ -29,9 +29,6 @@
           <DropdownMenu slot="list">
             <DropdownItem name="settings">
               Settings
-            </DropdownItem>
-            <DropdownItem name="home">
-              Home
             </DropdownItem>
             <DropdownItem name="logout">
               Logout
@@ -70,6 +67,9 @@ export default {
       } else {
         this.$router.push(name)
       }
+    },
+    handleClickHeader: function(name) {
+      this.$router.push(name)
     }
   }
 }
