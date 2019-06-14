@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { Header, Menu, MenuItem, Dropdown, DropdownMenu, DropdownItem, Icon } from 'iview'
 
 export default {
@@ -54,9 +54,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'getCurrentUser'])
+  ...mapGetters(['isAuthenticated', 'getCurrentUser'])
   },
   methods: {
+    ...mapMutations(['UpdateMenuItemsBy']),
     logout: function() {
       this.$store.dispatch('logout')
       this.$router.push('/login')
@@ -70,6 +71,7 @@ export default {
     },
     handleClickHeader: function(name) {
       this.$router.push(name)
+      this.UpdateMenuItemsBy(name)
     }
   }
 }

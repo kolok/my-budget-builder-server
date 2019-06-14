@@ -67,6 +67,23 @@ let router = new VueRouter({
       ]
     },
     {
+      path: '/team',
+      component: Common,
+      children: [
+        {
+          path: '/team',
+          name: 'Team',
+          component: () => import(
+            /* webpackChunkName: "group-common" */
+            './views/company/Team.vue'
+          ),
+          meta: {
+            requiresAuth: true
+          }
+        }
+      ]
+    },
+    {
       path: '/',
       redirect: '/home',
       component: Common,

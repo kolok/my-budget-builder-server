@@ -50,7 +50,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'getCurrentUser']),
+    ...mapGetters(['isAuthenticated', 'getCurrentUser', 'getMenuItems']),
     menuitemClasses: function () {
       return [
         'menu-item',
@@ -59,7 +59,8 @@ export default {
     },
     permittedMenuItems: function() {
       let _this = this
-      return this.menuItems.filter(function(item) {
+      console.log(this.getMenuItems)
+      return this.getMenuItems.filter(function(item) {
         return _this.isPermitted(item.roles)
       })
     }

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <p> Company </p>
+    <p> TEAM </p>
     <router-link to="/team">
-      Please access to your team settings
+      Here is your team !!!
     </router-link>
   </div>
 </template>
