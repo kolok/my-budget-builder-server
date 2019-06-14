@@ -8,10 +8,6 @@ const Common = () => import(
   /* webpackChunkName: "group-common" */
   './views/Common.vue'
 )
-const CommonCompany = () => import(
-  /* webpackChunkName: "group-common" */
-  './views/CommonCompany.vue'
-)
 
 /** Router **/
 Vue.use(VueRouter)
@@ -55,7 +51,7 @@ let router = new VueRouter({
     },
     {
       path: '/company',
-      component: CommonCompany,
+      component: Common,
       children: [
         {
           path: '/company',

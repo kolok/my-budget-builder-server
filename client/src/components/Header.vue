@@ -1,14 +1,26 @@
 <template>
   <Header>
-    <Menu
-      mode="horizontal"
-      theme="dark"
-    >
-      <div class="layout-logo" />
-      <div
-        v-if="isAuthenticated"
-        class="layout-nav"
-      >
+    <Menu mode="horizontal" theme="dark" active-name="1">
+      <div class="layout-logo"></div>
+      <div class="layout-nav" v-if="isAuthenticated">
+        <MenuItem name="team">
+          <Icon type="ios-navigate"></Icon>
+          Team
+        </MenuItem>
+        <MenuItem name="planning">
+          <Icon type="ios-keypad"></Icon>
+          Planning
+        </MenuItem>
+        <MenuItem name="execution">
+          <Icon type="ios-analytics"></Icon>
+          Execution
+        </MenuItem>
+        <MenuItem name="4">
+          <Icon type="ios-paper"></Icon>
+          Settings
+        </MenuItem>
+      </div>
+      <div class="layout-dropdown" v-if="isAuthenticated">
         <Dropdown @on-click="handleClickUserDropdown">
           <a href="javascript:void(0)">
             {{ getCurrentUser.name }}
@@ -17,6 +29,9 @@
           <DropdownMenu slot="list">
             <DropdownItem name="settings">
               Settings
+            </DropdownItem>
+            <DropdownItem name="home">
+              Home
             </DropdownItem>
             <DropdownItem name="logout">
               Logout
@@ -30,11 +45,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { Header, Menu, Dropdown, DropdownMenu, DropdownItem, Icon } from 'iview'
+import { Header, Menu, MenuItem, Dropdown, DropdownMenu, DropdownItem, Icon } from 'iview'
 
 export default {
   components: {
-    Header, Menu, Dropdown, DropdownMenu, DropdownItem, Icon
+    Header, Menu, MenuItem, Dropdown, DropdownMenu, DropdownItem, Icon
   },
   data() {
     return {
@@ -61,6 +76,13 @@ export default {
 </script>
 
 <style scoped>
+.layout{
+    border: 1px solid #d7dde4;
+    background: #f5f7f9;
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+}
 .layout-logo{
     width: 100px;
     height: 30px;
@@ -71,8 +93,11 @@ export default {
     top: 15px;
     left: 20px;
 }
-
 .layout-nav{
-  float: right;
+    width: 500px;
+    margin: 0 auto;
+}
+.layout-dropdown{
+    float: right;
 }
 </style>

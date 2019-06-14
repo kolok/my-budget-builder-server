@@ -1,11 +1,13 @@
 <template>
-  <Layout style="min-height: 100vh">
-    <app-header />
-    <router-view />
-    <!--
+  <div class="layout">
+    <Layout style="min-height: 100vh">
+      <app-header />
+      <router-view />
+      <!--
         <app-footer></app-footer>
-    -->
-  </Layout>
+        -->
+    </Layout>
+  </div>
 </template>
 
 <script>
