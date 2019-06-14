@@ -2,15 +2,24 @@ export default {
   state: {
     menuItems: [
       {
-        title: 'Things',
-        path: '/things',
-        icon: 'ios-keypad'
+        title: 'Dashboard',
+        path: '/teamDashboard',
+        icon: 'ios-pulse'
       },
       {
-        title: 'Users',
-        path: '/users',
-        icon: 'ios-person',
-        roles: ['admin']
+        title: 'Teams',
+        path: '/teams',
+        icon: 'ios-people'
+      },
+      {
+        title: 'Positions',
+        path: '/positions',
+        icon: 'ios-contact'
+      },
+      {
+        title: 'Employees',
+        path: '/employees',
+        icon: 'ios-person'
       }
     ]
   },
@@ -21,15 +30,23 @@ export default {
   },
   mutations: {
     UpdateMenuItemsBy: (state, mainMenu) => {
-
-console.log(mainMenu)
       switch (mainMenu) {
-        case 'team':
+        case 'teamDashboard':
           state.menuItems = [
             {
+              title: 'Dashboard',
+              path: '/teamDashboard',
+              icon: 'ios-pulse'
+            },
+            {
               title: 'Teams',
-              path: '/team',
-              icon: 'ios-keypad'
+              path: '/teams',
+              icon: 'ios-people'
+            },
+            {
+              title: 'Positions',
+              path: '/positions',
+              icon: 'ios-contact'
             },
             {
               title: 'Employees',

@@ -1,9 +1,9 @@
 <template>
   <Header>
-    <Menu mode="horizontal" theme="dark" active-name="team" @on-select="handleClickHeader">
+    <Menu mode="horizontal" theme="dark" active-name="teamDashboard" @on-select="handleClickHeader">
       <div class="layout-logo"></div>
       <div class="layout-nav" v-if="isAuthenticated">
-        <MenuItem name="team">
+        <MenuItem name="teamDashboard">
           <Icon type="ios-body"></Icon>
           Team
           </MenuItem>

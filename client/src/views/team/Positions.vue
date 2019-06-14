@@ -1,9 +1,6 @@
 <template>
   <div>
-    <p> TEAM </p>
-    <router-link to="/team">
-      Here is your team !!!
-    </router-link>
+    <p> Positions </p>
   </div>
 </template>
 

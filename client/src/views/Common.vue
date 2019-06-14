@@ -9,15 +9,6 @@
       <app-sider :is-collapsed="isCollapsed" />
     </Sider>
     <Layout :style="{padding: '0 24px 24px'}">
-      <Breadcrumb :style="{margin: '24px 0'}">
-        <BreadcrumbItem
-          v-if="$route.path!== '/home'"
-          to="/home"
-        >
-          Home
-        </BreadcrumbItem>
-        <BreadcrumbItem>{{ $route.name }}</BreadcrumbItem>
-      </Breadcrumb>
       <Content>
         <router-view />
       </Content>

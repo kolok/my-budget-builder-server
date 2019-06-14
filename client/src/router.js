@@ -29,7 +29,7 @@ let router = new VueRouter({
       ),
       beforeEnter: (to, from, next) => {
         if (store.getters.isAuthenticated) {
-          next('/home')
+          next('/teamDashboard')
         } else {
           next()
         }
@@ -67,15 +67,49 @@ let router = new VueRouter({
       ]
     },
     {
-      path: '/team',
+      path: '/',
+      redirect: '/teamDashboard',
       component: Common,
       children: [
         {
-          path: '/team',
-          name: 'Team',
+          path: '/teamDashboard',
+          name: 'Dashboard',
           component: () => import(
             /* webpackChunkName: "group-common" */
-            './views/company/Team.vue'
+            './views/team/Dashboard.vue'
+          ),
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
+          path: '/teams',
+          name: 'Teams',
+          component: () => import(
+            /* webpackChunkName: "group-common" */
+            './views/team/Teams.vue'
+          ),
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
+          path: '/positions',
+          name: 'Positions',
+          component: () => import(
+            /* webpackChunkName: "group-common" */
+            './views/team/Positions.vue'
+          ),
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
+          path: '/employees',
+          name: 'Employees',
+          component: () => import(
+            /* webpackChunkName: "group-common" */
+            './views/team/Employees.vue'
           ),
           meta: {
             requiresAuth: true
@@ -84,8 +118,7 @@ let router = new VueRouter({
       ]
     },
     {
-      path: '/',
-      redirect: '/home',
+      path: '/home',
       component: Common,
       children: [
         {
