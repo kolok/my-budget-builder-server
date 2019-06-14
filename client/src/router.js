@@ -170,7 +170,7 @@ let router = new VueRouter({
 
     {
       path: '/account',
-      redirect: 'profile',
+      redirect: '/profile',
       component: Common,
       children: [
         {
@@ -185,7 +185,7 @@ let router = new VueRouter({
           }
         },
         {
-          path: '/settings',
+          path: '/credentials',
           name: 'Credentials',
           component: () => import(
             /* webpackChunkName: "group-account" */

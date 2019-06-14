@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p> Planning </p>
+    <p> Profile </p>
   </div>
 </template>
 

@@ -83,8 +83,8 @@ export default {
             },
             {
               title: 'Credentials',
-              path: '/settings',
-              icon: 'ios-keypad'
+              path: '/credentials',
+              icon: 'ios-person'
             },
             {
               title: 'Users',
