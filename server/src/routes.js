@@ -7,7 +7,7 @@ module.exports = function(app) {
       // Handle Validation Error
       if(err.name === 'ValidationError') {
         err.status = 422
-      } 
+      }
       // Handle Mongoose Item Duplication Error
       if (err.name === 'BulkWriteError' && err.code === 11000) {
         err.status = 422
@@ -15,7 +15,7 @@ module.exports = function(app) {
       ctx.status = err.status || 500
       ctx.body = { message: err.message }
     }
-  })       
+  })
   app.use(require('./api/auth').routes())
   app.use(require('./api/user').routes())
   // route middleware to verify a token
@@ -23,4 +23,7 @@ module.exports = function(app) {
   app
     .use(require('./api/thing').routes())
     .use(require('./api/thing').allowedMethods())
+  app
+    .use(require('./api/company').routes())
+    .use(require('./api/company').allowedMethods())
 }
