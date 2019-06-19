@@ -6,7 +6,8 @@ const mongoose = require('mongoose')
 var companySchema = mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'name is required']
+    required: [true, 'name is required'],
+    unique: true // FIXME: didn't works as expected
   },
   info: String
 })

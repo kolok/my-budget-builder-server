@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const secret = require('../../config').secret.auth
 const auth = require('../auth/service')
 var User = require('./user.model')
+var Company = require('../company/company.model')
 
 let router = new Router({
   prefix: '/api/users'
@@ -27,6 +28,25 @@ router
   .post('/', async (ctx) => {
     try {
       let user = await User.create(ctx.request.body)
+      // Sign token
+      let token = await jwt.sign({id: user._id, role: user.role}, secret, {
+        expiresIn: '1d'
+      })
+      ctx.status = 201 // Status code 201 : created
+      ctx.body = {token: token}
+    } catch(err) {
+      throw err
+    }
+  })
+
+  // create
+  .post('/company', async (ctx) => {
+    try {
+      console.log('+++ Here in post users/company')
+      let company = await Company.create({name: ctx.request.body.companyname})
+      var userFields = ctx.request.body
+      userFields.companyID = company._id
+      let user = await User.create(userFields)
       // Sign token
       let token = await jwt.sign({id: user._id, role: user.role}, secret, {
         expiresIn: '1d'

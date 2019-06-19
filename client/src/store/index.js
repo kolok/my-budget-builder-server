@@ -5,9 +5,10 @@ import Vuex from 'vuex'
 import auth from './modules/auth'
 import things from './modules/things'
 import menu from './modules/menu'
+import companies from './modules/companies'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  modules: { auth, things, menu}
+  modules: { auth, things, menu, companies}
 })

@@ -34,6 +34,20 @@ let AuthService = {
       })
   },
 
+  signupwithcompany(body) {
+    return UserResource.createwithcompany(body)
+      .then(res => {
+        localStorage.setItem('token', res.data.token)
+        return UserResource.get()
+      })
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        throw err
+      })
+  },
+
   forget() {
 
   },

@@ -11,12 +11,22 @@
         :rules="ruleSignup"
       >
         <FormItem
+          label="Company name"
+          prop="companyname"
+        >
+          <Input
+            v-model="signupForm.companyname"
+            placeholder="Company name"
+          />
+          </Input>
+        </FormItem>
+        <FormItem
           label="Name"
           prop="name"
         >
           <Input
             v-model="signupForm.name"
-            placeholder="name"
+            placeholder="Name"
           />
           </Input>
         </FormItem>
@@ -27,7 +37,7 @@
           <Input
             v-model="signupForm.email"
             type="email"
-            placeholder="email"
+            placeholder="Email"
           />
           </Input>
         </FormItem>
@@ -38,7 +48,7 @@
           <Input
             v-model="signupForm.password"
             type="password"
-            placeholder="password"
+            placeholder="Password"
           />
           </Input>
         </FormItem>
@@ -49,7 +59,7 @@
           <Input
             v-model="signupForm.retypePwd"
             type="password"
-            placeholder="type password again"
+            placeholder="Type password again"
           />
           </Input>
         </FormItem>
@@ -84,12 +94,16 @@ export default {
   data() {
     return {
       signupForm: {
+        companyname: '',
         name: '',
         email: '',
         password: '',
         retypePwd: ''
       },
       ruleSignup: {
+        companyname: [
+          { required: true, message: 'Company name can\'t be blank' },
+        ],
         name: [
           { required: true, message: 'Name can\'t be blank' },
         ],
@@ -116,12 +130,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['signup']),
+    ...mapActions(['signupwithcompany']),
     /*eslint no-unused-vars: ["error", { "args": "none" }]*/
     submit: function(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.signup(this.signupForm)
+          this.signupwithcompany(this.signupForm)
             .then(() => {
               this.$Message.success(this.signupForm.email + ' Added')
               this.$router.push('/teamDashboard')
