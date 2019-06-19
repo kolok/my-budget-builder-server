@@ -50,6 +50,20 @@ let router = new VueRouter({
       }
     },
     {
+      path: '/signupnoplugin',
+      component: () => import(
+        /* webpackChunkName: "group-account" */
+        './views/account/SignupNoPlugin.vue'
+      ),
+      beforeEnter: (to, from, next) => {
+        if (store.getters.isAuthenticated) {
+          next('/teamDashboard')
+        } else {
+          next()
+        }
+      }
+    },
+    {
       path: '/',
       redirect: '/teamDashboard',
       component: Common,
