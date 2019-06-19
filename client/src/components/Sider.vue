@@ -59,7 +59,6 @@ export default {
     },
     permittedMenuItems: function() {
       let _this = this
-      console.log(this.getMenuItems)
       return this.getMenuItems.filter(function(item) {
         return _this.isPermitted(item.roles)
       })
