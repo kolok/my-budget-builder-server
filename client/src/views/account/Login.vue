@@ -1,72 +1,49 @@
 <template>
-  <Content class="beautiful-gradient">
-    <Card style="max-width:300px;width: 100%;margin: 100px auto">
-      <p slot="title">
-        Login
-      </p>
-      <!-- Begin: Form -->
-      <Form
-        ref="loginForm"
-        :model="loginForm"
-      >
-        <FormItem
-          :rules="[
-            { required: true, message: 'Email is required'},
-            { type: 'email', message: 'Please input correct email address'}
-          ]"
-          label="Email"
-          prop="email"
-        >
-          <Input
-            v-model="loginForm.email"
-            placeholder="email"
-          />
-          </Input>
-        </FormItem>
-        <FormItem
-          :rules="[{ required: true, message: 'Password is required'}]"
-          label="Password"
-          prop="password"
-        >
-          <Input
-            v-model="loginForm.password"
-            placeholder="password"
-            type="password"
-          />
-          </Input>
-        </FormItem>
-        <!--
-          <p class="text-right">
-            <router-link to="/"> Forgot password? </router-link>
-          </p>
-        -->
-        <FormItem>
-          <Button
-            type="primary"
-            long
-            @click="submit('loginForm')"
+  <div class="beautiful-gradient" style="height:100%;padding:100px 0;">
+    <el-card class="box-card" style="max-width:300px;width: 100%;margin: 0px auto;">
+      <div slot="header" class="clearfix" style="font-size: 14px;font-weight: bold;">
+        <span>Login</span>
+      </div>
+      <div class="loginform">
+        <el-form ref="loginForm" :model="loginForm">
+
+          <el-form-item
+            prop="email"
+            label="Email"
+            :rules="[
+              { required: true, message: 'Email is required', trigger: 'blur' },
+              { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }
+            ]"
           >
-            Login
-          </Button>
-        </FormItem>
-      </Form>
-      <p>
-        Don't have an account?
-        <router-link to="/signup">
-          Sign up
-        </router-link>
-      </p>
-    </Card>
-  </Content>
+            <el-input v-model="loginForm.email" placeholder="email"></el-input>
+          </el-form-item>
+          <el-form-item
+            :rules="[{ required: true, message: 'Password is required'}]"
+            label="Password"
+            prop="password"
+          >
+            <el-input type="password" v-model="loginForm.password" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submit('loginForm')" style="width:100%">Submit</el-button>
+          </el-form-item>
+        </el-form>
+        <p style="font-size: 14px;">
+          Don't have an account?
+          <router-link to="/signup">
+            Sign up
+          </router-link>
+        </p>
+      </div>
+    </el-card>
+  </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
-import { Content, Form, FormItem } from 'iview'
 
 export default {
   components: {
-    Content, Form, FormItem
   },
   data() {
     return {

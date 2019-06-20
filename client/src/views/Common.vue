@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout style="height:100%;">
     <Sider
       v-model="isCollapsed"
       :style="{background: '#fff'}"
@@ -8,10 +8,8 @@
     >
       <app-sider :is-collapsed="isCollapsed" />
     </Sider>
-    <Layout :style="{padding: '0 24px 24px'}">
-      <Content>
+    <Layout style="padding:24px">
         <router-view />
-      </Content>
     </Layout>
   </Layout>
 </template>

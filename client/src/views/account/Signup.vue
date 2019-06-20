@@ -1,96 +1,65 @@
 <template>
-  <Content class="beautiful-gradient">
-    <Card style="max-width:300px;width: 100%;margin: 100px auto">
-      <p slot="title">
-        Sign up
-      </p>
-      <!-- Begin: Form -->
-      <Form
-        ref="signupForm"
-        :model="signupForm"
-        :rules="ruleSignup"
-      >
-        <FormItem
-          label="Company name"
-          prop="companyname"
+  <div class="beautiful-gradient" style="height:100%;padding:100px 0;">
+    <el-card class="box-card" style="max-width:300px;width: 100%;margin: 0px auto;">
+      <div slot="header" class="clearfix" style="font-size: 14px;font-weight: bold;">
+        <span>Sign up</span>
+      </div>
+      <div class="signupform">
+        <el-form
+          ref="signupForm"
+          :model="signupForm"
+          :rules="ruleSignup"
         >
-          <Input
-            v-model="signupForm.companyname"
-            placeholder="Company name"
-          />
-          </Input>
-        </FormItem>
-        <FormItem
-          label="Name"
-          prop="name"
-        >
-          <Input
-            v-model="signupForm.name"
-            placeholder="Name"
-          />
-          </Input>
-        </FormItem>
-        <FormItem
-          label="Email"
-          prop="email"
-        >
-          <Input
-            v-model="signupForm.email"
-            type="email"
-            placeholder="Email"
-          />
-          </Input>
-        </FormItem>
-        <FormItem
-          label="Password"
-          prop="password"
-        >
-          <Input
-            v-model="signupForm.password"
-            type="password"
-            placeholder="Password"
-          />
-          </Input>
-        </FormItem>
-        <FormItem
-          label="Confirm Password"
-          prop="retypePwd"
-        >
-          <Input
-            v-model="signupForm.retypePwd"
-            type="password"
-            placeholder="Type password again"
-          />
-          </Input>
-        </FormItem>
-        <FormItem>
-          <Button
-            type="success"
-            long
-            @click="submit('signupForm')"
+          <el-form-item
+            prop="companyname"
+            label="Company name"
           >
-            Sign me up!
-          </Button>
-        </FormItem>
-      </Form>
-      <p>
-        Already have an account?
-        <router-link to="/login">
-          Login here
-        </router-link>
-      </p>
-    </Card>
-  </Content>
+            <el-input v-model="signupForm.companyname" placeholder="Company name"></el-input>
+          </el-form-item>
+          <el-form-item
+            prop="name"
+            label="Name"
+          >
+            <el-input v-model="signupForm.name" placeholder="Name"></el-input>
+          </el-form-item>
+          <el-form-item
+            prop="email"
+            label="Email"
+          >
+            <el-input v-model="signupForm.email" placeholder="email"></el-input>
+          </el-form-item>
+          <el-form-item
+            label="Password"
+            prop="password"
+          >
+            <el-input type="password" v-model="signupForm.password" autocomplete="off" placeholder="Password"></el-input>
+          </el-form-item>
+
+          <el-form-item
+            label="Confirm Password"
+            prop="retypePwd"
+          >
+            <el-input type="password" v-model="signupForm.retypePwd" autocomplete="off" placeholder="Type password again"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submit('signupForm')" style="width:100%">Sign me up</el-button>
+          </el-form-item>
+        </el-form>
+        <p>
+          Already have an account?
+          <router-link to="/login">
+            Login here
+          </router-link>
+        </p>
+      </div>
+    </el-card>
+  </div>
 </template>
 
 <script>
-import { Content, Form, FormItem } from 'iview'
 import { mapActions } from 'vuex'
 
 export default {
-  components: {
-    Content, Form, FormItem
-  },
   data() {
     return {
       signupForm: {
