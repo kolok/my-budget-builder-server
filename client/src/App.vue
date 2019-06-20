@@ -3,16 +3,12 @@
     <Layout style="min-height: 100vh">
       <app-header />
       <router-view />
-      <!--
-        <app-footer></app-footer>
-        -->
     </Layout>
   </div>
 </template>
 
 <script>
 import Header from './components/Header.vue'
-// import Footer from './components/Footer.vue'
 import { Layout } from 'iview'
 
 export default {
