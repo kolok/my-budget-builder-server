@@ -1,7 +1,7 @@
 <template>
   <Menu
     v-if="isAuthenticated"
-    :active-name="$route.path"
+    :active-name="activeMenu"
     :class="menuitemClasses"
     theme="light"
     width="auto"
@@ -49,6 +49,9 @@ export default {
       ]
     }
   },
+  afterMount(){
+    this.updateDefaultActiveMenu()
+  },
   computed: {
     ...mapGetters(['isAuthenticated', 'getCurrentUser', 'getMenuItems']),
     menuitemClasses: function () {
@@ -62,6 +65,14 @@ export default {
       return this.getMenuItems.filter(function(item) {
         return _this.isPermitted(item.roles)
       })
+    },
+    activeMenu: function() {
+      console.log(this.permittedMenuItems[0].path)
+      return this.permittedMenuItems[0].path
+    },
+    updateDefaultActiveMenu: function() {
+      this.activeMenu = this.menuItems[0].path
+      console.log('activeMenu: '+athis.activeMenu)
     }
   },
   methods: {

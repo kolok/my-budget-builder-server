@@ -76,13 +76,9 @@
 </template>
 
 <script>
-import { Content } from 'iview'
 import { mapActions } from 'vuex'
 
 export default {
-  components: {
-    Content
-  },
   data() {
     return {
       signupForm: {

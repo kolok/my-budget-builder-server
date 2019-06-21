@@ -1,5 +1,5 @@
 <template>
-  <div class="beautiful-gradient" style="height:100%;padding:100px 0;">
+  <div class="default-main-content">
     <el-card class="box-card" style="max-width:300px;width: 100%;margin: 0px auto;">
       <div slot="header" class="clearfix" style="font-size: 14px;font-weight: bold;">
         <span>Login</span>

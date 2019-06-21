@@ -1,106 +1,87 @@
 <template>
-  <Header>
-    <Menu mode="horizontal" theme="dark" active-name="teamDashboard" @on-select="handleClickHeader">
+  <el-row style="width:100%;height:64px;padding-top:4px;background-color:#545c64;" >
+    <el-col :span="4">
       <div class="layout-logo"></div>
+    </el-col>
+    <el-col :span="20">
       <div class="layout-nav" v-if="isAuthenticated">
-        <MenuItem name="teamDashboard">
-          <Icon type="ios-body"></Icon>
-          Team
-          </MenuItem>
-        <MenuItem name="planning">
-        <Icon type="ios-calculator"></Icon>
-          Planning
-        </MenuItem>
-        <MenuItem name="execution">
-          <Icon type="ios-speedometer"></Icon>
-          Execution
-        </MenuItem>
-        <MenuItem name="company">
-          <Icon type="ios-settings"></Icon>
-          Settings
-        </MenuItem>
+        <el-menu
+          default-active="teamDashboard"
+          class="header-menu"
+          mode="horizontal"
+          @select="handleClickHeader"
+          background-color="#545c64"
+          text-color="#fff"
+          active-text-color="#ffd04b">
+          <el-menu-item index="teamDashboard"><i class="el-icon-edit"></i>Team</el-menu-item>
+          <el-menu-item index="planning">Planning</el-menu-item>
+          <el-menu-item index="execution">Execution</el-menu-item>
+          <el-menu-item index="company">Settings</el-menu-item>
+          <el-submenu index="adminsettings" style="float:right">
+            <template slot="title">{{ getCurrentUser.name }}</template>
+            <el-menu-item index="account">Account</el-menu-item>
+            <el-menu-item index="logout">Logout</el-menu-item>
+          </el-submenu>
+        </el-menu>
       </div>
-      <div class="layout-dropdown" v-if="isAuthenticated">
-        <Dropdown @on-click="handleClickUserDropdown">
-          <a href="javascript:void(0)">
-            {{ getCurrentUser.name }}
-            <Icon type="arrow-down-b" />
-          </a>
-          <DropdownMenu slot="list">
-            <DropdownItem name="account">
-              Account
-            </DropdownItem>
-            <DropdownItem name="logout">
-              Logout
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
-      </div>
-    </Menu>
-  </Header>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
-import { Header, Menu, MenuItem, Dropdown, DropdownMenu, DropdownItem, Icon } from 'iview'
+  import { mapGetters, mapMutations } from 'vuex'
 
-export default {
-  components: {
-    Header, Menu, MenuItem, Dropdown, DropdownMenu, DropdownItem, Icon
-  },
-  data() {
-    return {
-
-    }
-  },
-  computed: {
-  ...mapGetters(['isAuthenticated', 'getCurrentUser'])
-  },
-  methods: {
-    ...mapMutations(['UpdateMenuItemsBy']),
-    logout: function() {
-      this.$store.dispatch('logout')
-      this.$router.push('/login')
+  export default {
+    components: {
     },
-    handleClickUserDropdown: function(name) {
-      if (name === 'logout') {
-        this.logout()
-      } else {
-        this.UpdateMenuItemsBy(name)
-        this.$router.push(name)
+    data() {
+      return {
       }
     },
-    handleClickHeader: function(name) {
-      this.UpdateMenuItemsBy(name)
-      this.$router.push(name)
+    computed: {
+    ...mapGetters(['isAuthenticated', 'getCurrentUser'])
+    },
+    methods: {
+      ...mapMutations(['UpdateMenuItemsBy']),
+      logout: function() {
+        this.$store.dispatch('logout')
+        this.$router.push('/login')
+      },
+      handleClickHeader: function(name) {
+        if (name === 'logout') {
+          this.logout()
+        } else {
+          this.UpdateMenuItemsBy(name)
+          this.$router.push(name)
+        }
+      }
     }
   }
-}
 </script>
 
 <style scoped>
-.layout{
-    border: 1px solid #d7dde4;
-    background: #f5f7f9;
-    position: relative;
-    border-radius: 4px;
-    overflow: hidden;
-}
-.layout-logo{
-    width: 100px;
-    height: 30px;
-    background: #5b6270;
-    border-radius: 3px;
-    float: left;
-    position: relative;
-    top: 15px;
-    left: 20px;
-}
-.layout-nav{
-    width: 500px;
-    margin: 0 auto;
-}
-.layout-dropdown{
-    float: right;
-}
+  .layout{
+      border: 1px solid #d7dde4;
+      background: #f5f7f9;
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+  }
+  .layout-logo{
+      width: 100px;
+      height: 30px;
+      background: #5b6270;
+      border-radius: 3px;
+      float: left;
+      position: relative;
+      top: 15px;
+      left: 20px;
+  }
+  .layout-nav{
+      width: 100 %;
+      margin: 0;
+  }
+  .layout-dropdown{
+      float: right;
+  }
 </style>
