@@ -12,7 +12,7 @@
       :key="item.title"
       :name="item.path"
     >
-      <Icon :type="item.icon" />
+      <i :class="item.icon"/>
       <span>{{ item.title }}</span>
     </MenuItem>
   </Menu>
@@ -34,19 +34,7 @@ export default {
   },
   data() {
     return {
-      menuItems: [
-        {
-          title: 'Things',
-          path: '/things',
-          icon: 'ios-keypad'
-        },
-        {
-          title: 'Users',
-          path: '/users',
-          icon: 'ios-person',
-          roles: ['admin']
-        }
-      ]
+      menuItems: []
     }
   },
   afterMount(){

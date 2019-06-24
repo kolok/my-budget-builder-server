@@ -13,10 +13,10 @@
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b">
-          <el-menu-item index="teamDashboard"><i class="el-icon-edit"></i>Team</el-menu-item>
-          <el-menu-item index="planning">Planning</el-menu-item>
-          <el-menu-item index="execution">Execution</el-menu-item>
-          <el-menu-item index="company">Settings</el-menu-item>
+          <el-menu-item index="teamDashboard"><i class="el-icon-user"/>Team</el-menu-item>
+          <el-menu-item index="planning"><i class="el-icon-c-scale-to-original"/>Planning</el-menu-item>
+          <el-menu-item index="execution"><i class="el-icon-folder-checked"/>Execution</el-menu-item>
+          <el-menu-item index="company"><i class="el-icon-setting"/>Settings</el-menu-item>
           <el-submenu index="adminsettings" style="float:right">
             <template slot="title">{{ getCurrentUser.name }}</template>
             <el-menu-item index="account">Account</el-menu-item>

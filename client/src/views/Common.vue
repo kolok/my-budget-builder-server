@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-aside width="200px">
+    <el-aside width="auto">
       <Sider
         v-model="isCollapsed"
         :style="{background: '#fff'}"

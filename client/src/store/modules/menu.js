@@ -2,22 +2,22 @@ var menuTeam = [
   {
     title: 'Dashboard',
     path: '/teamDashboard',
-    icon: 'ios-pulse'
+    icon: 'el-icon-pie-chart'
   },
   {
     title: 'Teams',
     path: '/teams',
-    icon: 'ios-people'
+    icon: 'el-icon-user'
   },
   {
     title: 'Positions',
     path: '/positions',
-    icon: 'ios-contact'
+    icon: 'el-icon-refresh-right'
   },
   {
     title: 'Employees',
     path: '/employees',
-    icon: 'ios-person'
+    icon: 'el-icon-user'
   }
 ]
 
@@ -46,7 +46,7 @@ export default {
             {
               title: 'Planning',
               path: '/planning',
-              icon: 'ios-keypad'
+              icon: 'el-icon-c-scale-to-original'
             }
           ];
           state.menuActive = 'planning'
@@ -56,7 +56,7 @@ export default {
             {
               title: 'Reporting',
               path: '/execution',
-              icon: 'ios-keypad'
+              icon: 'el-icon-folder-checked'
             }
           ];
           break;
@@ -65,12 +65,17 @@ export default {
             {
               title: 'Company',
               path: '/company',
-              icon: 'ios-keypad'
+              icon: 'el-icon-house'
             },
             {
               title: 'Entities',
               path: '/entities',
-              icon: 'ios-keypad'
+              icon: 'el-icon-files'
+            },
+            {
+              title: 'Teams',
+              path: '/teams',
+              icon: 'el-icon-user'
             }
           ];
           break;
@@ -79,23 +84,23 @@ export default {
             {
               title: 'Your profile',
               path: '/profile',
-              icon: 'ios-keypad'
+              icon: 'el-icon-user'
             },
             {
               title: 'Credentials',
               path: '/credentials',
-              icon: 'ios-person'
+              icon: 'el-icon-user'
             },
             {
               title: 'Users',
               path: '/users',
-              icon: 'ios-person',
+              icon: 'el-icon-user',
               roles: ['admin']
             },
             {
               path: '/things',
               title: 'Things',
-              icon: 'ios-keypad'
+              icon: 'el-icon-user'
             }
           ];
           break;

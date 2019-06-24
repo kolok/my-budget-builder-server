@@ -12,6 +12,20 @@
           v-model="companyForm.info">
         </el-input>
       </el-form-item>
+
+      <el-form-item label="Fiscal year">
+        <el-select v-model="value" placeholder="Select">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+
+
+
       <el-form-item>
   			<el-button type="primary" @click="onSubmit">Save</el-button>
 		  </el-form-item>
@@ -39,7 +53,45 @@ export default {
       'companyForm': {
         'name': '',
         'info': ''
-      }
+      },
+      options: [{
+          value: '01-12',
+          label: 'From January to December'
+        }, {
+          value: '02-01',
+          label: 'From February to January'
+        }, {
+          value: '03-02',
+          label: 'From March to February'
+        }, {
+          value: '04-03',
+          label: 'From April to March'
+        }, {
+          value: '05-04',
+          label: 'From May to April'
+        }, {
+          value: '06-05',
+          label: 'From June to May'
+        }, {
+          value: '07-06',
+          label: 'From July to June'
+        }, {
+          value: '08-07',
+          label: 'From August to July'
+        }, {
+          value: '09-08',
+          label: 'From September to August'
+        }, {
+          value: '10-09',
+          label: 'From October to September'
+        }, {
+          value: '11-10',
+          label: 'From November to October'
+        }, {
+          value: '12-11',
+          label: 'From December to November'
+        }],
+      value: ''
     }
   },
   beforeMount(){
@@ -50,7 +102,6 @@ export default {
 
     getCompany: function() {
       // Load specific thing infomation
-      console.log("++++ Onload company form")
       CompanyResource.get(this.id)
         .then(response => {
           let company = response.data
