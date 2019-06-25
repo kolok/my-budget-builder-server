@@ -1,13 +1,13 @@
 version: "2"
 services:
   server:
-    container_name: server
-    #image: yunhan0/koa-vue-fullstack:server
-    # image: server
+    container_name: loop-server
     build: .
     restart: always
     ports:
       - "3000:3000" # container port: server port
+    environment:
+      NODE_ENV: development
     volumes:
       - .:/server
       - /server/node_modules
@@ -15,10 +15,40 @@ services:
       - mongo
     #command: ["./wait-for-it.sh", "mongo:27017", "--", "npm", "run", "start"]
     command: ["npm", "run", "start"]
+# FIXME: mongo should be deprecated
   mongo:
-    container_name: mongo
+    container_name: loop-mongo
     image: mongo
     volumes:
       - /var/mongo/data:/data/db
     ports:
       - "27017:27017"
+# Here is the postgreSQL engine exposed on 5431
+  db:
+    image: postgres
+    restart: always
+# opened port 5432 to be able to connect to the db using a postgresql client direct in a shell
+# Ex: psql -p 5432 -h 127.0.0.1 -U myuser
+# Else, if the port is not opened you can use the "docker exec" command
+    ports:
+      - 5432:5432
+    environment:
+# Use a dedicate user for this pproject with a complex password
+      POSTGRES_USER: loop-admin
+      POSTGRES_PASSWORD: Aek8Aegaloh1jaD0Rah6ieghOosh9ree
+# PGDATA is the volume where the postgresql data file will be stored
+      PGDATA: /var/lib/postgresql/data/loopdata
+# mount posgresql volume on your own computer to persist the data
+    volumes:
+        - /var/lib/postgresql/data/loopdata:/var/lib/postgresql/data/loopdata:rw
+    container_name: loop-db
+
+# This is an interface to admininstrate db in your docker envirnment on port 8080
+# To access it, open a browser on the url http://localhost:8080
+# This is only t help developers but will not be used in MyITS project
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8081:8080
+    container_name: loop-adminer
