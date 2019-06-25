@@ -44,7 +44,7 @@ Using environment "test".
 == companies: migrating =======
 == companies: migrated (0.012s)
 
-$ docker-compose exec api npx sequelize db:seed:undo:all --config src/db/config/sequelize.js --env test --seeders-path src/db/seeders/ --models-path src/models/
+$ docker-compose exec server npx sequelize db:seed:undo:all --config src/db/config/sequelize.js --env test --seeders-path src/db/seeders/ --models-path src/models/
 
 > Sequelize CLI [Node: 8.14.0, CLI: 5.4.0, ORM: 4.42.0]
 

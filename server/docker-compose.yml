@@ -14,7 +14,7 @@ services:
     depends_on:
       - mongo
     #command: ["./wait-for-it.sh", "mongo:27017", "--", "npm", "run", "start"]
-    command: ["npm", "run", "start"]
+    command: ["npm", "run", "watch"]
 # FIXME: mongo should be deprecated
   mongo:
     container_name: loop-mongo

@@ -19,7 +19,7 @@ module.exports = {
         unique: true
       },
       company_id: {
-        type: Sequelize.DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: false/*,
         references: {
           model: 'Company',
