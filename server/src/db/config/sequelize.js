@@ -27,7 +27,7 @@ module.exports = {
     "port": process.env.DB_PORT,
     "pool": { "max": 5, "min": 0, "idle": 10000 },
     "define": { "freezeTableName": true, "timestamps": false },
-    "logging": false
+    "logging": console.log
   },
   "test": {
     "username": process.env.DB_USER,

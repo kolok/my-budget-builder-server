@@ -71,7 +71,7 @@
             id: 1,
             name: 'Loop SAS',
             country: 'France',
-            offices: 'Paris, Paris',
+            offices: 'Paris, Nantes, Lyon',
             officesDetails: [
               {
                 name: 'Loop - Siège social',

@@ -85,7 +85,7 @@ app.use(defaultRouter.routes())
 app.use(defaultRouter.allowedMethods())
 app.use(companiesRouter.routes())
 app.use(companiesRouter.allowedMethods())
-app.use(productsRouter.routes())
-app.use(productsRouter.allowedMethods())
+app.use(usersRouter.routes())
+app.use(usersRouter.allowedMethods())
 
 export default app

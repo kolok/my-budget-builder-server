@@ -14,8 +14,10 @@
   },
   "dependencies": {
     "@koa/cors": "^2.2.1",
+    "babel-polyfill": "~6.26.0",
     "bcrypt": "^3.0.6",
     "dotenv": "^5.0.1",
+    "ioredis": "^4.10.0",
     "jsonwebtoken": "^8.1.1",
     "kcors": "^2.2.2",
     "koa": "^2.2.0",
@@ -38,7 +40,6 @@
   },
   "devDependencies": {
     "babel-cli": "~6.26.0",
-    "babel-polyfill": "~6.26.0",
     "babel-preset-env": "~1.7.0",
     "babel-register": "~6.26.0",
     "babel-eslint": "^10.0.1",
