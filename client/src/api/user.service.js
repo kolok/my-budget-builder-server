@@ -17,8 +17,8 @@ let UserResource = {
     return HTTP.post('users/', body)
   },
 
-  createwithcompany(body) {
-    return HTTP.post('users/company', body)
+  signup(body) {
+    return HTTP.post('users/signup', body)
   },
 
   changePassword(body) {

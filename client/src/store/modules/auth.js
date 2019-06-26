@@ -55,14 +55,5 @@ export default {
         })
     },
 
-    signupwithcompany: ({ commit }, body) => {
-      return AuthService.signupwithcompany(body)
-        .then(user => {
-          commit('LOGIN', user)
-        })
-        .catch(err => {
-          throw err
-        })
-    },
   }
 }

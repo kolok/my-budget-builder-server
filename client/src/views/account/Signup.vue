@@ -99,12 +99,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['signupwithcompany']),
+    ...mapActions(['signup']),
     /*eslint no-unused-vars: ["error", { "args": "none" }]*/
     submit: function(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.signupwithcompany(this.signupForm)
+          this.signup(this.signupForm)
             .then(() => {
               this.$Message.success(this.signupForm.email + ' Added')
               this.$router.push('/teamDashboard')

@@ -12,6 +12,7 @@ const userController = new UserController()
 // FIXME: add v1 in the path
 // FIXME: manage authentication usign jwt
 
+// FIXME: do we need it ?
 router.get('/api/users', async (ctx, next) => {
     await userController.index(ctx)
 })
