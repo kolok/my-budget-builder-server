@@ -35,6 +35,12 @@ const User = sequelize.define("users", {
     type: Sequelize.STRING,
     defaultValue: 'user'
   },
+  loginCount: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+    field: "login_count"
+  },
   status: {
     allowNull: false,
     defaultValue: 'active',
@@ -59,5 +65,8 @@ const User = sequelize.define("users", {
     field: "deleted_at"
   }
 }, {underscored: true});
+
+// Instance Method
+User.incrementLoginCount = function (id) { this.update({ loginCount: sequelize.literal('login_count + 1') }, { where: { id: id } }); }
 
 export { User }

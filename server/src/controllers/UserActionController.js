@@ -59,6 +59,7 @@ const userSchemaResetPassword = joi.object({
 */
 import { User } from '../models/User'
 import { Company } from '../models/Company'
+import { RefreshToken } from '../models/RefreshToken'
 
 class UserController {
     constructor() {}
@@ -95,6 +96,7 @@ class UserController {
         }
 
         //Now let's generate a token for this user
+        //FIXME: should we store a token ?
         request.token = await this.generateUniqueToken()
 
         //Ok now let's hash their password.
@@ -147,17 +149,15 @@ class UserController {
     async authenticate(ctx) {
         const request = ctx.request.body
 
-        if (!request.username || !request.password) {
+        if (!request.email || !request.password) {
+          console.log("email password missing ?")
             ctx.throw(404, 'INVALID_DATA')
         }
 
         //Let's find that user
-        var [userData] = await db('users')
-            .where({
-                username: request.username,
-            })
-            .select('id', 'token', 'username', 'email', 'password', 'isAdmin')
-        if (!userData) {
+        let userbyemail = await User.findOne({ where: {email: request.email} }).then( user => { return user })
+
+        if (userbyemail === null) {
             ctx.throw(401, 'INVALID_CREDENTIALS')
         }
 
@@ -165,52 +165,32 @@ class UserController {
         try {
             let correct = await bcrypt.compare(
                 request.password,
-                userData.password
+                userbyemail.password
             )
             if (!correct) {
                 ctx.throw(400, 'INVALID_CREDENTIALS')
             }
         } catch (error) {
+          console.log("password matching issue ?")
             ctx.throw(400, 'INVALID_DATA')
         }
 
         //Let's get rid of that password now for security reasons
-        delete userData.password
+        delete userbyemail.password
 
         //Generate the refreshToken data
-        let refreshTokenData = {
-            username: userData.username,
-            refreshToken: new rand(/[a-zA-Z0-9_-]{64,64}/).gen(),
-            info:
-                ctx.userAgent.os +
-                ' ' +
-                ctx.userAgent.platform +
-                ' ' +
-                ctx.userAgent.browser,
-            ipAddress: ctx.request.ip,
-            expiration: dateAddMonths(new Date(), 1),
-            isValid: true,
-        }
+        let refreshTokenData = await this.generateRefreshToken(ctx,userbyemail)
 
-        //Insert the refresh data into the db
+        //increment the login count of the user
+        User.incrementLoginCount(userbyemail.id );//update({ loginCount: sequelize.literal('login_count + 1') }, { where: { id: userbyemail.id } });
         try {
-            await db('refresh_tokens').insert(refreshTokenData)
-        } catch (error) {
-            ctx.throw(400, 'INVALID_DATA')
-        }
-
-        //Update their login count
-        try {
-            await db('users')
-                .increment('loginCount')
-                .where({ id: userData.id })
         } catch (error) {
             ctx.throw(400, 'INVALID_DATA')
         }
 
         //Ok, they've made it, send them their jsonwebtoken with their data, accessToken and refreshToken
         const token = jsonwebtoken.sign(
-            { data: userData },
+            { data: userbyemail },
             process.env.JWT_SECRET,
             { expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME }
         )
@@ -220,6 +200,45 @@ class UserController {
         }
     }
 
+// Function to factorise the Refresh token generation
+//   Input: ctx => http request context
+//          user => user to who we need to generate a refresh token
+//   Output: refreshToken
+    async generateRefreshToken(ctx,user) {
+      //Generate the refreshToken data
+      let refreshTokenData =  {
+        //FIXME: before email was username
+          email: user.email,
+          refreshToken: new rand(/[a-zA-Z0-9_-]{64,64}/).gen(),
+          info:
+              ctx.userAgent.os +
+              ' ' +
+              ctx.userAgent.platform +
+              ' ' +
+              ctx.userAgent.browser,
+          ipAddress: ctx.request.ip,
+          // does it means that refresh token is valid during 1 month
+          expiration: dateAddMonths(new Date(), 1),
+          isValid: true,
+      }
+
+      //Insert the refresh data into the db
+      var refreshtoken = await RefreshToken.create(refreshTokenData).then( rt => {return rt})
+      try {
+          //FIXME: manage refreshtoken in db ?
+          //await db('refresh_tokens').insert(refreshTokenData)
+      } catch (error) {
+        console.log('+++++++++++++++ generateRefreshToken : '.error)
+
+          ctx.throw(400, 'INVALID_DATA')
+      }
+
+      return refreshtoken.refreshToken
+
+    }
+
+//FIXME: manage refreshtoken
+/*
     async refreshAccessToken(ctx) {
         const request = ctx.request.body
         if (!request.username || !request.refreshToken) {
@@ -335,7 +354,7 @@ class UserController {
             ctx.throw(400, 'INVALID_DATA')
         }
     }
-
+*/
     async forgot(ctx) {
         const request = ctx.request.body
 

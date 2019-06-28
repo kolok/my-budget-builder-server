@@ -33,11 +33,17 @@ module.exports = {
       role: {
         allowNull: false,
         type: Sequelize.STRING,
-        default: 'user'
+        defaultValue: 'user'
+      },
+      loginCount: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+        field: "login_count"
       },
       status: {
         allowNull: false,
-        default: 'active',
+        defaultValue: 'active',
         type: Sequelize.ENUM(['active','inactive','deleted'])
       },
       createdAt: {
@@ -52,7 +58,7 @@ module.exports = {
       },
       deletedAt: {
         allowNull: true,
-        default: undefined,
+        defaultValue: undefined,
         type: Sequelize.DATE,
         field: "deleted_at"
       }
