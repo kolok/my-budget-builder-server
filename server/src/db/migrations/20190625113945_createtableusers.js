@@ -60,7 +60,7 @@ module.exports = {
   },
   down: (queryInterface, Sequelize) => {
 //removeConstraint('products', 'Company').
-    return queryInterface.dropTable('products');
+    return queryInterface.dropTable('users');
 /*    return queryInterface.sequelize.transaction((t) => {
                 return Promise.all([
                     queryInterface.removeConstraint('products', 'Company', { transaction: t })

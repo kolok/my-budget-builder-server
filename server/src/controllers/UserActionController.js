@@ -78,21 +78,19 @@ class UserController {
 
         //Now let's check for a duplicate username
         let company = await Company.findOne({ where: {name: request.companyname} }).then( companyByName => { return companyByName })
-        console.log("============================= "+ company)
-
-        if (company !== undefined) {
+        if (company !== null) {
           return ctx.throw(400, 'DUPLICATE_COMPANY')
         }
 
         //Now let's check for a duplicate username
-        let userbyname = await User.findOne({ where: {name: request.name} })
-        if (userbyname === undefined) {
+        let userbyname = await User.findOne({ where: {name: request.name} }).then( user => { return user })
+        if (userbyname !== null) {
             ctx.throw(400, 'DUPLICATE_USERNAME')
         }
 
         //..and duplicate email
-        let userbyemail = await User.findOne({ where: {email: request.email} })
-        if (userbyemail === undefined) {
+        let userbyemail = await User.findOne({ where: {email: request.email} }).then( user => { return user })
+        if (userbyemail !== null) {
             ctx.throw(400, 'DUPLICATE_EMAIL')
         }
 
@@ -112,9 +110,10 @@ class UserController {
 
         //Ok, at this point we can sign them up.
         try {
-          var newCompany = await Company.create({name: request.companyname})
+          var newCompany = await Company.create({name: request.companyname}).then( company => {return company})
+          console.log(newCompany.id)
           delete request.companyname
-          request.companyID = newCompany.id
+          request.company_id = await newCompany.id
           var user = await User.create(request)
 
             //Let's send a welcome email.

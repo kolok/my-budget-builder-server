@@ -33,21 +33,23 @@ const User = sequelize.define("users", {
   role: {
     allowNull: false,
     type: Sequelize.STRING,
-    default: 'user'
+    defaultValue: 'user'
   },
   status: {
     allowNull: false,
-    default: 'active',
+    defaultValue: 'active',
     type: Sequelize.ENUM(['active','inactive','deleted'])
   },
   createdAt: {
     allowNull: false,
     type: Sequelize.DATE,
+    defaultValue: sequelize.fn('NOW'),
     field: "created_at"
   },
   updatedAt: {
     allowNull: false,
     type: Sequelize.DATE,
+    defaultValue: sequelize.fn('NOW'),
     field: "updated_at"
   },
   deletedAt: {
