@@ -1,5 +1,5 @@
 import db from '../db/db'
-// FIXME: add joi
+// FIXME: add joi ?
 //import joi from 'joi'
 import rand from 'randexp'
 import bcrypt from 'bcrypt'
@@ -12,7 +12,7 @@ import dateAddMonths from 'date-fns/add_months'
 import dateCompareAsc from 'date-fns/compare_asc'
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
-// FIXME: add joi
+// FIXME: add joi ?
 /*
 const userSchemaSignup = joi.object({
     firstName: joi
@@ -71,7 +71,7 @@ class UserController {
         const request = ctx.request.body
 
         //Next do validation on the input
-        // FIXME: add joi
+        // FIXME: add joi ?
         /*const validator = joi.validate(request, userSchemaSignup)
         if (validator.error) {
             ctx.throw(400, validator.error.details[0].message)

@@ -58,4 +58,8 @@ router.post('/api/user/private', jwtMiddleware, async (ctx, next) => {
     await userActionController.private(ctx)
 })
 
+router.get('/api/users/me', jwtMiddleware, async (ctx, next) => {
+    await userActionController.private(ctx)
+})
+
 export default router

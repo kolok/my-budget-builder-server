@@ -16,7 +16,7 @@ let HTTP = axios.create({
 // Add a request interceptor
 HTTP.interceptors.request.use(function (config) {
   if (localStorage.getItem('token') !== null) {
-    config.headers.common['access_token'] = localStorage.getItem('token')
+    config.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token')
   }
   return config
 }, function(error) {
