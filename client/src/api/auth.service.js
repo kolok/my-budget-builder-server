@@ -7,9 +7,9 @@ import UserResource from './user.service'
  */
 let AuthService = {
   login(body) {
-    return HTTP.post('user/authenticate', body)
+    return HTTP.post('users/signin', body)
       .then(res => {
-        localStorage.setItem('token', res.data.accessToken)
+        localStorage.setItem('accessToken', res.data.accessToken)
         return UserResource.get()
       })
       .then(response => {
@@ -23,7 +23,7 @@ let AuthService = {
   signup(body) {
     return UserResource.signup(body)
       .then(res => {
-        localStorage.setItem('token', res.data.accessToken)
+        localStorage.setItem('accessToken', res.data.accessToken)
         return UserResource.get()
       })
       .then(response => {

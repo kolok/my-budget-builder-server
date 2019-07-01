@@ -10,13 +10,13 @@ import router from '../router'
 
 // A new instance of axios with a custom config.
 let HTTP = axios.create({
-  baseURL: 'http://localhost:3000/api/'
+  baseURL: 'http://localhost:3000/api/v1/'
 })
 
 // Add a request interceptor
 HTTP.interceptors.request.use(function (config) {
-  if (localStorage.getItem('token') !== null) {
-    config.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token')
+  if (localStorage.getItem('accessToken') !== null) {
+    config.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('accessToken')
   }
   return config
 }, function(error) {

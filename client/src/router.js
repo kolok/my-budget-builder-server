@@ -162,7 +162,7 @@ let router = new VueRouter({
             './views/company/Company.vue'
           ),
           meta: {
-            requiresAuth: true
+            requiresAuth: true, title: 'Loop - Your Company'
           }
         },
         {
@@ -195,7 +195,7 @@ let router = new VueRouter({
             './views/account/Profile.vue'
           ),
           meta: {
-            requiresAuth: true
+            requiresAuth: true, title: 'Your profile'
           }
         },
         {
@@ -206,7 +206,7 @@ let router = new VueRouter({
             './views/account/Settings.vue'
           ),
           meta: {
-            requiresAuth: true
+            requiresAuth: true, title: 'Your profile'
           }
         },
         {
@@ -217,7 +217,7 @@ let router = new VueRouter({
             './views/admin/Users.vue'
           ),
           meta: {
-            requiresAuth: true, roles: ['admin']
+            requiresAuth: true, roles: ['admin'], title: 'Users'
           }
         },
         {
@@ -237,6 +237,26 @@ let router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  // FIXME: Start our vue-progressbar ?
+  //router.app.$Progress.start()
+
+  // To set the title of each route
+  document.title = to.meta.title
+
+/* FIXME: Manage tokens
+  // Grab the accessToken and refreshToken. Dealing with the localStorage and Vuex has been tricky,
+  // so we'll just set everything here at the top of the waterfall.
+  let accessToken = localStorage.getItem('accessToken') ? localStorage.getItem('accessToken') : null
+  let refreshToken = localStorage.getItem('refreshToken') ? localStorage.getItem('refreshToken') : null
+
+  // What we're accounting for is the instance of a reload, because up until then the user object will be
+  // present if they've already logged in. So if an accessToken is present let's set the user object
+  // and their access/refresh tokens.
+  if (accessToken) {
+      router.app.$options.store.dispatch('auth/setUserAndTokens', {accessToken: accessToken, refreshToken: refreshToken})
+  }
+*/
+
   // If doesn't require authentication, accept.
   if (!to.meta.requiresAuth) {
     return next()
@@ -255,6 +275,11 @@ router.beforeEach((to, from, next) => {
   }
   // Otherwise, denied.
   next('/')
+})
+
+router.afterEach((to, from) => {
+    // FIXME: End our vue-progressbar ?
+    // router.app.$Progress.finish()
 })
 
 export default router

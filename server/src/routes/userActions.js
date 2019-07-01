@@ -14,15 +14,20 @@ router.get('/', async (ctx, next) => {
 //Initial controller once for all routes
 const userActionController = new UserActionController()
 
-router.post('/api/users/signup', async (ctx, next) => {
+router.post('/api/v1/users/signup', async (ctx, next) => {
     await userActionController.signup(ctx)
 })
 
-router.post('/api/user/authenticate', async (ctx, next) => {
+router.post('/api/v1/users/signin', async (ctx, next) => {
     await userActionController.authenticate(ctx)
 })
 
-router.post('/api/user/refreshAccessToken', async (ctx, next) => {
+router.get('/api/v1/users/me', jwtMiddleware, async (ctx, next) => {
+    await userActionController.private(ctx)
+})
+
+/*
+router.post('/api/v1/user/refreshAccessToken', async (ctx, next) => {
     await userActionController.refreshAccessToken(ctx)
 })
 
@@ -57,9 +62,6 @@ router.post('/api/user/resetPassword', async (ctx, next) => {
 router.post('/api/user/private', jwtMiddleware, async (ctx, next) => {
     await userActionController.private(ctx)
 })
-
-router.get('/api/users/me', jwtMiddleware, async (ctx, next) => {
-    await userActionController.private(ctx)
-})
+*/
 
 export default router

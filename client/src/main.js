@@ -26,6 +26,22 @@ Vue.component('Col', Col)
 Vue.component('Card', Card)
 Vue.prototype.$Message = Message
 
+// FIXME: Manage to display a progress bar at each route loading ?
+/*import VueProgressBar from 'vue-progressbar'
+Vue.use(VueProgressBar, {
+    color: '#ADE027',
+    failedColor: '#F43D41',
+    thickness: '3px',
+    transition: {
+        speed: '0.2s',
+        opacity: '0.6s',
+        termination: 300
+    },
+    autoRevert: true,
+    location: 'top',
+    inverse: false
+})*/
+
 /*
  * FIXME: use babel plugin : https://element.eleme.io/#/fr-FR/component/quickstart
  */
@@ -41,7 +57,7 @@ function initialisation() {
 }
 
 (function () {
-  if (localStorage.getItem('token')) {
+  if (localStorage.getItem('accessToken')) {
     return AuthService.getCurrentUser()
       .then(user => {
         store.dispatch('autoLogin', user)
