@@ -12,17 +12,9 @@ services:
       - .:/server
       - /server/node_modules
     depends_on:
-      - mongo
+      - db
     #command: ["./wait-for-it.sh", "mongo:27017", "--", "npm", "run", "start"]
     command: ["npm", "run", "watch"]
-# FIXME: mongo should be deprecated
-  mongo:
-    container_name: loop-mongo
-    image: mongo
-    volumes:
-      - /var/mongo/data:/data/db
-    ports:
-      - "27017:27017"
 # Here is the postgreSQL engine exposed on 5431
   db:
     image: postgres

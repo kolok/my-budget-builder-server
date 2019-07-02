@@ -8,22 +8,22 @@ const router = new Router()
 const jwtMiddleware = jwt({ secret: process.env.JWT_SECRET })
 
 router.get('/', async (ctx, next) => {
-    ctx.body = { message: 'Hi there. ' + process.env.npm_package_version }
+  ctx.body = { message: 'Hi there. ' + process.env.npm_package_version }
 })
 
 //Initial controller once for all routes
 const userActionController = new UserActionController()
 
 router.post('/api/v1/users/signup', async (ctx, next) => {
-    await userActionController.signup(ctx)
+  await userActionController.signup(ctx)
 })
 
 router.post('/api/v1/users/signin', async (ctx, next) => {
-    await userActionController.authenticate(ctx)
+  await userActionController.signin(ctx)
 })
 
 router.get('/api/v1/users/me', jwtMiddleware, async (ctx, next) => {
-    await userActionController.private(ctx)
+  await userActionController.me(ctx)
 })
 
 /*
@@ -57,10 +57,6 @@ router.post('/api/user/checkPasswordResetToken', async (ctx, next) => {
 
 router.post('/api/user/resetPassword', async (ctx, next) => {
     await userActionController.resetPassword(ctx)
-})
-
-router.post('/api/user/private', jwtMiddleware, async (ctx, next) => {
-    await userActionController.private(ctx)
 })
 */
 

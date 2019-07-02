@@ -1,6 +1,5 @@
 import db from '../db/db'
-// FIXME: add joi ?
-//import joi from 'joi'
+
 import rand from 'randexp'
 import bcrypt from 'bcrypt'
 import jsonwebtoken from 'jsonwebtoken'
@@ -12,230 +11,158 @@ import dateAddMonths from 'date-fns/add_months'
 import dateCompareAsc from 'date-fns/compare_asc'
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
-// FIXME: add joi ?
-/*
-const userSchemaSignup = joi.object({
-    firstName: joi
-        .string()
-        .min(1)
-        .max(25)
-        .alphanum()
-        .required(),
-    lastName: joi
-        .string()
-        .min(1)
-        .max(25)
-        .alphanum()
-        .required(),
-    username: joi
-        .string()
-        .min(3)
-        .max(100)
-        .regex(/[a-zA-Z0-9@]/)
-        .required(),
-    email: joi
-        .string()
-        .email()
-        .required(),
-    password: joi
-        .string()
-        .min(8)
-        .max(35)
-        .required(),
-})
-
-const userSchemaResetPassword = joi.object({
-    email: joi
-        .string()
-        .email()
-        .required(),
-    password: joi
-        .string()
-        .min(8)
-        .max(35)
-        .required(),
-    passwordResetToken: joi.string().required(),
-})
-*/
 import { User } from '../models/User'
 import { Company } from '../models/Company'
 import { RefreshToken } from '../models/RefreshToken'
 
 class UserController {
-    constructor() {}
+  constructor() {}
 
-    async signup(ctx) {
-        //First let's save off the ctx.request.body. Throughout this project
-        //we're going to try and avoid using the ctx.request.body and instead use
-        //our own object that is seeded by the ctx.request.body initially
-        const request = ctx.request.body
+  async signup(ctx) {
+    //First let's save off the ctx.request.body. Throughout this project
+    //we're going to try and avoid using the ctx.request.body and instead use
+    //our own object that is seeded by the ctx.request.body initially
+    const request = ctx.request.body
 
-        //Next do validation on the input
-        // FIXME: add joi ?
-        /*const validator = joi.validate(request, userSchemaSignup)
-        if (validator.error) {
-            ctx.throw(400, validator.error.details[0].message)
-        }*/
-
-        //Now let's check for a duplicate username
-        let company = await Company.findOne({ where: {name: request.companyname} }).then( companyByName => { return companyByName })
-        if (company !== null) {
-          return ctx.throw(400, 'DUPLICATE_COMPANY')
-        }
-
-        //Now let's check for a duplicate username
-        let userbyname = await User.findOne({ where: {name: request.name} }).then( user => { return user })
-        if (userbyname !== null) {
-            ctx.throw(400, 'DUPLICATE_USERNAME')
-        }
-
-        //..and duplicate email
-        let userbyemail = await User.findOne({ where: {email: request.email} }).then( user => { return user })
-        if (userbyemail !== null) {
-            ctx.throw(400, 'DUPLICATE_EMAIL')
-        }
-
-        //Now let's generate a token for this user
-        //FIXME: should we store a token ?
-        request.token = await this.generateUniqueToken()
-
-        //Ok now let's hash their password.
-        try {
-            request.password = await bcrypt.hash(request.password, 12)
-        } catch (error) {
-            ctx.throw(400, 'INVALID_DATA')
-        }
-
-        //Let's grab their ipaddress
-        //TODO: This doesn't work correctly because of the reverse-proxy
-        //request.ipAddress = ctx.request.ip
-
-        //Ok, at this point we can sign them up.
-        try {
-          var newCompany = await Company.create({name: request.companyname}).then( company => {return company})
-          console.log(newCompany.id)
-          delete request.companyname
-          request.company_id = await newCompany.id
-          var user = await User.create(request)
-
-            //Let's send a welcome email.
-            if (process.env.NODE_ENV !== 'testing') {
-                //Let's turn off welcome emails for the moment
-                // let email = await fse.readFile(
-                //     './src/email/welcome.html',
-                //     'utf8'
-                // )
-                // const emailData = {
-                //     to: request.email,
-                //     from: process.env.APP_EMAIL,
-                //     subject: 'Welcome To Koa-Vue-Notes-Api',
-                //     html: email,
-                //     categories: ['koa-vue-notes-api-new-user'],
-                //     substitutions: {
-                //         appName: process.env.APP_NAME,
-                //         appEmail: process.env.APP_EMAIL,
-                //     },
-                // }
-                // await sgMail.send(emailData)
-            }
-            //And return our response.
-            ctx.body = { message: 'SUCCESS', id: user.id }
-        } catch (error) {
-          console.log('here', error)
-            ctx.throw(400, 'INVALID_DATA')
-        }
+    //Now let's check for a duplicate company
+    let company = await Company.findOne({ where: {name: request.companyname} }).then( companyByName => { return companyByName })
+    if (company !== null) {
+      return ctx.throw(400, 'DUPLICATE_COMPANY')
     }
 
-    async authenticate(ctx) {
-        const request = ctx.request.body
-
-        if (!request.email || !request.password) {
-          console.log("email password missing ?")
-            ctx.throw(404, 'INVALID_DATA')
-        }
-
-        //Let's find that user
-        let userbyemail = await User.findOne({ where: {email: request.email} }).then( user => { return user })
-
-        if (userbyemail === null) {
-            ctx.throw(401, 'INVALID_CREDENTIALS')
-        }
-
-        //Now let's check the password
-        try {
-            let correct = await bcrypt.compare(
-                request.password,
-                userbyemail.password
-            )
-            if (!correct) {
-                ctx.throw(400, 'INVALID_CREDENTIALS')
-            }
-        } catch (error) {
-          console.log("password matching issue ?")
-            ctx.throw(400, 'INVALID_DATA')
-        }
-
-        //Let's get rid of that password now for security reasons
-        delete userbyemail.password
-
-        //Generate the refreshToken data
-        let refreshTokenData = await this.generateRefreshToken(ctx,userbyemail)
-
-        //increment the login count of the user
-        User.incrementLoginCount(userbyemail.id );//update({ loginCount: sequelize.literal('login_count + 1') }, { where: { id: userbyemail.id } });
-        try {
-        } catch (error) {
-            ctx.throw(400, 'INVALID_DATA')
-        }
-
-        //Ok, they've made it, send them their jsonwebtoken with their data, accessToken and refreshToken
-        const token = jsonwebtoken.sign(
-            { data: userbyemail },
-            process.env.JWT_SECRET,
-            { expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME }
-        )
-        ctx.body = {
-            accessToken: token,
-            refreshToken: refreshTokenData.refreshToken,
-        }
+    //Now let's check for a duplicate email
+    let userbyemail = await User.findOne({ where: {email: request.email} }).then( user => { return user })
+    if (userbyemail !== null) {
+      ctx.throw(400, 'DUPLICATE_EMAIL')
     }
 
-// Function to factorise the Refresh token generation
-//   Input: ctx => http request context
-//          user => user to who we need to generate a refresh token
-//   Output: refreshToken
-    async generateRefreshToken(ctx,user) {
+    //Now let's generate a token for this user
+    request.token = await this.generateUniqueToken()
+
+    //Ok now let's hash their password.
+    try {
+      request.password = await bcrypt.hash(request.password, 12)
+    } catch (error) {
+      ctx.throw(400, 'INVALID_DATA')
+    }
+
+    //Ok, at this point we can sign them up.
+    try {
+      // Create the new company
+      var newCompany = await Company.create({name: request.companyname}).then( company => {return company})
+      delete request.companyname
+      // retrieve the company id to set it to the user
+      request.company_id = await newCompany.id
+      // create the user who belongs to the company
+      var user = await User.create(request)
+
+      //Let's send a welcome email.
+      if (process.env.NODE_ENV !== 'testing') {
+      //Let's turn off welcome emails for the moment
+      // let email = await fse.readFile(
+      //     './src/email/welcome.html',
+      //     'utf8'
+      // )
+      // const emailData = {
+      //     to: request.email,
+      //     from: process.env.APP_EMAIL,
+      //     subject: 'Welcome To Koa-Vue-Notes-Api',
+      //     html: email,
+      //     categories: ['koa-vue-notes-api-new-user'],
+      //     substitutions: {
+      //         appName: process.env.APP_NAME,
+      //         appEmail: process.env.APP_EMAIL,
+      //     },
+      // }
+      // await sgMail.send(emailData)
+      }
+
       //Generate the refreshToken data
-      let refreshTokenData =  {
-        //FIXME: before email was username
-          email: user.email,
-          refreshToken: new rand(/[a-zA-Z0-9_-]{64,64}/).gen(),
-          info:
-              ctx.userAgent.os +
-              ' ' +
-              ctx.userAgent.platform +
-              ' ' +
-              ctx.userAgent.browser,
-          ipAddress: ctx.request.ip,
-          // does it means that refresh token is valid during 1 month
-          expiration: dateAddMonths(new Date(), 1),
-          isValid: true,
-      }
+      let refreshTokenData = await this.generateRefreshToken(ctx,user)
 
-      //Insert the refresh data into the db
-      var refreshtoken = await RefreshToken.create(refreshTokenData).then( rt => {return rt})
+      //increment the login count of the user
       try {
-          //FIXME: manage refreshtoken in db ?
-          //await db('refresh_tokens').insert(refreshTokenData)
+        User.incrementLoginCount(user.id );
       } catch (error) {
-        console.log('+++++++++++++++ generateRefreshToken : '.error)
-
-          ctx.throw(400, 'INVALID_DATA')
+        ctx.throw(400, 'INVALID_DATA: '. error)
       }
 
-      return refreshtoken.refreshToken
+      //Ok, they've made it, send them their jsonwebtoken with their data, accessToken and refreshToken
+      const token = jsonwebtoken.sign(
+        { data: user },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME }
+      )
 
+      // return the accessToken and the refreshToken
+      ctx.body = {
+        accessToken: token,
+        refreshToken: refreshTokenData.refreshToken
+      }
+
+    } catch (error) {
+      ctx.throw(400, 'INVALID_DATA: '. error)
     }
+  }
+
+  async signin(ctx) {
+    const request = ctx.request.body
+
+    if (!request.email || !request.password) {
+      ctx.throw(404, 'INVALID_DATA')
+    }
+
+    //Let's find that user
+    let userbyemail = await User.findOne({ where: {email: request.email} }).then( user => { return user })
+
+    if (userbyemail === null) {
+      ctx.throw(401, 'INVALID_CREDENTIALS')
+    }
+
+    //Now let's check the password
+    try {
+      let correct = await bcrypt.compare(
+        request.password,
+        userbyemail.password
+      )
+      if (!correct) {
+        ctx.throw(400, 'INVALID_CREDENTIALS')
+      }
+    } catch (error) {
+      ctx.throw(400, 'INVALID_DATA')
+    }
+
+    //Let's get rid of that password now for security reasons
+    delete userbyemail.password
+
+    //Generate the refreshToken data
+    let refreshTokenData = await this.generateRefreshToken(ctx,userbyemail)
+
+    //increment the login count of the user
+    try {
+      User.incrementLoginCount(userbyemail.id );
+    } catch (error) {
+      ctx.throw(400, 'INVALID_DATA')
+    }
+
+    //Ok, they've made it, send them their jsonwebtoken with their data, accessToken and refreshToken
+    const token = jsonwebtoken.sign(
+      { data: userbyemail },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME }
+    )
+
+    // return the accessToken and the refreshToken
+    ctx.body = {
+      accessToken: token,
+      refreshToken: refreshTokenData.refreshToken
+    }
+  }
+
+  //Return the current user
+  async me(ctx) {
+    ctx.body = { user: ctx.state.user }
+  }
 
 //FIXME: manage refreshtoken
 /*
@@ -305,7 +232,7 @@ class UserController {
             await db('refresh_tokens').insert(refreshTokenData)
         } catch (error) {
             ctx.throw(400, 'INVALID_DATA')
-        }
+        }authenticate
 
         //Ok, they've made it, send them their jsonwebtoken with their data, accessToken and refreshToken
         const token = jsonwebtoken.sign(
@@ -354,7 +281,7 @@ class UserController {
             ctx.throw(400, 'INVALID_DATA')
         }
     }
-*/
+
     async forgot(ctx) {
         const request = ctx.request.body
 
@@ -494,37 +421,63 @@ class UserController {
         }
         ctx.body = { message: 'SUCCESS' }
     }
+    */
 
-    async private(ctx) {
-        ctx.body = { user: ctx.state.user }
+////////////////////////////////////////////////////////////////////////////////
+// Helpers
+////////////////////////////////////////////////////////////////////////////////
+
+  // Function to factorise the Refresh token generation
+  //   Input: ctx => http request context
+  //          user => user to who we need to generate a refresh token
+  //   Output: refreshToken
+  async generateRefreshToken(ctx,user) {
+    //Generate the refreshToken data
+    let refreshTokenData = {
+      email: user.email,
+      refreshToken: new rand(/[a-zA-Z0-9_-]{64,64}/).gen(),
+      info:
+        ctx.userAgent.os +
+        ' ' +
+        ctx.userAgent.platform +
+        ' ' +
+        ctx.userAgent.browser,
+      ipAddress: ctx.request.ip,
+      // does it means that refresh token is valid during 1 month
+      expiration: dateAddMonths(new Date(), 1),
+      isValid: true,
     }
 
-    //Helpers
-    async generateUniqueToken() {
-
-        let token = new rand(/[a-zA-Z0-9_-]{7,7}/).gen()
-
-// FIXME: Add check unique token but we need to store token in DB ?
-        return token
-
-/*        if (await this.checkUniqueToken(token)) {
-            await this.generateUniqueToken()
-        } else {
-            return token
-        }*/
+    //Insert the refresh data into the db
+    try {
+      await RefreshToken.create(refreshTokenData).then( rt => {return rt})
+    } catch (error) {
+      ctx.throw(400, 'INVALID_DATA')
     }
 
-    async checkUniqueToken(token) {
-        let result = await db('users')
-            .where({
-                token: token,
-            })
-            .count('id as id')
-        if (result[0].id) {
-            return true
-        }
-        return false
+    return refreshTokenData
+  }
+
+  // generateUniqueToken and checkUniqueToken are helper to handle token generation
+  // generateUniqueToken generate a 7 char random token usong a base 64
+  async generateUniqueToken() {
+    let token = new rand(/[a-zA-Z0-9_-]{7,7}/).gen()
+    if (await this.checkUniqueToken(token)) {
+      await this.generateUniqueToken()
+    } else {
+      return token
     }
+  }
+
+  // generateUniqueToken and checkUniqueToken are helper to handle token generation
+  // checkUniqueToken check if a user doesn't already use this token
+  async checkUniqueToken(token) {
+    let userbytoken = await User.findOne({ where: {token: token} }).then( user => { return user })
+    if (userbytoken !== null) {
+      return true
+    }
+    return false
+  }
 }
 
 export default UserController
