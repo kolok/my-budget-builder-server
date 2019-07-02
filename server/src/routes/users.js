@@ -2,7 +2,7 @@ import Router from 'koa-router'
 import jwt from '../middleware/jwt'
 import logger from '../logs/log'
 
-import UserActionController from '../controllers/UserController'
+import UserController from '../controllers/UserController'
 
 const router = new Router()
 const jwtMiddleware = jwt({ secret: process.env.JWT_SECRET })
@@ -12,30 +12,38 @@ router.get('/', async (ctx, next) => {
 })
 
 //Initial controller once for all routes
-const userActionController = new UserActionController()
+const userController = new UserController()
 
 router.post('/api/v1/users/signup', async (ctx, next) => {
-  await userActionController.signup(ctx)
+  await userController.signup(ctx)
 })
 
 router.post('/api/v1/users/signin', async (ctx, next) => {
-  await userActionController.signin(ctx)
+  await userController.signin(ctx)
 })
 
 router.get('/api/v1/users/me', jwtMiddleware, async (ctx, next) => {
-  await userActionController.me(ctx)
+  await userController.me(ctx)
+})
+
+router.get('/api/v1/users/me/company', jwtMiddleware, async (ctx, next) => {
+  await userController.myCompany(ctx)
+})
+
+router.put('/api/v1/users/me/company', jwtMiddleware, async (ctx, next) => {
+  await userController.saveMyCompany(ctx)
 })
 
 /*
 router.post('/api/v1/user/refreshAccessToken', async (ctx, next) => {
-    await userActionController.refreshAccessToken(ctx)
+    await userController.refreshAccessToken(ctx)
 })
 
 router.post(
     '/api/user/invalidateAllRefreshTokens',
     jwtMiddleware,
     async (ctx, next) => {
-        await userActionController.invalidateAllRefreshTokens(ctx)
+        await userController.invalidateAllRefreshTokens(ctx)
     }
 )
 
@@ -43,20 +51,20 @@ router.post(
     '/api/user/invalidateRefreshToken',
     jwtMiddleware,
     async (ctx, next) => {
-        await userActionController.invalidateRefreshToken(ctx)
+        await userController.invalidateRefreshToken(ctx)
     }
 )
 
 router.post('/api/user/forgot', async (ctx, next) => {
-    await userActionController.forgot(ctx)
+    await userController.forgot(ctx)
 })
 
 router.post('/api/user/checkPasswordResetToken', async (ctx, next) => {
-    await userActionController.checkPasswordResetToken(ctx)
+    await userController.checkPasswordResetToken(ctx)
 })
 
 router.post('/api/user/resetPassword', async (ctx, next) => {
-    await userActionController.resetPassword(ctx)
+    await userController.resetPassword(ctx)
 })
 */
 
