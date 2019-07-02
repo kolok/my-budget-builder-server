@@ -6,14 +6,13 @@ import cors from 'kcors'
 import logger from './logs/log'
 import userAgent from 'koa-useragent'
 import error from 'koa-json-error'
-import ratelimit from 'koa-ratelimit'
-import redis from 'ioredis'
+//import ratelimit from 'koa-ratelimit'
+//import redis from 'ioredis'
 
 //Routes
 import defaultRouter from './routes/default'
 import companiesRouter from './routes/companies'
 import usersRouter from './routes/users'
-import userActionsRouter from './routes/userActions'
 
 //Initialize app
 const app = new Koa()
@@ -88,7 +87,5 @@ app.use(companiesRouter.routes())
 app.use(companiesRouter.allowedMethods())
 app.use(usersRouter.routes())
 app.use(usersRouter.allowedMethods())
-app.use(userActionsRouter.routes())
-app.use(userActionsRouter.allowedMethods())
 
 export default app

@@ -1,24 +1,63 @@
 import Router from 'koa-router'
-//import jwt from '../middleware/jwt'
+import jwt from '../middleware/jwt'
 import logger from '../logs/log'
 
-import UserController from '../controllers/UserController'
+import UserActionController from '../controllers/UserController'
 
 const router = new Router()
-//const jwtMiddleware = jwt({ secret: process.env.JWT_SECRET })
+const jwtMiddleware = jwt({ secret: process.env.JWT_SECRET })
 
-const userController = new UserController()
-
-// FIXME: add v1 in the path
-// FIXME: manage authentication usign jwt
-
-// FIXME: do we need it ?
-router.get('/api/users', async (ctx, next) => {
-    await userController.index(ctx)
+router.get('/', async (ctx, next) => {
+  ctx.body = { message: 'Hi there. ' + process.env.npm_package_version }
 })
 
-router.get('/api/users/:id/company', /*jwtMiddleware,*/ async (ctx, next) => {
-    await userController.getCompany(ctx)
+//Initial controller once for all routes
+const userActionController = new UserActionController()
+
+router.post('/api/v1/users/signup', async (ctx, next) => {
+  await userActionController.signup(ctx)
 })
+
+router.post('/api/v1/users/signin', async (ctx, next) => {
+  await userActionController.signin(ctx)
+})
+
+router.get('/api/v1/users/me', jwtMiddleware, async (ctx, next) => {
+  await userActionController.me(ctx)
+})
+
+/*
+router.post('/api/v1/user/refreshAccessToken', async (ctx, next) => {
+    await userActionController.refreshAccessToken(ctx)
+})
+
+router.post(
+    '/api/user/invalidateAllRefreshTokens',
+    jwtMiddleware,
+    async (ctx, next) => {
+        await userActionController.invalidateAllRefreshTokens(ctx)
+    }
+)
+
+router.post(
+    '/api/user/invalidateRefreshToken',
+    jwtMiddleware,
+    async (ctx, next) => {
+        await userActionController.invalidateRefreshToken(ctx)
+    }
+)
+
+router.post('/api/user/forgot', async (ctx, next) => {
+    await userActionController.forgot(ctx)
+})
+
+router.post('/api/user/checkPasswordResetToken', async (ctx, next) => {
+    await userActionController.checkPasswordResetToken(ctx)
+})
+
+router.post('/api/user/resetPassword', async (ctx, next) => {
+    await userActionController.resetPassword(ctx)
+})
+*/
 
 export default router

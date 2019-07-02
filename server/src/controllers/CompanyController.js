@@ -2,39 +2,8 @@ import { Company } from '../models/Company'
 import { User } from '../models/User'
 
 class CompanyController {
-  async index(ctx) {
-      //Init a new company object
-      const query = ctx.query
 
-      //Get list of company
-      try {
-          let result = await Company.findAll()
-          ctx.body = result
-      } catch (error) {
-          console.log(error)
-          ctx.throw(400, 'INVALID_DATA' + error)
-      }
-  }
-  async getUsers(ctx) {
-      // get company id from params
-      const params = ctx.params
-      if (!params.id) ctx.throw(400, 'INVALID_DATA')
-
-      //Init a new company object
-      const company = new Company()
-
-      //Get list of users which belongs to the company
-      try {
-          //Find and show note
-          console.log(company)
-          let result = await Company.findByPk(params.id, {include: [{model:User, as:'users'}]}).then(companies => {return companies})
-          ctx.body = result
-      } catch (error) {
-          console.log(error)
-          ctx.throw(400, 'INVALID_DATA')
-      }
-  }
-  async show(ctx) {
+  async get(ctx) {
       // get company id from params
       const params = ctx.params
       if (!params.id) ctx.throw(400, 'INVALID_DATA')
@@ -50,7 +19,55 @@ class CompanyController {
       }
   }
 
+  async update(ctx) {
+    const params = ctx.params
+    const request = ctx.request.body
+
+    //Make sure they've specified a company
+    if (!params.id) ctx.throw(400, 'INVALID_DATA')
+
+    //Find and set that company
+    const company = new Company()
+    await company.find(params.id)
+    if (!note) ctx.throw(400, 'INVALID_DATA')
+
+    //Add the updated date value
+    company.updatedAt = dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss')
+
+    //Replace the note data with the new updated note data
+    Object.keys(ctx.request.body).forEach(function(parameter, index) {
+      company[parameter] = request[parameter]
+    })
+
+    try {
+      await company.save()
+      ctx.body = { message: 'SUCCESS' }
+    } catch (error) {
+      console.log(error)
+      ctx.throw(400, 'INVALID_DATA')
+    }
+  }
+
 /*
+async getUsers(ctx) {
+// get company id from params
+const params = ctx.params
+if (!params.id) ctx.throw(400, 'INVALID_DATA')
+
+//Init a new company object
+const company = new Company()
+
+//Get list of users which belongs to the company
+try {
+//Find and show note
+let result = await Company.findByPk(params.id, {include: [{model:User, as:'users'}]}).then(companies => {return companies})
+ctx.body = result
+} catch (error) {
+console.log(error)
+ctx.throw(400, 'INVALID_DATA')
+}
+}
+
     async show(ctx) {
         const params = ctx.params
         if (!params.id) ctx.throw(400, 'INVALID_DATA')

@@ -10,9 +10,11 @@ let AuthService = {
     return HTTP.post('users/signin', body)
       .then(res => {
         localStorage.setItem('accessToken', res.data.accessToken)
+        localStorage.setItem('refreshToken', res.data.refreshToken)
         return UserResource.get()
       })
       .then(response => {
+        console.log(response.data)
         return response.data
       })
       .catch(err => {
@@ -24,6 +26,7 @@ let AuthService = {
     return UserResource.signup(body)
       .then(res => {
         localStorage.setItem('accessToken', res.data.accessToken)
+        localStorage.setItem('refreshToken', res.data.refreshToken)
         return UserResource.get()
       })
       .then(response => {
