@@ -6,7 +6,7 @@
  * DELETE   /api/things/:id     -> delete
  */
 
-import HTTP from './http-common'
+import HTTP from './common/http'
 
 /*
  * Service should be singleton,
