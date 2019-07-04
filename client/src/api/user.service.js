@@ -5,12 +5,13 @@ import HTTP from './common/http'
  * hence we could declare a simple object literal.
  */
 let UserResource = {
-  show() { // Show all the users
-    return HTTP.get('users/')
-  },
-
   get() { // Get current user
     return HTTP.get('users/me')
+  },
+
+/*
+  show() { // Show all the users
+    return HTTP.get('users/')
   },
 
   create(body) {
@@ -28,6 +29,7 @@ let UserResource = {
   delete(id) { // Delete a thing
     return HTTP.delete('users/' + id)
   }
+*/
 }
 
 export default UserResource

@@ -4,48 +4,42 @@ import AuthService from '../../api/auth.service'
 
 export default {
   state: {
+    // store the current user in the state
+    // FIXME: if you reload the page, the current user is lost.
+    // 2 ways to solve this issue :
+    //   1. store the user (or user.email) in the localStorage
+    //   2. do not use the user.email in the refresh token action
+    //   3. manage this case using autoLogin
     user: null,
-    accessToken: null,
-    refreshToken: null
   },
   getters: {
+    // used in router and to display or not elements
     isAuthenticated: state => {
       return !!state.user
     },
+    // shortcut to admin role of the user
     isAdmin: state => {
       return state.user.role === 'admin'
     },
+    // return the current user
     getCurrentUser: state => {
       return state.user
-    },
-    accessToken (state) {
-      return state.accessToken
-    },
-    refreshToken (state) {
-      return state.refreshToken
     }
   },
   mutations: {
+    // Save current user just after it is logged
     LOGIN (state, data) {
       state.user = data
     },
-    STORE_ACCESS_TOKEN (state, accessToken) {
-      state.accessToken = accessToken
-      localStorage.setItem('accessToken', accessToken)
-    },
-    STORE_REFRESH_TOKEN (state, refreshToken) {
-      state.refreshToken = refreshToken
-      localStorage.setItem('refreshToken', refreshToken)
-    },
+    // Remove current user and tokens just after it is logged out
     LOGOUT (state) {
       state.user = null
-      state.accessToken = null
-      state.refreshToken = null
       localStorage.removeItem('accessToken')
       localStorage.removeItem('refreshToken')
     }
   },
   actions: {
+    // login action
     login: ({ commit }, body) => {
       return AuthService.login(body)
         .then(user => {
@@ -56,8 +50,8 @@ export default {
         })
     },
 
+    // logout action
     logout: ({ commit }) => {
-      localStorage.removeItem('accessToken')
       commit('LOGOUT')
     },
 
@@ -75,13 +69,10 @@ export default {
         })
     },
 
+    // actions used to refresh the accessTokens using the refreshToken
     async refreshUserTokens ({ dispatch, commit, getters, rootGetters }) {
       return await AuthService.refreshAccessToken( getters.getCurrentUser.email, localStorage.getItem('refreshToken') )
-        .then(token => {
-          console.log(token)
-        })
         .catch(err => {
-          console.log(err)
           throw err
         })
     },
