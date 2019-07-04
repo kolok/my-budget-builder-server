@@ -170,13 +170,12 @@ class UserController {
 //FIXME: manage refreshtoken
 async refreshAccessToken(ctx) {
   const request = ctx.request.body
-  if (!request.email || !request.refreshToken) {
+  if (!request.refreshToken) {
     ctx.throw(401, 'NO_REFRESH_TOKEN')
   }
   //Let's find that user
   let refreshTokenDatabaseData = await RefreshToken
   .findOne({ where: {
-    email: request.email,
     refreshToken: request.refreshToken,
     isValid: true,} })
   .then( refreshtoken => { return refreshtoken })
@@ -194,6 +193,8 @@ async refreshAccessToken(ctx) {
     ctx.throw(400, 'REFRESH_TOKEN_EXPIRED')
   }
 
+  let email = refreshTokenDatabaseData.email
+
   //Ok, everthing checked out. So let's invalidate the refresh token they just confirmed, and get them hooked up with a new one.
   try {
     refreshTokenDatabaseData.update({ isValid: false, updatedAt: dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss') });
@@ -202,7 +203,7 @@ async refreshAccessToken(ctx) {
   }
 
   //Let's find that user
-  let userbyemail = await User.findOne({ where: {email: request.email} }).then( user => { return user })
+  let userbyemail = await User.findOne({ where: {email: email} }).then( user => { return user })
 
   if (userbyemail === null) {
     ctx.throw(401, 'INVALID_REFRESH_TOKEN')

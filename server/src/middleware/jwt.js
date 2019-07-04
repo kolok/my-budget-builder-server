@@ -18,7 +18,6 @@ module.exports = (opts = {}) => {
             )
 
             //If it worked set the ctx.state.user parameter to the decoded token.
-            console.log(decoded.data)
             ctx.state.user = decoded.data
         } catch (error) {
             //If it's an expiration error, let's report that specifically.

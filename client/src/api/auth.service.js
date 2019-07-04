@@ -61,9 +61,8 @@ let AuthService = {
 // input:
 //    email of the user
 //    refreshToken from the localStorage
-  refreshAccessToken(email, refreshToken) {
+  refreshAccessToken(refreshToken) {
     return HTTP.post('users/me/refreshAccessToken', {
-      email: email,
       refreshToken: localStorage.getItem('refreshToken')
     })
     .then(response => {

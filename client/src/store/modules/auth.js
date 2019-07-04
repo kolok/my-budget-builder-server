@@ -71,7 +71,7 @@ export default {
 
     // actions used to refresh the accessTokens using the refreshToken
     async refreshUserTokens ({ dispatch, commit, getters, rootGetters }) {
-      return await AuthService.refreshAccessToken( getters.getCurrentUser.email, localStorage.getItem('refreshToken') )
+      return await AuthService.refreshAccessToken( localStorage.getItem('refreshToken') )
         .catch(err => {
           throw err
         })

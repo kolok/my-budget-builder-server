@@ -14,7 +14,6 @@ class CompanyController {
           let result = await Company.findByPk(params.id)
           ctx.body = result
       } catch (error) {
-          console.log(error)
           ctx.throw(400, 'INVALID_DATA')
       }
   }
@@ -43,7 +42,6 @@ class CompanyController {
       await company.save()
       ctx.body = { message: 'SUCCESS' }
     } catch (error) {
-      console.log(error)
       ctx.throw(400, 'INVALID_DATA')
     }
   }
@@ -63,7 +61,6 @@ try {
 let result = await Company.findByPk(params.id, {include: [{model:User, as:'users'}]}).then(companies => {return companies})
 ctx.body = result
 } catch (error) {
-console.log(error)
 ctx.throw(400, 'INVALID_DATA')
 }
 }
@@ -80,7 +77,6 @@ ctx.throw(400, 'INVALID_DATA')
             await company.find(params.id)
             ctx.body = company
         } catch (error) {
-            console.log(error)
             ctx.throw(400, 'INVALID_DATA')
         }
     }
@@ -99,7 +95,6 @@ ctx.throw(400, 'INVALID_DATA')
             let result = await company.store()
             ctx.body = { message: 'SUCCESS', id: result }
         } catch (error) {
-            console.log(error)
             ctx.throw(400, 'INVALID_DATA')
         }
     }
@@ -128,7 +123,6 @@ ctx.throw(400, 'INVALID_DATA')
             await company.save()
             ctx.body = { message: 'SUCCESS' }
         } catch (error) {
-            console.log(error)
             ctx.throw(400, 'INVALID_DATA')
         }
     }
@@ -146,7 +140,6 @@ ctx.throw(400, 'INVALID_DATA')
             await note.destroy()
             ctx.body = { message: 'SUCCESS' }
         } catch (error) {
-            console.log(error)
             ctx.throw(400, 'INVALID_DATA')
         }
     }
