@@ -25,19 +25,22 @@ router.post('/api/v1/users/signin', async (ctx, next) => {
 router.get('/api/v1/users/me', jwtMiddleware, async (ctx, next) => {
   await userController.me(ctx)
 })
-
+/*
 router.get('/api/v1/users/me/company', jwtMiddleware, async (ctx, next) => {
   await userController.myCompany(ctx)
 })
-
+*/
+/*
 router.put('/api/v1/users/me/company', jwtMiddleware, async (ctx, next) => {
   await userController.saveMyCompany(ctx)
 })
+*/
+router.post('/api/v1/users/me/refreshAccessToken', async (ctx, next) => {
+  await userController.refreshAccessToken(ctx)
+})
+
 
 /*
-router.post('/api/v1/user/refreshAccessToken', async (ctx, next) => {
-    await userController.refreshAccessToken(ctx)
-})
 
 router.post(
     '/api/user/invalidateAllRefreshTokens',

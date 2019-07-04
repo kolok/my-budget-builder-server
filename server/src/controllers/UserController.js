@@ -1,15 +1,17 @@
-import db from '../db/db'
-
 import rand from 'randexp'
 import bcrypt from 'bcrypt'
 import jsonwebtoken from 'jsonwebtoken'
-import fse from 'fs-extra'
-import sgMail from '@sendgrid/mail'
 import dateFormat from 'date-fns/format'
-import dateAddMinutes from 'date-fns/add_minutes'
 import dateAddMonths from 'date-fns/add_months'
 import dateCompareAsc from 'date-fns/compare_asc'
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+
+// FIXME: needed for the forgot password process
+//import dateAddMinutes from 'date-fns/add_minutes'
+
+//FIXME: Email inactive yet
+//import fse from 'fs-extra'
+//import sgMail from '@sendgrid/mail'
+//sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 import { User } from '../models/User'
 import { Company } from '../models/Company'
@@ -166,86 +168,64 @@ class UserController {
   }
 
 //FIXME: manage refreshtoken
+async refreshAccessToken(ctx) {
+  const request = ctx.request.body
+  if (!request.email || !request.refreshToken) {
+    ctx.throw(401, 'NO_REFRESH_TOKEN')
+  }
+  //Let's find that user
+  let refreshTokenDatabaseData = await RefreshToken
+  .findOne({ where: {
+    email: request.email,
+    refreshToken: request.refreshToken,
+    isValid: true,} })
+  .then( refreshtoken => { return refreshtoken })
+
+  if (refreshTokenDatabaseData === null) {
+    ctx.throw(400, 'INVALID_REFRESH_TOKEN')
+  }
+
+  //Let's make sure the refreshToken is not expired
+  const refreshTokenIsValid = dateCompareAsc(
+    dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'),
+    refreshTokenDatabaseData.expiration
+  )
+  if (refreshTokenIsValid !== -1) {
+    ctx.throw(400, 'REFRESH_TOKEN_EXPIRED')
+  }
+
+  //Ok, everthing checked out. So let's invalidate the refresh token they just confirmed, and get them hooked up with a new one.
+  try {
+    refreshTokenDatabaseData.update({ isValid: false, updatedAt: dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss') });
+  } catch (error) {
+    ctx.throw(400, 'INVALID_DATA1')
+  }
+
+  //Let's find that user
+  let userbyemail = await User.findOne({ where: {email: request.email} }).then( user => { return user })
+
+  if (userbyemail === null) {
+    ctx.throw(401, 'INVALID_REFRESH_TOKEN')
+  }
+
+  //Generate the refreshToken data
+  let refreshTokenData = await this.generateRefreshToken(ctx,userbyemail)
+
+  //Ok, they've made it, send them their jsonwebtoken with their data, accessToken and refreshToken
+  const token = jsonwebtoken.sign(
+    { data: userbyemail },
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME }
+  )
+
+  // return the accessToken and the refreshToken
+  ctx.body = {
+    accessToken: token,
+    refreshToken: refreshTokenData.refreshToken
+  }
+}
+
 /*
-    async refreshAccessToken(ctx) {
-        const request = ctx.request.body
-        if (!request.username || !request.refreshToken) {
-            ctx.throw(401, 'NO_REFRESH_TOKEN')
-        }
-
-        //Let's find that user and refreshToken in the refreshToken table
-        const [refreshTokenDatabaseData] = await db('refresh_tokens')
-            .select('username', 'refreshToken', 'expiration')
-            .where({
-                username: request.username,
-                refreshToken: request.refreshToken,
-                isValid: true,
-            })
-        if (!refreshTokenDatabaseData) {
-            ctx.throw(400, 'INVALID_REFRESH_TOKEN')
-        }
-
-        //Let's make sure the refreshToken is not expired
-        const refreshTokenIsValid = dateCompareAsc(
-            dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'),
-            refreshTokenDatabaseData.expiration
-        )
-        if (refreshTokenIsValid !== -1) {
-            ctx.throw(400, 'REFRESH_TOKEN_EXPIRED')
-        }
-
-        //Ok, everthing checked out. So let's invalidate the refresh token they just confirmed, and get them hooked up with a new one.
-        try {
-            await db('refresh_tokens')
-                .update({
-                    isValid: false,
-                    updatedAt: dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'),
-                })
-                .where({ refreshToken: refreshTokenDatabaseData.refreshToken })
-        } catch (error) {
-            ctx.throw(400, 'INVALID_DATA1')
-        }
-
-        const [userData] = await db('users')
-            .select('id', 'token', 'username', 'email', 'isAdmin')
-            .where({ username: request.username })
-        if (!userData) {
-            ctx.throw(401, 'INVALID_REFRESH_TOKEN')
-        }
-
-        //Generate the refreshToken data
-        let refreshTokenData = {
-            username: request.username,
-            refreshToken: new rand(/[a-zA-Z0-9_-]{64,64}/).gen(),
-            info:
-                ctx.userAgent.os +
-                ' ' +
-                ctx.userAgent.platform +
-                ' ' +
-                ctx.userAgent.browser,
-            ipAddress: ctx.request.ip,
-            expiration: dateAddMonths(new Date(), 1),
-            isValid: true,
-        }
-
-        //Insert the refresh data into the db
-        try {
-            await db('refresh_tokens').insert(refreshTokenData)
-        } catch (error) {
-            ctx.throw(400, 'INVALID_DATA')
-        }authenticate
-
-        //Ok, they've made it, send them their jsonwebtoken with their data, accessToken and refreshToken
-        const token = jsonwebtoken.sign(
-            { data: userData },
-            process.env.JWT_SECRET,
-            { expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME }
-        )
-        ctx.body = {
-            accessToken: token,
-            refreshToken: refreshTokenData.refreshToken,
-        }
-    }
 
     async invalidateAllRefreshTokens(ctx) {
         const request = ctx.request.body

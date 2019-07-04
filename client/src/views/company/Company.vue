@@ -26,7 +26,6 @@ export default {
   computed: {
     ...mapGetters(['getCurrentUser']),
     userCompanyExists: function() {
-      console.log(this.getCurrentUser.company_id)
       return this.getCurrentUser.company_id !== undefined
     }
   },

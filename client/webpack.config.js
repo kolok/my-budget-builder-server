@@ -6,9 +6,7 @@ const path = require('path')
 
 module.exports = function(env) {
   var CONFIG = {
-    entry: {
-      app: './src/main.js',
-    },
+    entry: ['babel-polyfill', './src/main.js'],
     plugins: [
       new webpack.HashedModuleIdsPlugin(), // so that file hashes don't change unexpectedly
     ],

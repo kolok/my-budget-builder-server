@@ -4,7 +4,7 @@
  */
 import axios from 'axios'
 /** Store **/
-import store from '../../store/'
+import store from '../../store'
 /** Router **/
 import router from '../../router'
 
@@ -23,8 +23,19 @@ HTTP.interceptors.request.use(function (config) {
   return Promise.reject(error)
 })
 
-// Add a response interceptor
-HTTP.interceptors.response.use(undefined, function(error) {
+// Add a response interceptor to manage authentication process
+HTTP.interceptors.response.use(undefined, async function(error) {
+  if (error.response.status === 401 && error.response.data.message === 'TOKEN_EXPIRED' && !error.config.__isRetryRequest) {
+    try {
+      let response = await getAuthToken()
+      error.config.headers['Authorization'] = 'Bearer ' + localStorage.getItem('accessToken')
+      error.config.__isRetryRequest = true
+      return HTTP(error.config)
+    } catch (error) {
+      store.dispatch('logout')
+      router.push('/login')
+    }
+  }
   if (error.response.status === 401) {
     store.dispatch('logout')
     router.push('/login')
@@ -32,9 +43,23 @@ HTTP.interceptors.response.use(undefined, function(error) {
   return Promise.reject(error.response.data)
 })
 
+//FIXME: do we need authTokenRequest
+let authTokenRequest
+async function getAuthToken () {
+  if (!authTokenRequest) {
+    authTokenRequest = store.dispatch('refreshUserTokens')
+    // reset authTokenRequest ?
+    authTokenRequest.then(() => {
+      authTokenRequest = null
+    }).catch(() => {
+      authTokenRequest = null
+    })
+  }
+  return authTokenRequest
+}
+
 /*
 HTTP.interceptors.response.use(undefined, async (error) => {
-  console.log('interceptor')
     if (error.response.status === 401 && error.response.data.message === 'TOKEN_EXPIRED' && !error.config.__isRetryRequest) {
         try {
             let response = await getAuthToken()

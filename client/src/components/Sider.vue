@@ -55,12 +55,10 @@ export default {
       })
     },
     activeMenu: function() {
-      console.log(this.permittedMenuItems[0].path)
       return this.permittedMenuItems[0].path
     },
     updateDefaultActiveMenu: function() {
       this.activeMenu = this.menuItems[0].path
-      console.log('activeMenu: '+athis.activeMenu)
     }
   },
   methods: {
