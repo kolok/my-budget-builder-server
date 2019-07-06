@@ -65,173 +65,139 @@ let router = new VueRouter({
     },
     {
       path: '/',
-      redirect: '/teamDashboard',
-      component: Common,
-      children: [
-        {
-          path: '/teamDashboard',
-          name: 'Dashboard',
-          component: () => import(
-            /* webpackChunkName: "group-common" */
-            './views/team/Dashboard.vue'
-          ),
-          meta: {
-            requiresAuth: true
-          }
-        },
-        {
-          path: '/teams',
-          name: 'Teams',
-          component: () => import(
-            /* webpackChunkName: "group-common" */
-            './views/team/Teams.vue'
-          ),
-          meta: {
-            requiresAuth: true
-          }
-        },
-        {
-          path: '/positions',
-          name: 'Positions',
-          component: () => import(
-            /* webpackChunkName: "group-common" */
-            './views/team/Positions.vue'
-          ),
-          meta: {
-            requiresAuth: true
-          }
-        },
-        {
-          path: '/employees',
-          name: 'Employees',
-          component: () => import(
-            /* webpackChunkName: "group-common" */
-            './views/team/Employees.vue'
-          ),
-          meta: {
-            requiresAuth: true
-          }
-        }
-      ]
+      redirect: '/teamDashboard'
+    },
+    {
+      path: '/teamDashboard',
+      name: 'Dashboard',
+      component: () => import(
+        /* webpackChunkName: "group-common" */
+        './views/team/Dashboard.vue'
+      ),
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/teams',
+      name: 'Teams',
+      component: () => import(
+        /* webpackChunkName: "group-common" */
+        './views/team/Teams.vue'
+      ),
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/positions',
+      name: 'Positions',
+      component: () => import(
+        /* webpackChunkName: "group-common" */
+        './views/team/Positions.vue'
+      ),
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/employees',
+      name: 'Employees',
+      component: () => import(
+        /* webpackChunkName: "group-common" */
+        './views/team/Employees.vue'
+      ),
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/planning',
-      component: Common,
-      children: [
-        {
-          path: '/planning',
-          name: 'Planning',
-          component: () => import(
-            /* webpackChunkName: "group-common" */
-            './views/planning/Planning.vue'
-          ),
-          meta: {
-            requiresAuth: true
-          }
-        }
-      ]
+      name: 'Planning',
+      component: () => import(
+        /* webpackChunkName: "group-common" */
+        './views/planning/Planning.vue'
+      ),
+      meta: {
+        requiresAuth: true
+      }
     },
     {
-      path: '/execution',
-      redirect: '/reporting',
-      component: Common,
-      children: [
-        {
-          path: '/reporting',
-          name: 'Reporting',
-          component: () => import(
-            /* webpackChunkName: "group-common" */
-            './views/execution/Reporting.vue'
-          ),
-          meta: {
-            requiresAuth: true
-          }
-        }
-      ]
+      path: '/reporting',
+      name: 'Reporting',
+      component: () => import(
+        /* webpackChunkName: "group-common" */
+        './views/execution/Reporting.vue'
+      ),
+      meta: {
+        requiresAuth: true
+      }
     },
     {
-      path: '/settings',
-      redirect: '/company',
-      component: Common,
-      children: [
-        {
-          path: '/company',
-          name: 'Company',
-          component: () => import(
-            /* webpackChunkName: "group-common" */
-            './views/company/Company.vue'
-          ),
-          meta: {
-            requiresAuth: true, title: 'Loop - Your Company'
-          }
-        },
-        {
-          path: '/entities',
-          name: 'Entities',
-          component: () => import(
-            /* webpackChunkName: "group-common" */
-            './views/company/Entities.vue'
-          ),
-          meta: {
-            requiresAuth: true
-          }
-        }
-      ]
+      path: '/company',
+      name: 'Company',
+      component: () => import(
+        /* webpackChunkName: "group-common" */
+        './views/company/Company.vue'
+      ),
+      meta: {
+        requiresAuth: true, title: 'Loop - Your Company'
+      }
     },
-
-
-
-
     {
-      path: '/account',
-      redirect: '/profile',
-      component: Common,
-      children: [
-        {
-          path: '/profile',
-          name: 'Your Profile',
-          component: () => import(
-            /* webpackChunkName: "group-account" */
-            './views/account/Profile.vue'
-          ),
-          meta: {
-            requiresAuth: true, title: 'Your profile'
-          }
-        },
-        {
-          path: '/credentials',
-          name: 'Credentials',
-          component: () => import(
-            /* webpackChunkName: "group-account" */
-            './views/account/Settings.vue'
-          ),
-          meta: {
-            requiresAuth: true, title: 'Your profile'
-          }
-        },
-        {
-          path: '/users',
-          name: 'Users',
-          component: () => import(
-            /* webpackChunkName: "group-admin" */
-            './views/admin/Users.vue'
-          ),
-          meta: {
-            requiresAuth: true, roles: ['admin'], title: 'Users'
-          }
-        },
-        {
-          path: '/things',
-          name: 'Things',
-          component: () => import(
-            /* webpackChunkName: "group-common" */
-            './views/Things.vue'
-          ),
-          meta: {
-            requiresAuth: true
-          }
-        }
-      ]
+      path: '/entities',
+      name: 'Entities',
+      component: () => import(
+        /* webpackChunkName: "group-common" */
+        './views/company/Entities.vue'
+      ),
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/profile',
+      name: 'Your Profile',
+      component: () => import(
+        /* webpackChunkName: "group-account" */
+        './views/account/Profile.vue'
+      ),
+      meta: {
+        requiresAuth: true, title: 'Your profile'
+      }
+    },
+    {
+      path: '/credentials',
+      name: 'Credentials',
+      component: () => import(
+        /* webpackChunkName: "group-account" */
+        './views/account/Settings.vue'
+      ),
+      meta: {
+        requiresAuth: true, title: 'Your profile'
+      }
+    },
+    {
+      path: '/users',
+      name: 'Users',
+      component: () => import(
+        /* webpackChunkName: "group-admin" */
+        './views/admin/Users.vue'
+      ),
+      meta: {
+        requiresAuth: true, roles: ['admin'], title: 'Users'
+      }
+    },
+    {
+      path: '/things',
+      name: 'Things',
+      component: () => import(
+        /* webpackChunkName: "group-common" */
+        './views/Things.vue'
+      ),
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 })
