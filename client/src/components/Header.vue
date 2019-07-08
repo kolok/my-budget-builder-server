@@ -195,7 +195,6 @@
       this.getDefaultMenu()
     },
     methods: {
-      ...mapMutations(['UpdateMenuItemsBy']),
       logout: function() {
         this.$store.dispatch('logout')
         this.$router.push('/login')
@@ -204,7 +203,6 @@
         if (name === 'logout') {
           this.logout()
         } else {
-          this.UpdateMenuItemsBy(name)
           this.$router.push(name)
         }
       },
