@@ -1,3 +1,4 @@
+import dateFormat from 'date-fns/format'
 import { Company } from '../models/Company'
 import { User } from '../models/User'
 
@@ -26,9 +27,8 @@ class CompanyController {
     if (!params.id) ctx.throw(400, 'INVALID_DATA')
 
     //Find and set that company
-    const company = new Company()
-    await company.find(params.id)
-    if (!note) ctx.throw(400, 'INVALID_DATA')
+    let company = await Company.findByPk(params.id)
+    if (!company) ctx.throw(400, 'INVALID_DATA')
 
     //Add the updated date value
     company.updatedAt = dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss')

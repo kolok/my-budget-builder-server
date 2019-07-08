@@ -15,18 +15,21 @@ module.exports = {
       {
         name: 'Company 1',
         status: 'active',
+        subdomain: 'company1',
         created_at: new Date(),
         updated_at: new Date()
       },
       {
         name: 'Company 2',
         status: 'active',
+        subdomain: 'company2',
         created_at: new Date(),
         updated_at: new Date()
       },
       {
         name: 'Company 3',
         status: 'active',
+        subdomain: 'company3',
         created_at: new Date(),
         updated_at: new Date()
       }

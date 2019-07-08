@@ -1,5 +1,4 @@
 import {sequelize, Sequelize} from '../db/db'
-import {Company} from './Company'
 
 const User = sequelize.define("users", {
   id: {
@@ -24,11 +23,7 @@ const User = sequelize.define("users", {
   },
   company_id: {
     type: Sequelize.INTEGER,
-    allowNull: false/*,
-    references: {
-      model: 'Company',
-      key: 'id'
-    }*/
+    allowNull: false
   },
   password: {
     allowNull: false,

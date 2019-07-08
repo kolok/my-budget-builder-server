@@ -4,17 +4,9 @@
    		<el-form-item label="Company name">
    		  <el-input v-model="companyForm.name"></el-input>
       </el-form-item>
-      <el-form-item label="Company info">
-        <el-input
-          type="textarea"
-          :rows="3"
-          placeholder="Free fields: fill free to put any comment"
-          v-model="companyForm.info">
-        </el-input>
-      </el-form-item>
 
       <el-form-item label="Fiscal year">
-        <el-select v-model="value" placeholder="Select">
+        <el-select v-model="companyForm.first_month_fiscal_year" placeholder="Select">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -52,44 +44,44 @@ export default {
     return {
       'companyForm': {
         'name': '',
-        'info': ''
+        'first_month_fiscal_year': ''
       },
       options: [{
-          value: '01-12',
-          label: 'From January to December'
+          value: '1',
+          label: 'January'
         }, {
-          value: '02-01',
-          label: 'From February to January'
+          value: '2',
+          label: 'February'
         }, {
-          value: '03-02',
-          label: 'From March to February'
+          value: '3',
+          label: 'March'
         }, {
-          value: '04-03',
-          label: 'From April to March'
+          value: '4',
+          label: 'April'
         }, {
-          value: '05-04',
-          label: 'From May to April'
+          value: '5',
+          label: 'May'
         }, {
-          value: '06-05',
-          label: 'From June to May'
+          value: '6',
+          label: 'June'
         }, {
-          value: '07-06',
-          label: 'From July to June'
+          value: '7',
+          label: 'July'
         }, {
-          value: '08-07',
-          label: 'From August to July'
+          value: '8',
+          label: 'August'
         }, {
-          value: '09-08',
-          label: 'From September to August'
+          value: '9',
+          label: 'September'
         }, {
-          value: '10-09',
-          label: 'From October to September'
+          value: '10',
+          label: 'October'
         }, {
-          value: '11-10',
-          label: 'From November to October'
+          value: '11',
+          label: 'November'
         }, {
-          value: '12-11',
-          label: 'From December to November'
+          value: '12',
+          label: 'December'
         }],
       value: ''
     }
@@ -106,7 +98,7 @@ export default {
         .then(response => {
           let company = response.data
           this.companyForm.name = company.name
-          this.companyForm.info = company.info
+          this.companyForm.first_month_fiscal_year = company.first_month_fiscal_year
         })
         .catch(err => {
           this.$Message.error(err.message)

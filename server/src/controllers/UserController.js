@@ -51,8 +51,7 @@ class UserController {
     //Ok, at this point we can sign them up.
     try {
       // Create the new company
-      var newCompany = await Company.create({name: request.companyname}).then( company => {return company})
-      delete request.companyname
+      var newCompany = await Company.create({name: request.companyname, subdomain: request.subdomain}).then( company => {return company})
       // retrieve the company id to set it to the user
       request.company_id = await newCompany.id
       // create the user who belongs to the company
@@ -83,11 +82,7 @@ class UserController {
       let refreshTokenData = await this.generateRefreshToken(ctx,user)
 
       //increment the login count of the user
-      try {
-        User.incrementLoginCount(user.id );
-      } catch (error) {
-        ctx.throw(400, 'INVALID_DATA: '. error)
-      }
+      User.incrementLoginCount(user.id );
 
       //Ok, they've made it, send them their jsonwebtoken with their data, accessToken and refreshToken
       const token = jsonwebtoken.sign(
@@ -103,6 +98,7 @@ class UserController {
       }
 
     } catch (error) {
+      console.log(error)
       ctx.throw(400, 'INVALID_DATA: '. error)
     }
   }

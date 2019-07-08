@@ -13,9 +13,18 @@ module.exports = {
         type: Sequelize.STRING,
         unique: true
       },
-      info: {
-        allowNull: true,
-        type: Sequelize.STRING
+      subdomain: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
+      },
+      first_month_fiscal_year: {
+        type: Sequelize.ENUM(['1','2','3','4','5','6','7','8','9','10','11','12']),
+        defaultValue: '1'
+      },
+      default_currency_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true
       },
       status: {
         allowNull: false,

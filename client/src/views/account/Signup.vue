@@ -1,6 +1,6 @@
 <template>
   <div class="default-main-content">
-    <el-card class="box-card" style="max-width:300px;width: 100%;margin: 0px auto;">
+    <el-card class="box-card signup-card" style="max-width:400px;width: 100%;margin: 0px auto;">
       <div slot="header" class="clearfix" style="font-size: 14px;font-weight: bold;">
         <span>Sign up</span>
       </div>
@@ -14,7 +14,14 @@
             prop="companyname"
             label="Company name"
           >
-            <el-input v-model="signupForm.companyname" placeholder="Company name"></el-input>
+            <el-input v-model="signupForm.companyname" placeholder="Company name" v-on:input="updateSubDomain"></el-input>
+          </el-form-item>
+          <el-form-item
+            prop="subdomain"
+            label="Komber sub-domain"
+          >
+            <el-input v-model="signupForm.subdomain" placeholder="subdomain" class="subdomain"></el-input>
+            <span class="domain">.komber.io</span>
           </el-form-item>
           <el-form-item
             prop="name"
@@ -64,6 +71,7 @@ export default {
     return {
       signupForm: {
         companyname: '',
+        subdomain: '',
         name: '',
         email: '',
         password: '',
@@ -72,9 +80,25 @@ export default {
       ruleSignup: {
         companyname: [
           { required: true, message: 'Company name can\'t be blank' },
+          { max:25, message: 'Too long'},
+          { min:3, message: 'Too short'}
         ],
         name: [
           { required: true, message: 'Name can\'t be blank' },
+          { max:255, message: 'Too long'}
+        ],
+        subdomain: [
+          { required: true, message: 'Subdomain can\'t be blank' },
+          { max:25, message: 'Too long'},
+          { min:3, message: 'Too short'},
+          { validator: (rule, value, callback) => {
+              if (value.match(/[^a-z]/) !== null) {
+                callback(new Error('subdomain should contain only lower case ascii characters'))
+              } else {
+                callback()
+              }
+            }
+          }
         ],
         email: [
           { required: true, message: 'You cannot use a blank email' },
@@ -86,14 +110,14 @@ export default {
         ],
         retypePwd: [
           { validator: (rule, value, callback) => {
-            if (value === '') {
-              callback(new Error('Please enter your password again'))
-            } else if (value !== this.signupForm.password) {
-              callback(new Error('The two input passwords do not match'))
-            } else {
-              callback()
+              if (value === '') {
+                callback(new Error('Please enter your password again'))
+              } else if (value !== this.signupForm.password) {
+                callback(new Error('The two input passwords do not match'))
+              } else {
+                callback()
+              }
             }
-          }
           }]
       }
     }
@@ -116,7 +140,21 @@ export default {
           return false
         }
       })
+    },
+    updateSubDomain: function() {
+      this.signupForm.subdomain = this.signupForm.companyname.toLowerCase().replace(/[^a-z]/g, '')
     }
   }
 }
 </script>
+
+<style>
+.subdomain {
+  width: 200px;
+  float: left;
+  clear: both;
+}
+.domain {
+  float: left;
+}
+</style>

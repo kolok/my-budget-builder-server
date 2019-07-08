@@ -12,6 +12,7 @@ import error from 'koa-json-error'
 //Routes
 import defaultRouter from './routes/default'
 import companiesRouter from './routes/companies'
+import currenciesRouter from './routes/currencies'
 import usersRouter from './routes/users'
 
 //Initialize app
@@ -85,6 +86,8 @@ app.use(defaultRouter.routes())
 app.use(defaultRouter.allowedMethods())
 app.use(companiesRouter.routes())
 app.use(companiesRouter.allowedMethods())
+app.use(currenciesRouter.routes())
+app.use(currenciesRouter.allowedMethods())
 app.use(usersRouter.routes())
 app.use(usersRouter.allowedMethods())
 
