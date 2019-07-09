@@ -6,6 +6,7 @@
   "license": "ISC",
   "main": "src/main.js",
   "scripts": {
+    "watch": "webpack-dev-server --env=dev --host 0.0.0.0 --inline --content-base --port=80",
     "start": "webpack-dev-server --env=dev",
     "build": "rm -rf dist && webpack --env=prod",
     "analyse": "webpack --json > stats.json",

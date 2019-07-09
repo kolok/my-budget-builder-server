@@ -1,20 +1,58 @@
+# Docker compose version
 version: "2"
 services:
+
+# Server docker
   server:
     container_name: loop-server
-    build: .
+# server sources are locatted into ./server, we need to set the root ./server for the Docker builder
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     restart: always
+# Open port 3000
+# FIXME: this should be replaced by nginx-proxy
     ports:
       - "3000:3000" # container port: server port
     environment:
       NODE_ENV: development
+# Mount root to taken into account code updates
+# ignore /usr/server/node_modules
     volumes:
-      - .:/usr/server
+      - ./server:/usr/server
       - /usr/server/node_modules
+# Waiting for database
     depends_on:
       - db
-    #command: ["./wait-for-it.sh", "mongo:27017", "--", "npm", "run", "start"]
+# Run nodemon using "npm run watch"
     command: ["npm", "run", "watch"]
+
+# Client docker
+  client:
+    container_name: loop-client
+# server sources are locatted into ./client, we need to set the root ./client for the Docker builder
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    restart: always
+# Open port 8080
+# FIXME: this should be replaced by nginx-proxy
+    ports:
+      - "8080:80"
+    environment:
+      NODE_ENV: development
+
+# Mount root to taken into account code updates
+# ignore /usr/server/node_modules
+    volumes:
+      - ./client:/usr/client
+      - /usr/client/node_modules
+# Waiting for server
+    depends_on:
+      - server
+# Run nodemon using "npm run watch"
+    command: ["npm", "run", "watch"]
+
 # Here is the postgreSQL engine exposed on 5431
   db:
     image: postgres
@@ -22,8 +60,8 @@ services:
 # opened port 5432 to be able to connect to the db using a postgresql client direct in a shell
 # Ex: psql -p 5432 -h 127.0.0.1 -U myuser
 # Else, if the port is not opened you can use the "docker exec" command
-    ports:
-      - 5432:5432
+#    ports:
+#      - 5432:5432
     environment:
 # Use a dedicate user for this pproject with a complex password
       POSTGRES_USER: loop-admin

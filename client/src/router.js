@@ -9,7 +9,7 @@ const Common = () => import(
   './views/Common.vue'
 )
 
-/** Router **/
+/** Vue Router **/
 Vue.use(VueRouter)
 
 let router = new VueRouter({
