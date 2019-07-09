@@ -80,6 +80,7 @@ module.exports = function(env) {
     CONFIG.devServer = {
       // contentBase: '', # Confuse
       hot: true,
+      disableHostCheck: true,
       // historyApiFallback: true
     }
     break
