@@ -9,6 +9,7 @@
           ref="signupForm"
           :model="signupForm"
           :rules="ruleSignup"
+          @keyup.enter.native="submit('signupForm')"
         >
           <el-form-item
             prop="companyname"

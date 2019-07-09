@@ -1,9 +1,6 @@
 /**
- * GET      /api/companies         -> index
- * POST     /api/companies         -> create
- * GET      /api/companies/:id     -> show
- * PUT      /api/companies/:id     -> update
- * DELETE   /api/companies/:id     -> delete
+ * GET      /api/v1/companies         -> index
+ * PUT      /api/v1/companies/:id     -> update
  */
 
 import HTTP from './common/http'

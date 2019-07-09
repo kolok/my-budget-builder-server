@@ -5,8 +5,11 @@
         <span>Login</span>
       </div>
       <div class="loginform">
-        <el-form ref="loginForm" :model="loginForm">
-
+        <el-form
+          ref="loginForm"
+          :model="loginForm"
+          @keyup.enter.native="submit('loginForm')"
+        >
           <el-form-item
             prop="email"
             label="Email"

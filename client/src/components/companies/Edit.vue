@@ -1,11 +1,11 @@
 <template>
   <div style="display:inline">
-    <el-form ref="companyForm" :model="companyForm" label-width="150px" style="max-width:600px">
+    <el-form ref="companyForm" :model="companyForm" label-width="250px" style="max-width:600px">
    		<el-form-item label="Company name">
    		  <el-input v-model="companyForm.name"></el-input>
       </el-form-item>
 
-      <el-form-item label="Fiscal year">
+      <el-form-item label="Fiscal year start month">
         <el-select v-model="companyForm.first_month_fiscal_year" placeholder="Select">
           <el-option
             v-for="item in options"
@@ -16,7 +16,24 @@
         </el-select>
       </el-form-item>
 
+      <el-form-item label="Currency">
+        <el-select v-model="companyForm.default_currency_id" placeholder="Select a currency">
+          <el-option
+            v-for="currency in currencyList"
+            :key="currency.id"
+            :label="currency.combineName"
+            :value="currency.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
 
+      <el-form-item
+        prop="subdomain"
+        label="Komber sub-domain"
+      >
+        <el-input v-model="companyForm.subdomain" placeholder="subdomain" class="subdomain" :disabled="true"></el-input>
+        <span class="domain">.komber.io</span>
+      </el-form-item>
 
       <el-form-item>
   			<el-button type="primary" @click="onSubmit">Save</el-button>
@@ -29,6 +46,7 @@
 
 <script>
 import CompanyResource from '../../api/company.service'
+import CurrencyResource from '../../api/currency.service'
 import { mapActions } from 'vuex'
 
 export default {
@@ -42,10 +60,7 @@ export default {
   },
   data() {
     return {
-      'companyForm': {
-        'name': '',
-        'first_month_fiscal_year': ''
-      },
+      'companyForm': {},
       options: [{
           value: '1',
           label: 'January'
@@ -83,11 +98,13 @@ export default {
           value: '12',
           label: 'December'
         }],
+      currencyList: [],
       value: ''
     }
   },
   beforeMount(){
     this.getCompany()
+    this.getCurrencyList()
   },
   methods: {
     ...mapActions(['editCompany']),
@@ -96,9 +113,25 @@ export default {
       // Load specific thing infomation
       CompanyResource.get(this.id)
         .then(response => {
-          let company = response.data
-          this.companyForm.name = company.name
-          this.companyForm.first_month_fiscal_year = company.first_month_fiscal_year
+          this.companyForm = response.data
+        })
+        .catch(err => {
+          this.$Message.error(err.message)
+        })
+    },
+
+    getCurrencyList: function() {
+      // Load specific thing infomation
+      CurrencyResource.list()
+        .then(response => {
+          this.currencyList = response.data
+          let currencyList = []
+          response.data.forEach(function(currency){
+            currency.id = currency.id + 10
+            currency.combineName = currency.name + ' (' + currency.symbol + ')'
+            currencyList.push(currency)
+          })
+          this.currencyList = currencyList
         })
         .catch(err => {
           this.$Message.error(err.message)
@@ -138,3 +171,14 @@ export default {
   }
 }
 </script>
+
+<style>
+.subdomain {
+  width: 200px;
+  float: left;
+  clear: none;
+}
+.domain {
+  float: left;
+}
+</style>
