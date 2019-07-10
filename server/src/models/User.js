@@ -65,6 +65,26 @@ const User = sequelize.define("users", {
   }
 }, {underscored: true});
 
+User.associate = (models) => {
+  // Companies has many users
+  //So Users belongs to Company
+  User.belongsTo(models.Company, {
+    foreignKey: 'company_id',
+    as: 'company'
+  });
+
+  User.hasMany(models.UserCompany, {
+    foreignKey: 'user_id',
+    as: 'userCompanies'
+  });
+
+  User.belongsToMany(models.Company, {
+    through: 'UserCompany',
+    as: 'companies',
+    foreignKey: 'user_id'
+  });
+};
+
 // Instance Method
 User.incrementLoginCount = function (id) { this.update({ loginCount: sequelize.literal('login_count + 1') }, { where: { id: id } }); }
 

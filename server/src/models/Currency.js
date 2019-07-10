@@ -25,5 +25,19 @@ const Currency = sequelize.define("currencies", {
   }
 }, {underscored: true});
 
+Currency.associate = (models) => {
+  // Currency has many companies
+  Currency.hasMany(models.Company, {
+    foreignKey: 'default_currency_id',
+    as: 'companies',
+  });
+
+  // Currency can belongs to a company
+  // The currency which aren't belongs by a company are the one open to everybody
+  Currency.belongsTo(models.Company, {
+    foreignKey: 'company_id',
+    as: 'company'
+  });
+}
 
 export { Currency }

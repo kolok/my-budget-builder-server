@@ -15,6 +15,7 @@ import dateCompareAsc from 'date-fns/compare_asc'
 
 import { User } from '../models/User'
 import { Company } from '../models/Company'
+import { UserCompany } from '../models/UserCompany'
 import { RefreshToken } from '../models/RefreshToken'
 
 class UserController {
@@ -27,8 +28,8 @@ class UserController {
     const request = ctx.request.body
 
     //Now let's check for a duplicate company
-    let company = await Company.findOne({ where: {name: request.companyname} }).then( companyByName => { return companyByName })
-    if (company !== null) {
+    let companyByName = await Company.findOne({ where: {name: request.companyname} }).then( company => { return company })
+    if (companyByName !== null) {
       return ctx.throw(400, 'DUPLICATE_COMPANY')
     }
 
@@ -56,6 +57,8 @@ class UserController {
       request.company_id = await newCompany.id
       // create the user who belongs to the company
       var user = await User.create(request)
+      // create the link between user and company with client_admin role
+      var userCompany = await UserCompany.create({user_id: user.id, company_id: newCompany.id, role: 'client_admin'})
 
       //Let's send a welcome email.
       if (process.env.NODE_ENV !== 'testing') {
