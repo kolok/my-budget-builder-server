@@ -142,31 +142,22 @@ export default {
       let payload = { _id: this.id, content: this.companyForm }
       this.editCompany(payload)
         .then(response => {
-          this.editModal = false
+          const h = this.$createElement;
+          this.$notify({
+            title: 'Company update',
+            message: h('i', { style: 'color: teal' }, 'company ' + this.companyForm.name + ' was updated'),
+            type: 'success'
+          });
         })
         .catch(e => {
+          const h = this.$createElement;
+          this.$notify({
+            title: 'Company update',
+            message: h('i', { style: 'color: red' }, 'something went wrong, the company wasn\'t updated'),
+            type: 'error'
+          });
           console.log(e)
         })
-    },
-
-    /*eslint no-unused-vars: ["error", { "args": "none" }]*/
-    edit: function(formName) { // Edit item
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          // payload info passed to the state management of companies
-          let payload = { _id: this.id, content: this.companyForm }
-          this.editCompany(payload)
-            .then(response => {
-              this.editModal = false
-            })
-            .catch(e => {
-              console.log(e)
-            })
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
     }
   }
 }
