@@ -52,13 +52,13 @@ class UserController {
     //Ok, at this point we can sign them up.
     try {
       // Create the new company
-      var newCompany = await Company.create({name: request.companyname, subdomain: request.subdomain}).then( company => {return company})
+      var company = await Company.create({name: request.companyname, subdomain: request.subdomain}) //.then( company => {return company})
       // retrieve the company id to set it to the user
-      request.company_id = await newCompany.id
+      request.company_id = await company.id
       // create the user who belongs to the company
       var user = await User.create(request)
       // create the link between user and company with client_admin role
-      var userCompany = await UserCompany.create({user_id: user.id, company_id: newCompany.id, role: 'client_admin'})
+      var userCompany = await UserCompany.create({user_id: user.id, company_id: company.id, role: 'client_admin'})
 
       //Let's send a welcome email.
       if (process.env.NODE_ENV !== 'testing') {
@@ -89,7 +89,7 @@ class UserController {
 
       //Ok, they've made it, send them their jsonwebtoken with their data, accessToken and refreshToken
       const token = jsonwebtoken.sign(
-        { data: user },
+        { data: { user: user, userCompany: userCompany, company: company } },
         process.env.JWT_SECRET,
         { expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME }
       )
@@ -114,7 +114,10 @@ class UserController {
     }
 
     //Let's find that user
-    let userbyemail = await User.findOne({ where: {email: request.email} }).then( user => { return user })
+    // FIXME: make the association works, it doesn't yet
+    let userbyemail = await User.findOne({ where: {email: request.email} })
+    let company = await Company.findOne({ where: {id: userbyemail.company_id} })
+    let userCompany = await UserCompany.findOne({ where: {user_id: userbyemail.id} })
 
     if (userbyemail === null) {
       ctx.throw(401, 'INVALID_CREDENTIALS')
@@ -148,7 +151,7 @@ class UserController {
 
     //Ok, they've made it, send them their jsonwebtoken with their data, accessToken and refreshToken
     const token = jsonwebtoken.sign(
-      { data: userbyemail },
+      { data: { user: userbyemail, userCompany: userCompany, company: company } },
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME }
     )
@@ -162,68 +165,71 @@ class UserController {
 
   //Return the current user
   async me(ctx) {
-//    ctx.body = { user: ctx.state.user }
-    ctx.body = ctx.state.user
+    ctx.body = {
+      user: ctx.state.user,
+      company: ctx.state.company,
+      userCompany: ctx.state.userCompany
+    }
   }
 
-//FIXME: manage refreshtoken
-async refreshAccessToken(ctx) {
-  const request = ctx.request.body
-  if (!request.refreshToken) {
-    ctx.throw(401, 'NO_REFRESH_TOKEN')
+  //FIXME: manage refreshtoken
+  async refreshAccessToken(ctx) {
+    const request = ctx.request.body
+    if (!request.refreshToken) {
+      ctx.throw(401, 'NO_REFRESH_TOKEN')
+    }
+    //Let's find that user
+    let refreshTokenDatabaseData = await RefreshToken
+    .findOne({ where: {
+      refreshToken: request.refreshToken,
+      isValid: true,} })
+    .then( refreshtoken => { return refreshtoken })
+
+    if (refreshTokenDatabaseData === null) {
+      ctx.throw(400, 'INVALID_REFRESH_TOKEN')
+    }
+
+    //Let's make sure the refreshToken is not expired
+    const refreshTokenIsValid = dateCompareAsc(
+      dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'),
+      refreshTokenDatabaseData.expiration
+    )
+    if (refreshTokenIsValid !== -1) {
+      ctx.throw(400, 'REFRESH_TOKEN_EXPIRED')
+    }
+
+    let email = refreshTokenDatabaseData.email
+
+    //Ok, everthing checked out. So let's invalidate the refresh token they just confirmed, and get them hooked up with a new one.
+    try {
+      refreshTokenDatabaseData.update({ isValid: false, updatedAt: dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss') });
+    } catch (error) {
+      ctx.throw(400, 'INVALID_DATA1')
+    }
+
+    //Let's find that user
+    let userbyemail = await User.findOne({ where: {email: email} }).then( user => { return user })
+
+    if (userbyemail === null) {
+      ctx.throw(401, 'INVALID_REFRESH_TOKEN')
+    }
+
+    //Generate the refreshToken data
+    let refreshTokenData = await this.generateRefreshToken(ctx,userbyemail)
+
+    //Ok, they've made it, send them their jsonwebtoken with their data, accessToken and refreshToken
+    const token = jsonwebtoken.sign(
+      { data: userbyemail },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME }
+    )
+
+    // return the accessToken and the refreshToken
+    ctx.body = {
+      accessToken: token,
+      refreshToken: refreshTokenData.refreshToken
+    }
   }
-  //Let's find that user
-  let refreshTokenDatabaseData = await RefreshToken
-  .findOne({ where: {
-    refreshToken: request.refreshToken,
-    isValid: true,} })
-  .then( refreshtoken => { return refreshtoken })
-
-  if (refreshTokenDatabaseData === null) {
-    ctx.throw(400, 'INVALID_REFRESH_TOKEN')
-  }
-
-  //Let's make sure the refreshToken is not expired
-  const refreshTokenIsValid = dateCompareAsc(
-    dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'),
-    refreshTokenDatabaseData.expiration
-  )
-  if (refreshTokenIsValid !== -1) {
-    ctx.throw(400, 'REFRESH_TOKEN_EXPIRED')
-  }
-
-  let email = refreshTokenDatabaseData.email
-
-  //Ok, everthing checked out. So let's invalidate the refresh token they just confirmed, and get them hooked up with a new one.
-  try {
-    refreshTokenDatabaseData.update({ isValid: false, updatedAt: dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss') });
-  } catch (error) {
-    ctx.throw(400, 'INVALID_DATA1')
-  }
-
-  //Let's find that user
-  let userbyemail = await User.findOne({ where: {email: email} }).then( user => { return user })
-
-  if (userbyemail === null) {
-    ctx.throw(401, 'INVALID_REFRESH_TOKEN')
-  }
-
-  //Generate the refreshToken data
-  let refreshTokenData = await this.generateRefreshToken(ctx,userbyemail)
-
-  //Ok, they've made it, send them their jsonwebtoken with their data, accessToken and refreshToken
-  const token = jsonwebtoken.sign(
-    { data: userbyemail },
-    process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME }
-  )
-
-  // return the accessToken and the refreshToken
-  ctx.body = {
-    accessToken: token,
-    refreshToken: refreshTokenData.refreshToken
-  }
-}
 
 /*
 

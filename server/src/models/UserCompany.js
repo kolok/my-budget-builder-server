@@ -31,6 +31,8 @@ const UserCompany = sequelize.define("users_companies", {
   }
 }, {underscored: true});
 
+//FIXME add unicity user_id, company_id
+
 UserCompany.associate = (models) => {
   //So UserCompany belongs to Company
   UserCompany.belongsTo(models.Company, {

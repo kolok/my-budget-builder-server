@@ -11,6 +11,8 @@ export default {
     //   2. do not use the user.email in the refresh token action
     //   3. manage this case using autoLogin
     user: null,
+    company: null,
+    userCompany: null,
   },
   getters: {
     // used in router and to display or not elements
@@ -29,7 +31,9 @@ export default {
   mutations: {
     // Save current user just after it is logged
     LOGIN (state, data) {
-      state.user = data
+      state.user = data.user
+      state.company = data.company
+      state.userCompany = data.userCompany
     },
     // Remove current user and tokens just after it is logged out
     LOGOUT (state) {
@@ -42,10 +46,11 @@ export default {
     // login action
     login: ({ commit }, body) => {
       return AuthService.login(body)
-        .then(user => {
-          commit('LOGIN', user)
+        .then(data => {
+          commit('LOGIN', data)
         })
         .catch(err => {
+          console.log('login failed')
           throw err
         })
     },
@@ -61,8 +66,8 @@ export default {
 
     signup: ({ commit }, body) => {
       return AuthService.signup(body)
-        .then(user => {
-          commit('LOGIN', user)
+        .then(data => {
+          commit('LOGIN', data)
         })
         .catch(err => {
           throw err

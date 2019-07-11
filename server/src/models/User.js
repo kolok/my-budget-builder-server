@@ -65,7 +65,7 @@ const User = sequelize.define("users", {
   }
 }, {underscored: true});
 
-User.associate = (models) => {
+User.associate = function(models) {
   // Companies has many users
   //So Users belongs to Company
   User.belongsTo(models.Company, {
@@ -73,7 +73,7 @@ User.associate = (models) => {
     as: 'company'
   });
 
-  User.hasMany(models.UserCompany, {
+/*  User.hasMany(models.UserCompany, {
     foreignKey: 'user_id',
     as: 'userCompanies'
   });
@@ -82,7 +82,7 @@ User.associate = (models) => {
     through: 'UserCompany',
     as: 'companies',
     foreignKey: 'user_id'
-  });
+  });*/
 };
 
 // Instance Method

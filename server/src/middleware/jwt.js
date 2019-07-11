@@ -18,7 +18,9 @@ module.exports = (opts = {}) => {
             )
 
             //If it worked set the ctx.state.user parameter to the decoded token.
-            ctx.state.user = decoded.data
+            ctx.state.user = decoded.data.user
+            ctx.state.company = decoded.data.company
+            ctx.state.userCompany = decoded.data.userCompany
         } catch (error) {
             //If it's an expiration error, let's report that specifically.
             if (error.name === 'TokenExpiredError') {
