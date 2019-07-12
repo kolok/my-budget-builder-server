@@ -1,46 +1,48 @@
-import {sequelize, Sequelize} from '../db/db'
+'use strict';
 
-const RefreshToken = sequelize.define("refresh_tokens", {
-  id: {
-    allowNull: false,
-    autoIncrement: true,
-    primaryKey: true,
-    type: Sequelize.INTEGER
-  },
-  email: {
-    allowNull: false,
-    type: Sequelize.STRING
-  },
-  refreshToken: {
-    allowNull: false,
-    type: Sequelize.STRING,
-    field: "refresh_token"
-  },
-  info: {
-    type: Sequelize.STRING
-  },
-  isValid: {
-    allowNull: false,
-    type: Sequelize.BOOLEAN,
-    field: "is_valid",
-    defaultValue: false
-  },
-  expiration: {
-    allowNull: true,
-    type: Sequelize.DATE
-  },
-  createdAt: {
-    allowNull: false,
-    type: Sequelize.DATE,
-    defaultValue: sequelize.fn('NOW'),
-    field: "created_at"
-  },
-  updatedAt: {
-    allowNull: false,
-    type: Sequelize.DATE,
-    defaultValue: sequelize.fn('NOW'),
-    field: "updated_at"
-  }
-}, {underscored: true});
+module.exports  = function(sequelize, DataTypes) {
+  var RefreshToken = sequelize.define("RefreshToken", {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
+    email: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    refreshToken: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      field: "refresh_token"
+    },
+    info: {
+      type: DataTypes.STRING
+    },
+    isValid: {
+      allowNull: false,
+      type: DataTypes.BOOLEAN,
+      field: "is_valid",
+      defaultValue: false
+    },
+    expiration: {
+      allowNull: true,
+      type: DataTypes.DATE
+    },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      defaultValue: sequelize.fn('NOW'),
+      field: "created_at"
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      defaultValue: sequelize.fn('NOW'),
+      field: "updated_at"
+    }
+  }, {underscored: true, tableName: 'refresh_tokens'});
 
-export { RefreshToken }
+  return RefreshToken
+}

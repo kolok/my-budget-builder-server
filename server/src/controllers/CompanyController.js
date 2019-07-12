@@ -1,22 +1,24 @@
 import dateFormat from 'date-fns/format'
-import { Company } from '../models/Company'
-import { User } from '../models/User'
+
+import db from '../models'
+const Company = db.Company;
+const User = db.User;
 
 class CompanyController {
 
   async get(ctx) {
-      // get company id from params
-      const params = ctx.params
-      if (!params.id) ctx.throw(400, 'INVALID_DATA')
+    // get company id from params
+    const params = ctx.params
+    if (!params.id) ctx.throw(400, 'INVALID_DATA')
 
-      //Get list of users which belongs to the company
-      try {
-          //Find and show note
-          let result = await Company.findByPk(params.id)
-          ctx.body = result
-      } catch (error) {
-          ctx.throw(400, 'INVALID_DATA')
-      }
+    //Get list of users which belongs to the company
+    try {
+      //Find and show note
+      let result = await Company.findByPk(params.id)
+      ctx.body = result
+    } catch (error) {
+      ctx.throw(400, 'INVALID_DATA')
+    }
   }
 
   async update(ctx) {

@@ -13,10 +13,11 @@ import dateCompareAsc from 'date-fns/compare_asc'
 //import sgMail from '@sendgrid/mail'
 //sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
-import { User } from '../models/User'
-import { Company } from '../models/Company'
-import { UserCompany } from '../models/UserCompany'
-import { RefreshToken } from '../models/RefreshToken'
+import db from '../models'
+const User = db.User;
+const Company = db.Company;
+const UserCompany = db.UserCompany;
+const RefreshToken = db.RefreshToken;
 
 class UserController {
   constructor() {}
@@ -110,16 +111,27 @@ class UserController {
     const request = ctx.request.body
 
     if (!request.email || !request.password) {
+      console.log('error1')
       ctx.throw(404, 'INVALID_DATA')
     }
+    console.log('signin')
 
     //Let's find that user
     // FIXME: make the association works, it doesn't yet
-    let userbyemail = await User.findOne({ where: {email: request.email} })
-    let company = await Company.findOne({ where: {id: userbyemail.company_id} })
-    let userCompany = await UserCompany.findOne({ where: {user_id: userbyemail.id} })
+    let userbyemail = await User.findOne({ where: {email: request.email}, include: ['company', 'userCompanies'] })
+    if (userbyemail.userCompanies === undefined || userbyemail.userCompanies.length != 1) {
+      console.log('error2')
+      ctx.throw(401, 'WRONG_AASOCIATION')
+    }
+
+    let company = userbyemail.company
+    delete userbyemail.company //await Company.findOne({ where: {id: userbyemail.company_id} })
+    let userCompany = userbyemail.userCompanies[0]
+    delete userbyemail.userCompanies
+
 
     if (userbyemail === null) {
+      console.log('error2')
       ctx.throw(401, 'INVALID_CREDENTIALS')
     }
 
@@ -130,6 +142,8 @@ class UserController {
         userbyemail.password
       )
       if (!correct) {
+        console.log('error3')
+
         ctx.throw(400, 'INVALID_CREDENTIALS')
       }
     } catch (error) {
@@ -146,6 +160,7 @@ class UserController {
     try {
       User.incrementLoginCount(userbyemail.id );
     } catch (error) {
+      console.log(error)
       ctx.throw(400, 'INVALID_DATA')
     }
 
@@ -437,8 +452,9 @@ class UserController {
 
     //Insert the refresh data into the db
     try {
-      await RefreshToken.create(refreshTokenData).then( rt => {return rt})
+      await RefreshToken.create(refreshTokenData)
     } catch (error) {
+      console.log(error)
       ctx.throw(400, 'INVALID_DATA')
     }
 

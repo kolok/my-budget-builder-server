@@ -1,41 +1,42 @@
-import {sequelize, Sequelize} from '../db/db'
+'use strict';
 
-const User = sequelize.define("users", {
+module.exports  = function(sequelize, DataTypes) {
+  var User = sequelize.define('User', {
   id: {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
-    type: Sequelize.INTEGER
+    type: DataTypes.INTEGER
   },
   name: {
     allowNull: false,
-    type: Sequelize.STRING
+    type: DataTypes.STRING
   },
   email: {
     allowNull: false,
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     unique: true
   },
   token: {
     allowNull: false,
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     unique: true
   },
   company_id: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: false
   },
   password: {
     allowNull: false,
-    type: Sequelize.STRING
+    type: DataTypes.STRING
   },
   role: {
     allowNull: false,
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     defaultValue: 'user'
   },
   loginCount: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 0,
     field: "login_count"
@@ -43,27 +44,27 @@ const User = sequelize.define("users", {
   status: {
     allowNull: false,
     defaultValue: 'active',
-    type: Sequelize.ENUM(['active','inactive','deleted'])
+    type: DataTypes.ENUM(['active','inactive','deleted'])
   },
   createdAt: {
     allowNull: false,
-    type: Sequelize.DATE,
+    type: DataTypes.DATE,
     defaultValue: sequelize.fn('NOW'),
     field: "created_at"
   },
   updatedAt: {
     allowNull: false,
-    type: Sequelize.DATE,
+    type: DataTypes.DATE,
     defaultValue: sequelize.fn('NOW'),
     field: "updated_at"
   },
   deletedAt: {
     allowNull: true,
     default: undefined,
-    type: Sequelize.DATE,
+    type: DataTypes.DATE,
     field: "deleted_at"
   }
-}, {underscored: true});
+}, {underscored: true, tableName: 'users'});
 
 User.associate = function(models) {
   // Companies has many users
@@ -73,7 +74,7 @@ User.associate = function(models) {
     as: 'company'
   });
 
-/*  User.hasMany(models.UserCompany, {
+  User.hasMany(models.UserCompany, {
     foreignKey: 'user_id',
     as: 'userCompanies'
   });
@@ -82,10 +83,11 @@ User.associate = function(models) {
     through: 'UserCompany',
     as: 'companies',
     foreignKey: 'user_id'
-  });*/
+  });
 };
 
 // Instance Method
 User.incrementLoginCount = function (id) { this.update({ loginCount: sequelize.literal('login_count + 1') }, { where: { id: id } }); }
 
-export { User }
+return User
+}

@@ -47,6 +47,7 @@ export default {
     login: ({ commit }, body) => {
       return AuthService.login(body)
         .then(data => {
+          console.log(data)
           commit('LOGIN', data)
         })
         .catch(err => {
