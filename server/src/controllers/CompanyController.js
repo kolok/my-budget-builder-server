@@ -6,30 +6,21 @@ const User = db.User;
 
 class CompanyController {
 
-  async get(ctx) {
-    // get company id from params
-    const params = ctx.params
-    if (!params.id) ctx.throw(400, 'INVALID_DATA')
-
-    //Get list of users which belongs to the company
+  async getCurrent(ctx) {
     try {
-      //Find and show note
-      let result = await Company.findByPk(params.id)
+      let result = await Company.findByPk(ctx.state.company.id)
       ctx.body = result
     } catch (error) {
+      console.log(error)
       ctx.throw(400, 'INVALID_DATA')
     }
   }
 
-  async update(ctx) {
-    const params = ctx.params
+  async updateCurrent(ctx) {
     const request = ctx.request.body
 
-    //Make sure they've specified a company
-    if (!params.id) ctx.throw(400, 'INVALID_DATA')
-
     //Find and set that company
-    let company = await Company.findByPk(params.id)
+    let company = await Company.findByPk(ctx.state.company.id)
     if (!company) ctx.throw(400, 'INVALID_DATA')
 
     //Add the updated date value

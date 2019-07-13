@@ -40,9 +40,6 @@ class UserController {
       ctx.throw(400, 'DUPLICATE_EMAIL')
     }
 
-    //Now let's generate a token for this user
-    request.token = await this.generateUniqueToken()
-
     //Ok now let's hash their password.
     try {
       request.password = await bcrypt.hash(request.password, 12)
@@ -52,11 +49,11 @@ class UserController {
 
     //Ok, at this point we can sign them up.
     try {
+      //FIXME: make the 3 following creations in a transaction
       // Create the new company
       var company = await Company.create({name: request.companyname, subdomain: request.subdomain}) //.then( company => {return company})
-      // retrieve the company id to set it to the user
-      request.company_id = await company.id
-      // create the user who belongs to the company
+      // create the user
+      console.log(request)
       var user = await User.create(request)
       // create the link between user and company with client_admin role
       var userCompany = await UserCompany.create({user_id: user.id, company_id: company.id, role: 'client_admin'})
@@ -89,7 +86,7 @@ class UserController {
       User.incrementLoginCount(user.id );
 
       //Ok, they've made it, send them their jsonwebtoken with their data, accessToken and refreshToken
-      const token = jsonwebtoken.sign(
+      const accessToken = jsonwebtoken.sign(
         { data: { user: user, userCompany: userCompany, company: company } },
         process.env.JWT_SECRET,
         { expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME }
@@ -97,7 +94,7 @@ class UserController {
 
       // return the accessToken and the refreshToken
       ctx.body = {
-        accessToken: token,
+        accessToken: accessToken,
         refreshToken: refreshTokenData.refreshToken
       }
 
@@ -116,24 +113,26 @@ class UserController {
     }
     console.log('signin')
 
-    //Let's find that user
-    // FIXME: make the association works, it doesn't yet
-    let userbyemail = await User.findOne({ where: {email: request.email}, include: ['company', 'userCompanies'] })
-    if (userbyemail.userCompanies === undefined || userbyemail.userCompanies.length != 1) {
-      console.log('error2')
-      ctx.throw(401, 'WRONG_AASOCIATION')
-    }
-
-    let company = userbyemail.company
-    delete userbyemail.company //await Company.findOne({ where: {id: userbyemail.company_id} })
-    let userCompany = userbyemail.userCompanies[0]
-    delete userbyemail.userCompanies
-
-
+    //Let's find that user and its company associated to him
+    let userbyemail = await User.findOne({ where: {email: request.email}, include: ['userCompanies', 'companies'] })
     if (userbyemail === null) {
-      console.log('error2')
+      console.log('INVALID_CREDENTIALS')
       ctx.throw(401, 'INVALID_CREDENTIALS')
     }
+
+    if (userbyemail.userCompanies === undefined || userbyemail.userCompanies.length != 1) {
+      console.log('WRONG_ASSOCIATION 1')
+      ctx.throw(401, 'WRONG_ASSOCIATION')
+    }
+    if (userbyemail.companies === undefined || userbyemail.companies.length != 1) {
+      console.log('WRONG_ASSOCIATION 2')
+      ctx.throw(401, 'WRONG_ASSOCIATION')
+    }
+
+    let company = await userbyemail.companies[0]
+    await delete userbyemail['companies']
+    let userCompany = await userbyemail.userCompanies[0]
+    await delete userbyemail['userCompanies']
 
     //Now let's check the password
     try {
@@ -165,7 +164,7 @@ class UserController {
     }
 
     //Ok, they've made it, send them their jsonwebtoken with their data, accessToken and refreshToken
-    const token = jsonwebtoken.sign(
+    const accessToken = jsonwebtoken.sign(
       { data: { user: userbyemail, userCompany: userCompany, company: company } },
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME }
@@ -173,7 +172,7 @@ class UserController {
 
     // return the accessToken and the refreshToken
     ctx.body = {
-      accessToken: token,
+      accessToken: accessToken,
       refreshToken: refreshTokenData.refreshToken
     }
   }
@@ -223,25 +222,39 @@ class UserController {
     }
 
     //Let's find that user
-    let userbyemail = await User.findOne({ where: {email: email} }).then( user => { return user })
+    let userbyemail = await User.findOne({ where: {email: email}, include: ['userCompanies', 'companies'] })
 
     if (userbyemail === null) {
       ctx.throw(401, 'INVALID_REFRESH_TOKEN')
     }
 
+    if (userbyemail.userCompanies === undefined || userbyemail.userCompanies.length != 1) {
+      console.log('WRONG_ASSOCIATION 1')
+      ctx.throw(401, 'WRONG_ASSOCIATION')
+    }
+    if (userbyemail.companies === undefined || userbyemail.companies.length != 1) {
+      console.log('WRONG_ASSOCIATION 2')
+      ctx.throw(401, 'WRONG_ASSOCIATION')
+    }
+
+    let company = await userbyemail.companies[0]
+    await delete userbyemail['companies']
+    let userCompany = await userbyemail.userCompanies[0]
+    await delete userbyemail['userCompanies']
+
     //Generate the refreshToken data
     let refreshTokenData = await this.generateRefreshToken(ctx,userbyemail)
 
     //Ok, they've made it, send them their jsonwebtoken with their data, accessToken and refreshToken
-    const token = jsonwebtoken.sign(
-      { data: userbyemail },
+    const accessToken = jsonwebtoken.sign(
+      { data: { user: userbyemail, userCompany: userCompany, company: company } },
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME }
     )
 
     // return the accessToken and the refreshToken
     ctx.body = {
-      accessToken: token,
+      accessToken: accessToken,
       refreshToken: refreshTokenData.refreshToken
     }
   }
@@ -461,26 +474,6 @@ class UserController {
     return refreshTokenData
   }
 
-  // generateUniqueToken and checkUniqueToken are helper to handle token generation
-  // generateUniqueToken generate a 7 char random token usong a base 64
-  async generateUniqueToken() {
-    let token = new rand(/[a-zA-Z0-9_-]{7,7}/).gen()
-    if (await this.checkUniqueToken(token)) {
-      await this.generateUniqueToken()
-    } else {
-      return token
-    }
-  }
-
-  // generateUniqueToken and checkUniqueToken are helper to handle token generation
-  // checkUniqueToken check if a user doesn't already use this token
-  async checkUniqueToken(token) {
-    let userbytoken = await User.findOne({ where: {token: token} }).then( user => { return user })
-    if (userbytoken !== null) {
-      return true
-    }
-    return false
-  }
 }
 
 export default UserController

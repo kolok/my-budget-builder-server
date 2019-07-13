@@ -11,10 +11,10 @@ import HTTP from './common/http'
  */
 let CompanyResource = {
   update(id, body) { // Update a company
-    return HTTP.put('companies/' + id, body)
+    return HTTP.put('companies/current', body)
   },
   get(id) { // Update a company
-    return HTTP.get('companies/' + id)
+    return HTTP.get('companies/current')
   }
 }
 

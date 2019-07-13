@@ -17,19 +17,6 @@ module.exports = {
         type: Sequelize.STRING,
         unique: true
       },
-      token: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        unique: true
-      },
-      company_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false/*,
-        references: {
-          model: 'Company',
-          key: 'id'
-        }*/
-      },
       password: {
         allowNull: false,
         type: Sequelize.STRING

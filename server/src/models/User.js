@@ -17,15 +17,6 @@ module.exports  = function(sequelize, DataTypes) {
     type: DataTypes.STRING,
     unique: true
   },
-  token: {
-    allowNull: false,
-    type: DataTypes.STRING,
-    unique: true
-  },
-  company_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
   password: {
     allowNull: false,
     type: DataTypes.STRING
@@ -67,12 +58,6 @@ module.exports  = function(sequelize, DataTypes) {
 }, {underscored: true, tableName: 'users'});
 
 User.associate = function(models) {
-  // Companies has many users
-  //So Users belongs to Company
-  User.belongsTo(models.Company, {
-    foreignKey: 'company_id',
-    as: 'company'
-  });
 
   User.hasMany(models.UserCompany, {
     foreignKey: 'user_id',
@@ -84,6 +69,7 @@ User.associate = function(models) {
     as: 'companies',
     foreignKey: 'user_id'
   });
+
 };
 
 // Instance Method

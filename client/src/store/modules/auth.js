@@ -21,11 +21,19 @@ export default {
     },
     // shortcut to admin role of the user
     isAdmin: state => {
-      return state.user.role === 'admin'
+      return state.userCompany.role === 'client_admin'
     },
     // return the current user
     getCurrentUser: state => {
       return state.user
+    },
+    // return the current company
+    getCurrentCompany: state => {
+      return state.company
+    },
+    // return the current userCompany
+    getCurrentUserCompany: state => {
+      return state.userCompany
     }
   },
   mutations: {
@@ -38,6 +46,8 @@ export default {
     // Remove current user and tokens just after it is logged out
     LOGOUT (state) {
       state.user = null
+      state.company = null
+      state.userCompany = null
       localStorage.removeItem('accessToken')
       localStorage.removeItem('refreshToken')
     }

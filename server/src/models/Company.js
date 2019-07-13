@@ -52,18 +52,13 @@ module.exports  = function(sequelize, DataTypes) {
   // relationship using a typed link to handle the roles of the user in the
   // company
   Company.associate = function(models) {
-    Company.hasMany(models.User, {
-      foreignKey: 'company_id',
-      as: 'users',
-    });
-
     Company.hasMany(models.UserCompany, {
       foreignKey: 'company_id',
       as: 'userCompanies'
     });
     Company.belongsToMany(models.User, {
       through: 'UserCompany',
-      as: 'manyusers',
+      as: 'users',
       foreignKey: 'company_id'
     });
 

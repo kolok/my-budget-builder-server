@@ -127,7 +127,7 @@ export default {
           this.currencyList = response.data
           let currencyList = []
           response.data.forEach(function(currency){
-            currency.id = currency.id + 10
+            currency.id = currency.id
             currency.combineName = currency.name + ' (' + currency.symbol + ')'
             currencyList.push(currency)
           })

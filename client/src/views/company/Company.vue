@@ -4,7 +4,7 @@
       <h1>Edit your company settings</h1>
       <Row :gutter="30">
         <Col />
-          <CompanyEdit :id="this.getCurrentUser.company_id"/>
+          <CompanyEdit :id="this.getCurrentCompany.id"/>
         </Col>
       </Row>
     </div>
@@ -24,9 +24,9 @@ export default {
     CompanyEdit
   },
   computed: {
-    ...mapGetters(['getCurrentUser']),
+    ...mapGetters(['getCurrentCompany']),
     userCompanyExists: function() {
-      return this.getCurrentUser.company_id !== undefined
+      return this.getCurrentCompany.id !== undefined
     }
   },
   data() {

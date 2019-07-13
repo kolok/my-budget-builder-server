@@ -10,13 +10,13 @@ const jwtMiddleware = jwt({ secret: process.env.JWT_SECRET })
 const companyController = new CompanyController()
 
 // get a company
-router.get('/api/v1/companies/:id', jwtMiddleware, async (ctx, next) => {
+router.get('/api/v1/companies/current', jwtMiddleware, async (ctx, next) => {
   //FIXME: check the user right
-  await companyController.get(ctx)
+  await companyController.getCurrent(ctx)
 })
 
-router.put('/api/v1/companies/:id', jwtMiddleware, async (ctx, next) => {
-    await companyController.update(ctx)
+router.put('/api/v1/companies/current', jwtMiddleware, async (ctx, next) => {
+    await companyController.updateCurrent(ctx)
 })
 
 export default router
