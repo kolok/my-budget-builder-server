@@ -28,6 +28,10 @@ module.exports  = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    entity_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     status: {
       allowNull: false,
       defaultValue: 'active',
@@ -54,13 +58,14 @@ module.exports  = function(sequelize, DataTypes) {
   }, {underscored: true, tableName: 'offices'});
 
   Office.associate = function(models) {
-    // Companies has many users
-    //So Users belongs to Company
     Office.belongsTo(models.Company, {
       foreignKey: 'company_id',
       as: 'company'
     });
-
+    Office.belongsTo(models.Entity, {
+      foreignKey: 'entity_id',
+      as: 'entity'
+    });
     Office.belongsTo(models.Country, {
       foreignKey: 'country_id',
       as: 'country'

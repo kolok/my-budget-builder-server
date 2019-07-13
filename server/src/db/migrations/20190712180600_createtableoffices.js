@@ -28,6 +28,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false
       },
+      entity_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       status: {
         allowNull: false,
         defaultValue: 'active',

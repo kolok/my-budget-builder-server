@@ -42,8 +42,6 @@ module.exports  = function(sequelize, DataTypes) {
   }, {underscored: true, tableName: 'teams'});
 
   Team.associate = function(models) {
-    // Companies has many users
-    //So Users belongs to Company
     Team.belongsTo(models.Company, {
       foreignKey: 'company_id',
       as: 'company'
