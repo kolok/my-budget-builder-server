@@ -34,7 +34,7 @@ module.exports = {
       },
       {
         id: 3,
-        name: 'Company1 BS',
+        name: 'Company1 Corporation',
         company_id: 1,
         country_id: 3,
         default_currency_id:3,
@@ -65,7 +65,7 @@ module.exports = {
       {
         id: 6,
         name: 'Company3 SA',
-        company_id: 1,
+        company_id: 3,
         country_id: 1,
         status: 'active',
         created_at: new Date(),

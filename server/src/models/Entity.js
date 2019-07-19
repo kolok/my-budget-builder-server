@@ -12,11 +12,11 @@ module.exports  = function(sequelize, DataTypes) {
       allowNull: false,
       type: DataTypes.STRING
     },
-    company_id: {
+    country_id: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    country_id: {
+    company_id: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
@@ -50,8 +50,11 @@ module.exports  = function(sequelize, DataTypes) {
   }, {underscored: true, tableName: 'entities'});
 
   Entity.associate = function(models) {
-    // Companies has many users
-    //So Users belongs to Company
+    Entity.hasMany(models.Office, {
+      foreignKey: 'entity_id',
+      as: 'offices'
+    });
+
     Entity.belongsTo(models.Company, {
       foreignKey: 'company_id',
       as: 'company'
@@ -60,6 +63,11 @@ module.exports  = function(sequelize, DataTypes) {
     Entity.belongsTo(models.Country, {
       foreignKey: 'country_id',
       as: 'country'
+    });
+
+    Entity.belongsTo(models.Currency, {
+      foreignKey: 'default_currency_id',
+      as: 'currency'
     });
 
   };

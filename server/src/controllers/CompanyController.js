@@ -2,7 +2,6 @@ import dateFormat from 'date-fns/format'
 
 import db from '../models'
 const Company = db.Company;
-const User = db.User;
 
 class CompanyController {
 

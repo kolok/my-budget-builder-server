@@ -24,6 +24,10 @@ module.exports  = function(sequelize, DataTypes) {
       allowNull: false,
       type: DataTypes.STRING
     },
+    country_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
     company_id: {
       type: DataTypes.INTEGER,
       allowNull: false

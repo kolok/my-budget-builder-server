@@ -14,6 +14,7 @@ import defaultRouter from './routes/default'
 import companiesRouter from './routes/companies'
 import currenciesRouter from './routes/currencies'
 import usersRouter from './routes/users'
+import entitiesRouter from './routes/entities'
 
 //Initialize app
 const app = new Koa()
@@ -90,5 +91,7 @@ app.use(currenciesRouter.routes())
 app.use(currenciesRouter.allowedMethods())
 app.use(usersRouter.routes())
 app.use(usersRouter.allowedMethods())
+app.use(entitiesRouter.routes())
+app.use(entitiesRouter.allowedMethods())
 
 export default app

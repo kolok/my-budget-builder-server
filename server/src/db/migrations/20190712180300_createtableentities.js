@@ -12,11 +12,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      company_id: {
+      country_id: {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      country_id: {
+      company_id: {
         type: Sequelize.INTEGER,
         allowNull: false
       },
