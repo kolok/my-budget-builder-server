@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   up: async function(queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('entities', [
+    var result = await queryInterface.bulkInsert('entities',[
       {
         id: 1,
         name: 'Company1 SA',
@@ -72,6 +72,8 @@ module.exports = {
         updated_at: new Date()
       }
     ], {});
+    await queryInterface.sequelize.query(`select setval('entities_id_seq', (select max(id) from entities), true)`);
+    return result;
   },
 
   down: (queryInterface, Sequelize) => {

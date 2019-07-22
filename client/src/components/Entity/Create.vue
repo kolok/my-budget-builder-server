@@ -4,12 +4,24 @@
       <el-button type="primary" @click="createDialog = true">Create a new entity</el-button>
     </template>
 
-    <el-dialog title="Adresse d'expédition" :visible.sync="createDialog">
-      <el-form :model="entityForm" label-width="250px" style="max-width:600px">
-        <el-form-item label="Entity">
+    <el-dialog title="Create an entity" :visible.sync="createDialog">
+      <el-form
+        ref="entityForm"
+        :model="entityForm"
+        :rules="entityRule"
+        label-width="250px"
+        style="max-width:600px"
+      >
+        <el-form-item
+          prop="name"
+          label="Entity"
+        >
           <el-input v-model="entityForm.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="Country">
+        <el-form-item
+          label="Country"
+          prop="country_id"
+        >
           <el-select v-model="entityForm.country_id" placeholder="Select a country">
             <el-option
               v-for="country in countries"
@@ -19,8 +31,11 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Currency">
-          <el-select v-model="entityForm.currency_id" placeholder="Select a currency">
+        <el-form-item
+          label="Currency"
+          prop="default_currency_id"
+        >
+          <el-select v-model="entityForm.default_currency_id" placeholder="Select a currency">
             <el-option
               v-for="currency in currencies"
               :key="currency.id"
@@ -32,7 +47,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancelAddEntity">Annuler</el-button>
-        <el-button type="primary" @click="createDialog = false">Confirmer</el-button>
+        <el-button type="primary" @click="createEntity('entityForm')">Confirmer</el-button>
       </span>
     </el-dialog>
 
@@ -50,7 +65,20 @@ export default {
       entityForm: {
         name: '',
         country_id:'',
-        currency_id: ''
+        default_currency_id: ''
+      },
+      entityRule: {
+        name: [
+          { required: true, message: 'Entity name can\'t be blank' },
+          { max:25, message: 'Too long'},
+          { min:3, message: 'Too short'}
+        ],
+        country_id: [
+          { required: true, message: 'A country should be selected' }
+        ],
+        default_currency_id: [
+          { required: true, message: 'A currency should be selected' }
+        ]
       }
     }
   },
@@ -64,7 +92,9 @@ export default {
   methods: {
     ...mapActions(['addEntity']),
     /*eslint no-unused-vars: ["error", { "args": "none" }]*/
-    create: function(formName) { // Create item
+    createEntity: function(formName) { // Create entity
+    console.log(formName)
+    console.log(this.$refs[formName])
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.addEntity(this.entityForm)

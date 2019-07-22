@@ -39,8 +39,9 @@ class EntityController {
     request.company_id = ctx.state.company.id
 
     try {
-      await Entity.create( request )
-      ctx.body = { message: 'SUCCESS' }
+      let entity = await Entity.create( request , {include: ['currency', 'country']})
+      let result = await Entity.findOne( { where: { id: entity.id}, include: ['offices', 'currency', 'country'] } )
+      ctx.body = result
     } catch (error) {
       ctx.throw(400, 'INVALID_DATA')
     }

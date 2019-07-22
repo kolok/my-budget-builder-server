@@ -48,6 +48,10 @@ export default {
     addEntity: ({commit}, entity) => {
       return EntityResource.create(entity)
         .then(response => {
+          var entity = response.data
+          if (entity.currency !== null) {
+            entity.currencyName = entity.currency.name + ' ( ' + entity.currency.symbol + ' )'
+          }
           commit('ADD_ENTITY', response.data)
         })
         .catch(err => {
