@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import CompanyEdit from '../../components/companies/Edit.vue'
+import CompanyEdit from '../../components/company/Edit.vue'
 import { mapGetters } from 'vuex'
 
 export default {

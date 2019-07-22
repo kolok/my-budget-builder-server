@@ -93,8 +93,6 @@ export default {
     ...mapActions(['addEntity']),
     /*eslint no-unused-vars: ["error", { "args": "none" }]*/
     createEntity: function(formName) { // Create entity
-    console.log(formName)
-    console.log(this.$refs[formName])
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.addEntity(this.entityForm)

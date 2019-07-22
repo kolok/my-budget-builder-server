@@ -68,7 +68,8 @@ class EntityController {
 
     try {
       await entity.save()
-      ctx.body = { message: 'SUCCESS' }
+      let result = await Entity.findOne( { where: { id: entity.id}, include: ['offices', 'currency', 'country'] } )
+      ctx.body = result
     } catch (error) {
       ctx.throw(400, 'INVALID_DATA')
     }

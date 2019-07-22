@@ -16,14 +16,13 @@ export default {
     },
     EDIT_ENTITY: (state, entity) => {
       state.entities.forEach(item => {
-        if (item._id === entity._id) {
-          item.name = entity.name
-          item.info = entity.info
+        if (item.id === entity.id) {
+          item = entity
         }
       })
     },
     REMOVE_ENTITY: (state, id) => {
-      state.entities = state.entities.filter(item => item._id !== id)
+      state.entities = state.entities.filter(item => item.id !== id)
     }
   },
   actions: {
@@ -52,14 +51,14 @@ export default {
           if (entity.currency !== null) {
             entity.currencyName = entity.currency.name + ' ( ' + entity.currency.symbol + ' )'
           }
-          commit('ADD_ENTITY', response.data)
+          commit('ADD_ENTITY', entity)
         })
         .catch(err => {
           throw err
         })
     },
     editEntity: ({commit}, payload) => {
-      return EntityResource.update(payload._id, payload.content)
+      return EntityResource.update(payload.id, payload)
         .then(response => {
           commit('EDIT_ENTITY', response.data)
         })
