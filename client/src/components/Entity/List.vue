@@ -49,17 +49,16 @@
         <el-button
           size="mini"
           type="primary"
+          icon="el-icon-edit"
           @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
         <el-button
           size="mini"
           type="danger"
+          icon="el-icon-delete"
           @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
       </template>
       </el-table-column>
     </el-table>
-    <template>
-      <el-button type="primary">Create a new entity</el-button>
-    </template>
   </div>
 </template>
 <script>
@@ -88,7 +87,13 @@
         console.log('edit', row)
       },
       handleDelete(index,row) {
-        console.log('delete', row)
+        this.$confirm('Ceci effacera le fichier. Continuer?', 'Warning', {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Annuler',
+          type: 'warning'
+        }).then(() => {
+          console.log('delete', row)
+        });
       }
     }
   }
