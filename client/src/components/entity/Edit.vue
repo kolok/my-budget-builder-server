@@ -119,10 +119,6 @@ export default {
   computed: {
     ...mapGetters(['currencies', 'countries'])
   },
-  created() {
-    this.$store.dispatch('getCurrencies'),
-    this.$store.dispatch('getCountries')
-  },
   methods: {
     ...mapActions(['editEntity', 'removeEntity']),
     /*eslint no-unused-vars: ["error", { "args": "none" }]*/

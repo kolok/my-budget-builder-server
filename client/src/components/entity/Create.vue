@@ -107,10 +107,6 @@ export default {
   computed: {
     ...mapGetters(['currencies', 'countries'])
   },
-  created() {
-    this.$store.dispatch('getCurrencies'),
-    this.$store.dispatch('getCountries')
-  },
   methods: {
     ...mapActions(['addEntity']),
     /*eslint no-unused-vars: ["error", { "args": "none" }]*/
