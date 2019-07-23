@@ -1,5 +1,3 @@
-import jsonwebtoken from 'jsonwebtoken'
-
 import db from '../models'
 const Country = db.Country
 

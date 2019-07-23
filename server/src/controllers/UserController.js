@@ -35,13 +35,15 @@ class UserController {
     const request = ctx.request.body
 
     //Now let's check for a duplicate company
-    let companyByName = await Company.findOne({ where: {name: request.companyname} }).then( company => { return company })
+    let companyByName = await Company.findOne(
+      { where: {name: request.companyname} }).then( company => { return company }
+    )
     if (companyByName !== null) {
       return ctx.throw(400, 'DUPLICATE_COMPANY')
     }
 
     //Now let's check for a duplicate email
-    let userbyemail = await User.findOne({ where: {email: request.email} }).then( user => { return user })
+    let userbyemail = await User.findOne({ where: {email: request.email} })
     if (userbyemail !== null) {
       ctx.throw(400, 'DUPLICATE_EMAIL')
     }
@@ -59,7 +61,7 @@ class UserController {
        *FIXME: make the 3 following creations in a transaction
        * Create the new company
        */
-      var company = await Company.create({name: request.companyname, subdomain: request.subdomain}) //.then( company => {return company})
+      var company = await Company.create({name: request.companyname, subdomain: request.subdomain})
       // create the user
       console.log(request)
       var user = await User.create(request)
@@ -224,7 +226,10 @@ class UserController {
 
     let email = refreshTokenDatabaseData.email
 
-    //Ok, everthing checked out. So let's invalidate the refresh token they just confirmed, and get them hooked up with a new one.
+    /*
+     * Ok, everthing checked out.
+     * So let's invalidate the refresh token they just confirmed, and get them hooked up with a new one.
+     */
     try {
       refreshTokenDatabaseData.update({ isValid: false, updatedAt: dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss') })
     } catch (error) {
@@ -448,9 +453,9 @@ class UserController {
    * }
    */
 
-  ////////////////////////////////////////////////////////////////////////////////
-  // Helpers
-  ////////////////////////////////////////////////////////////////////////////////
+  /*
+   * ===== HELPERS =====
+   */
 
   /*
    * Function to factorise the Refresh token generation

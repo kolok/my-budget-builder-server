@@ -13,7 +13,7 @@ const bcrypt = require('bcrypt')
 
 
 module.exports = {
-  up: async function(queryInterface, Sequelize) {
+  up: async function(queryInterface/*, Sequelize*/) {
     let password = 'azerty'
     try {
       password = await bcrypt.hash('azerty', 12)
@@ -53,7 +53,7 @@ module.exports = {
     return result
   },
 
-  down: (queryInterface, Sequelize) => {
+  down: (queryInterface/*, Sequelize*/) => {
     return queryInterface.bulkDelete('users', null, {})
   }
 }

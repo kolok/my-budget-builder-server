@@ -35,7 +35,8 @@ module.exports  = function(sequelize, DataTypes) {
 
     /*
      * Currency can belongs to a company
-     * The currency which aren't belongs by a company are the one open to everybody
+     * The currency which aren't belongs by a company are the one open to
+     * everybody
      */
     Currency.belongsTo(models.Company, {
       foreignKey: 'company_id',

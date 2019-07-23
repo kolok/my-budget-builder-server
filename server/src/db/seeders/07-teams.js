@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 module.exports = {
-  up: async function(queryInterface, Sequelize) {
+  up: async function(queryInterface/*, Sequelize*/) {
     var result = await queryInterface.bulkInsert('teams', [
       {
         id: 1,
@@ -65,7 +65,7 @@ module.exports = {
     return result
   },
 
-  down: (queryInterface, Sequelize) => {
+  down: (queryInterface/*, Sequelize*/) => {
     return queryInterface.bulkDelete('teams', null, {})
   }
 }

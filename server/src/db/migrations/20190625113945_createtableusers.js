@@ -55,7 +55,7 @@ module.exports = {
       }
     })
   },
-  down: (queryInterface, Sequelize) => {
+  down: (queryInterface/*, Sequelize*/) => {
     //removeConstraint('products', 'Company').
     return queryInterface.dropTable('users')
     /*

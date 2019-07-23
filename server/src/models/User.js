@@ -73,7 +73,10 @@ module.exports  = function(sequelize, DataTypes) {
   }
 
   // Instance Method
-  User.incrementLoginCount = function (id) { this.update({ loginCount: sequelize.literal('login_count + 1') }, { where: { id: id } }) }
+  User.incrementLoginCount = function (id) {
+    this.update({ loginCount: sequelize.literal('login_count + 1') },
+      { where: { id: id } })
+  }
 
   return User
 }

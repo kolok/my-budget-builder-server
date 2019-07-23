@@ -26,7 +26,7 @@ class CompanyController {
     company.updatedAt = dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss')
 
     //Replace the note data with the new updated note data
-    Object.keys(ctx.request.body).forEach(function(parameter, index) {
+    Object.keys(ctx.request.body).forEach(function(parameter) {
       company[parameter] = request[parameter]
     })
 
@@ -50,7 +50,8 @@ class CompanyController {
  * //Get list of users which belongs to the company
  * try {
  * //Find and show note
- * let result = await Company.findByPk(params.id, {include: [{model:User, as:'users'}]}).then(companies => {return companies})
+ * let result = await Company.findByPk(params.id, {include: [{model:User, as:'users'}]})
+ *   .then(companies => {return companies})
  * ctx.body = result
  * } catch (error) {
  * ctx.throw(400, 'INVALID_DATA')

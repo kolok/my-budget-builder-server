@@ -51,7 +51,9 @@ app.use(async (ctx, next) => {
     logger.info(
       ctx.method + ' ' + ctx.url + ' RESPONSE: ' + ctx.response.status
     )
-  } catch (error) {}
+  } catch (error) {
+    console.err(error)
+  }
 })
 
 //Apply error json handling
