@@ -11,11 +11,11 @@ import error from 'koa-json-error'
 
 //Routes
 import defaultRouter from './routes/default'
-import companiesRouter from './routes/companies'
-import countriesRouter from './routes/countries'
-import currenciesRouter from './routes/currencies'
-import usersRouter from './routes/users'
-import entitiesRouter from './routes/entities'
+import companyRouter from './routes/company'
+import countryRouter from './routes/country'
+import currencyRouter from './routes/currency'
+import userRouter from './routes/user'
+import entityRouter from './routes/entity'
 
 //Initialize app
 const app = new Koa()
@@ -86,15 +86,15 @@ app.use(bodyParser({ enableTypes: ['json'] }))
 //For router
 app.use(defaultRouter.routes())
 app.use(defaultRouter.allowedMethods())
-app.use(companiesRouter.routes())
-app.use(companiesRouter.allowedMethods())
-app.use(countriesRouter.routes())
-app.use(countriesRouter.allowedMethods())
-app.use(currenciesRouter.routes())
-app.use(currenciesRouter.allowedMethods())
-app.use(usersRouter.routes())
-app.use(usersRouter.allowedMethods())
-app.use(entitiesRouter.routes())
-app.use(entitiesRouter.allowedMethods())
+app.use(companyRouter.routes())
+app.use(companyRouter.allowedMethods())
+app.use(countryRouter.routes())
+app.use(countryRouter.allowedMethods())
+app.use(currencyRouter.routes())
+app.use(currencyRouter.allowedMethods())
+app.use(userRouter.routes())
+app.use(userRouter.allowedMethods())
+app.use(entityRouter.routes())
+app.use(entityRouter.allowedMethods())
 
 export default app

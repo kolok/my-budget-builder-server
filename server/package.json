@@ -6,11 +6,9 @@
   "license": "ISC",
   "main": "src/server.js",
   "scripts": {
-    "watch": "NODE_ENV=development nodemon app.js --exec",
+    "watch": "NODE_ENV=development nodemon src/app.js --exec",
     "eslint": "./node_modules/.bin/eslint src/",
-    "eslint-fix": "./node_modules/.bin/eslint src/ --fix",
-    "start": "NODE_ENV=development nodemon src/server.js",
-    "build": "NODE_ENV=production nodemon src/server.js"
+    "eslint-fix": "./node_modules/.bin/eslint src/ --fix"
   },
   "dependencies": {
     "@koa/cors": "^2.2.1",

@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'test') {
 }
 
 const port =  process.env.PORT || 4000;
-const src = process.env.NODE_ENV === 'production' ? './build/index' : './src/index';
+const src = process.env.NODE_ENV === 'production' ? '../build/index' : './index';
 
 require('babel-polyfill');
 if (process.env.NODE_ENV === 'development') { require('babel-register'); }
