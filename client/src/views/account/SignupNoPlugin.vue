@@ -7,8 +7,8 @@
       <!-- Begin: Form -->
       <form
         id="signupForm"
-        @submit="signup"
         method="post"
+        @submit="signup"
       >
         <p>
           <label for="company">Company</label>

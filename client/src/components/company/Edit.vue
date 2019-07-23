@@ -1,29 +1,40 @@
 <template>
   <div style="display:inline">
-    <el-form ref="companyForm" :model="companyForm" label-width="250px" style="max-width:600px">
-   		<el-form-item label="Company name">
-   		  <el-input v-model="companyForm.name"></el-input>
+    <el-form
+      ref="companyForm"
+      :model="companyForm"
+      label-width="250px"
+      style="max-width:600px"
+    >
+      <el-form-item label="Company name">
+        <el-input v-model="companyForm.name" />
       </el-form-item>
 
       <el-form-item label="Fiscal year start month">
-        <el-select v-model="companyForm.first_month_fiscal_year" placeholder="Select">
+        <el-select
+          v-model="companyForm.first_month_fiscal_year"
+          placeholder="Select"
+        >
           <el-option
             v-for="item in options"
             :key="item.value"
             :label="item.label"
-            :value="item.value">
-          </el-option>
+            :value="item.value"
+          />
         </el-select>
       </el-form-item>
 
       <el-form-item label="Currency">
-        <el-select v-model="companyForm.default_currency_id" placeholder="Select a currency">
+        <el-select
+          v-model="companyForm.default_currency_id"
+          placeholder="Select a currency"
+        >
           <el-option
             v-for="currency in currencies"
             :key="currency.id"
             :label="currency.longName"
-            :value="currency.id">
-          </el-option>
+            :value="currency.id"
+          />
         </el-select>
       </el-form-item>
 
@@ -31,17 +42,25 @@
         prop="subdomain"
         label="Komber sub-domain"
       >
-        <el-input v-model="companyForm.subdomain" placeholder="subdomain" class="subdomain" :disabled="true"></el-input>
+        <el-input
+          v-model="companyForm.subdomain"
+          placeholder="subdomain"
+          class="subdomain"
+          :disabled="true"
+        />
         <span class="domain">.komber.io</span>
       </el-form-item>
 
       <el-form-item>
-  			<el-button type="primary" @click="onSubmit">Save</el-button>
-		  </el-form-item>
+        <el-button
+          type="primary"
+          @click="onSubmit"
+        >
+          Save
+        </el-button>
+      </el-form-item>
     </el-form>
-
   </div>
-
 </template>
 
 <script>
@@ -49,12 +68,6 @@ import CompanyResource from '../../api/company.service'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  computed: {
-    ...mapGetters(['currencies'])
-  },
-  created() {
-    this.$store.dispatch('getCurrencies')
-  },
   props: {
     'id': {
       type: Number,
@@ -65,47 +78,53 @@ export default {
     return {
       'companyForm': {},
       options: [{
-          value: '1',
-          label: 'January'
-        }, {
-          value: '2',
-          label: 'February'
-        }, {
-          value: '3',
-          label: 'March'
-        }, {
-          value: '4',
-          label: 'April'
-        }, {
-          value: '5',
-          label: 'May'
-        }, {
-          value: '6',
-          label: 'June'
-        }, {
-          value: '7',
-          label: 'July'
-        }, {
-          value: '8',
-          label: 'August'
-        }, {
-          value: '9',
-          label: 'September'
-        }, {
-          value: '10',
-          label: 'October'
-        }, {
-          value: '11',
-          label: 'November'
-        }, {
-          value: '12',
-          label: 'December'
-        }],
+        value: '1',
+        label: 'January'
+      }, {
+        value: '2',
+        label: 'February'
+      }, {
+        value: '3',
+        label: 'March'
+      }, {
+        value: '4',
+        label: 'April'
+      }, {
+        value: '5',
+        label: 'May'
+      }, {
+        value: '6',
+        label: 'June'
+      }, {
+        value: '7',
+        label: 'July'
+      }, {
+        value: '8',
+        label: 'August'
+      }, {
+        value: '9',
+        label: 'September'
+      }, {
+        value: '10',
+        label: 'October'
+      }, {
+        value: '11',
+        label: 'November'
+      }, {
+        value: '12',
+        label: 'December'
+      }],
       value: ''
     }
   },
+  computed: {
+    ...mapGetters(['currencies'])
+  },
   beforeMount(){
     this.getCompany()
+  },
+  created() {
+    this.$store.dispatch('getCurrencies')
   },
   methods: {
     ...mapActions(['editCompany']),
@@ -122,21 +141,21 @@ export default {
     onSubmit: function() {
       let payload = { _id: this.id, content: this.companyForm }
       this.editCompany(payload)
-        .then(response => {
-          const h = this.$createElement;
+        .then(() => {
+          const h = this.$createElement
           this.$notify({
             title: 'Company update',
             message: h('i', { style: 'color: teal' }, 'company ' + this.companyForm.name + ' was updated'),
             type: 'success'
-          });
+          })
         })
         .catch(e => {
-          const h = this.$createElement;
+          const h = this.$createElement
           this.$notify({
             title: 'Company update',
             message: h('i', { style: 'color: red' }, 'something went wrong, the company wasn\'t updated'),
             type: 'error'
-          });
+          })
           console.log(e)
         })
     }

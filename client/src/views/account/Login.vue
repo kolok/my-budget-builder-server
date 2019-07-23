@@ -1,7 +1,14 @@
 <template>
   <div class="default-main-content">
-    <el-card class="box-card" style="max-width:300px;width: 100%;margin: 0px auto;">
-      <div slot="header" class="clearfix" style="font-size: 14px;font-weight: bold;">
+    <el-card
+      class="box-card"
+      style="max-width:300px;width: 100%;margin: 0px auto;"
+    >
+      <div
+        slot="header"
+        class="clearfix"
+        style="font-size: 14px;font-weight: bold;"
+      >
         <span>Login</span>
       </div>
       <div class="loginform">
@@ -18,17 +25,30 @@
               { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }
             ]"
           >
-            <el-input v-model="loginForm.email" placeholder="email"></el-input>
+            <el-input
+              v-model="loginForm.email"
+              placeholder="email"
+            />
           </el-form-item>
           <el-form-item
             :rules="[{ required: true, message: 'Password is required'}]"
             label="Password"
             prop="password"
           >
-            <el-input type="password" v-model="loginForm.password" autocomplete="off"></el-input>
+            <el-input
+              v-model="loginForm.password"
+              type="password"
+              autocomplete="off"
+            />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submit('loginForm')" style="width:100%">Submit</el-button>
+            <el-button
+              type="primary"
+              style="width:100%"
+              @click="submit('loginForm')"
+            >
+              Submit
+            </el-button>
           </el-form-item>
         </el-form>
         <p style="font-size: 14px;">

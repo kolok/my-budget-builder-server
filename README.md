@@ -81,9 +81,20 @@ install docker and docker-compose
 
 To migrate and populate the database, you should follow the ./README.sequelize.md file
 
-- Others:
+### Production
+
+To be continued...
 ```bash
 npm run build      # Running production mode
+```
+
+### ESLint
+
+To manage the code quality, eslint is used.
+It is possible to edit the eslint rule in the config files client/.eslintrc.json and server/.eslintrc.json
+
+Add to run it, use these commands inside client or server repository
+```bash
 npm run eslint     # Check your coding style
 npm run eslint-fix # Use auto ESLint fix
 ```

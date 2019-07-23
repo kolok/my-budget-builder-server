@@ -3,10 +3,10 @@
     <h1>Entities</h1>
     <Row :gutter="30">
       <Col />
-        <EntityList/>
+      <EntityList />
       </Col>
       <Col />
-        <EntityCreate />
+      <EntityCreate />
       </Col>
     </Row>
   </div>

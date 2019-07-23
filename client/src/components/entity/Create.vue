@@ -1,10 +1,18 @@
 <template>
   <div>
     <template>
-      <el-button type="primary" @click="createDialog = true">Create a new entity</el-button>
+      <el-button
+        type="primary"
+        @click="createDialog = true"
+      >
+        Create a new entity
+      </el-button>
     </template>
 
-    <el-dialog title="Create an entity" :visible.sync="createDialog">
+    <el-dialog
+      title="Create an entity"
+      :visible.sync="createDialog"
+    >
       <el-form
         ref="entityForm"
         :model="entityForm"
@@ -16,41 +24,55 @@
           prop="name"
           label="Entity"
         >
-          <el-input v-model="entityForm.name" autocomplete="off"></el-input>
+          <el-input
+            v-model="entityForm.name"
+            autocomplete="off"
+          />
         </el-form-item>
         <el-form-item
           label="Country"
           prop="country_id"
         >
-          <el-select v-model="entityForm.country_id" placeholder="Select a country">
+          <el-select
+            v-model="entityForm.country_id"
+            placeholder="Select a country"
+          >
             <el-option
               v-for="country in countries"
               :key="country.id"
               :label="country.name"
-              :value="country.id">
-            </el-option>
+              :value="country.id"
+            />
           </el-select>
         </el-form-item>
         <el-form-item
           label="Currency"
           prop="default_currency_id"
         >
-          <el-select v-model="entityForm.default_currency_id" placeholder="Select a currency">
+          <el-select
+            v-model="entityForm.default_currency_id"
+            placeholder="Select a currency"
+          >
             <el-option
               v-for="currency in currencies"
               :key="currency.id"
               :label="currency.longName"
-              :value="currency.id">
-            </el-option>
+              :value="currency.id"
+            />
           </el-select>
         </el-form-item>
       </el-form>
-      <span slot="footer" class="dialog-footer">
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button @click="cancelAddEntity">Annuler</el-button>
-        <el-button type="primary" @click="createEntity('entityForm')">Confirmer</el-button>
+        <el-button
+          type="primary"
+          @click="createEntity('entityForm')"
+        >Confirmer</el-button>
       </span>
     </el-dialog>
-
   </div>
 </template>
 

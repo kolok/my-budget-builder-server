@@ -1,7 +1,14 @@
 <template>
   <div class="default-main-content">
-    <el-card class="box-card signup-card" style="max-width:400px;width: 100%;margin: 0px auto;">
-      <div slot="header" class="clearfix" style="font-size: 14px;font-weight: bold;">
+    <el-card
+      class="box-card signup-card"
+      style="max-width:400px;width: 100%;margin: 0px auto;"
+    >
+      <div
+        slot="header"
+        class="clearfix"
+        style="font-size: 14px;font-weight: bold;"
+      >
         <span>Sign up</span>
       </div>
       <div class="signupform">
@@ -15,42 +22,72 @@
             prop="companyname"
             label="Company name"
           >
-            <el-input v-model="signupForm.companyname" placeholder="Company name" v-on:input="updateSubDomain"></el-input>
+            <el-input
+              v-model="signupForm.companyname"
+              placeholder="Company name"
+              @input="updateSubDomain"
+            />
           </el-form-item>
           <el-form-item
             prop="subdomain"
             label="Komber sub-domain"
           >
-            <el-input v-model="signupForm.subdomain" placeholder="subdomain" class="subdomain"></el-input>
+            <el-input
+              v-model="signupForm.subdomain"
+              placeholder="subdomain"
+              class="subdomain"
+            />
             <span class="domain">.komber.io</span>
           </el-form-item>
           <el-form-item
             prop="name"
             label="Name"
           >
-            <el-input v-model="signupForm.name" placeholder="Name"></el-input>
+            <el-input
+              v-model="signupForm.name"
+              placeholder="Name"
+            />
           </el-form-item>
           <el-form-item
             prop="email"
             label="Email"
           >
-            <el-input v-model="signupForm.email" placeholder="email"></el-input>
+            <el-input
+              v-model="signupForm.email"
+              placeholder="email"
+            />
           </el-form-item>
           <el-form-item
             label="Password"
             prop="password"
           >
-            <el-input type="password" v-model="signupForm.password" autocomplete="off" placeholder="Password"></el-input>
+            <el-input
+              v-model="signupForm.password"
+              type="password"
+              autocomplete="off"
+              placeholder="Password"
+            />
           </el-form-item>
 
           <el-form-item
             label="Confirm Password"
             prop="retypePwd"
           >
-            <el-input type="password" v-model="signupForm.retypePwd" autocomplete="off" placeholder="Type password again"></el-input>
+            <el-input
+              v-model="signupForm.retypePwd"
+              type="password"
+              autocomplete="off"
+              placeholder="Type password again"
+            />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submit('signupForm')" style="width:100%">Sign me up</el-button>
+            <el-button
+              type="primary"
+              style="width:100%"
+              @click="submit('signupForm')"
+            >
+              Sign me up
+            </el-button>
           </el-form-item>
         </el-form>
         <p>
@@ -93,12 +130,12 @@ export default {
           { max:25, message: 'Too long'},
           { min:3, message: 'Too short'},
           { validator: (rule, value, callback) => {
-              if (value.match(/[^a-z]/) !== null) {
-                callback(new Error('subdomain should contain only lower case ascii characters'))
-              } else {
-                callback()
-              }
+            if (value.match(/[^a-z]/) !== null) {
+              callback(new Error('subdomain should contain only lower case ascii characters'))
+            } else {
+              callback()
             }
+          }
           }
         ],
         email: [
@@ -111,14 +148,14 @@ export default {
         ],
         retypePwd: [
           { validator: (rule, value, callback) => {
-              if (value === '') {
-                callback(new Error('Please enter your password again'))
-              } else if (value !== this.signupForm.password) {
-                callback(new Error('The two input passwords do not match'))
-              } else {
-                callback()
-              }
+            if (value === '') {
+              callback(new Error('Please enter your password again'))
+            } else if (value !== this.signupForm.password) {
+              callback(new Error('The two input passwords do not match'))
+            } else {
+              callback()
             }
+          }
           }]
       }
     }
