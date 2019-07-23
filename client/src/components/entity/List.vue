@@ -7,6 +7,7 @@
       row-key="id"
       border
       default-collapse-all
+      empty-text="No entity..."
     >
       <el-table-column
         label="Entity"

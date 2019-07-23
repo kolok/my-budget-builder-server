@@ -13,8 +13,8 @@ if (process.env.NODE_ENV === 'production') {
 // let check how we can handle it
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('countries', [
+  up: async function(queryInterface, Sequelize) {
+    var result = await queryInterface.bulkInsert('countries', [
       {
         id: 1,
         name: 'Unites States',
@@ -31,6 +31,8 @@ module.exports = {
         code2: 'FR'
       }
     ], {});
+    await queryInterface.sequelize.query(`select setval('countries_id_seq', (select max(id) from countries), true)`);
+    return result;
   },
 
   down: (queryInterface, Sequelize) => {

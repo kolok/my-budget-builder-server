@@ -10,8 +10,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('companies', [
+  up: async function(queryInterface, Sequelize) {
+    var result = await queryInterface.bulkInsert('companies', [
       {
         id: 1,
         name: 'Company 1',
@@ -43,6 +43,8 @@ module.exports = {
         updated_at: new Date()
       }
     ], {});
+    await queryInterface.sequelize.query(`select setval('companies_id_seq', (select max(id) from companies), true)`);
+    return result;
   },
 
   down: (queryInterface, Sequelize) => {

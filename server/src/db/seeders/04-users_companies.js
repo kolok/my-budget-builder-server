@@ -10,8 +10,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('users_companies', [
+  up: async function(queryInterface, Sequelize) {
+    var result = await queryInterface.bulkInsert('users_companies', [
       {
         id: 1,
         company_id: 1,
@@ -31,6 +31,8 @@ module.exports = {
         role: 'client_admin'
       }
     ], {});
+    await queryInterface.sequelize.query(`select setval('users_companies_id_seq', (select max(id) from users_companies), true)`);
+    return result;
   },
 
   down: (queryInterface, Sequelize) => {

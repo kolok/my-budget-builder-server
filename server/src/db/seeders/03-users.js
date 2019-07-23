@@ -20,7 +20,7 @@ module.exports = {
     } catch (error) {
       console.log('encrypt error')
     }
-    return queryInterface.bulkInsert('users', [
+    var result = await queryInterface.bulkInsert('users', [
       {
         id: 1,
         name: 'Admin1',
@@ -49,6 +49,8 @@ module.exports = {
         updated_at: new Date()
       }
     ], {});
+    await queryInterface.sequelize.query(`select setval('users_id_seq', (select max(id) from users), true)`);
+    return result;
   },
 
   down: (queryInterface, Sequelize) => {
