@@ -5,27 +5,33 @@ import dateFormat from 'date-fns/format'
 import dateAddMonths from 'date-fns/add_months'
 import dateCompareAsc from 'date-fns/compare_asc'
 
-// FIXME: needed for the forgot password process
-//import dateAddMinutes from 'date-fns/add_minutes'
+/*
+ * FIXME: needed for the forgot password process
+ *import dateAddMinutes from 'date-fns/add_minutes'
+ */
 
-//FIXME: Email inactive yet
-//import fse from 'fs-extra'
-//import sgMail from '@sendgrid/mail'
-//sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+/*
+ *FIXME: Email inactive yet
+ *import fse from 'fs-extra'
+ *import sgMail from '@sendgrid/mail'
+ *sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+ */
 
 import db from '../models'
-const User = db.User;
-const Company = db.Company;
-const UserCompany = db.UserCompany;
-const RefreshToken = db.RefreshToken;
+const User = db.User
+const Company = db.Company
+const UserCompany = db.UserCompany
+const RefreshToken = db.RefreshToken
 
 class UserController {
   constructor() {}
 
   async signup(ctx) {
-    //First let's save off the ctx.request.body. Throughout this project
-    //we're going to try and avoid using the ctx.request.body and instead use
-    //our own object that is seeded by the ctx.request.body initially
+    /*
+     *First let's save off the ctx.request.body. Throughout this project
+     *we're going to try and avoid using the ctx.request.body and instead use
+     *our own object that is seeded by the ctx.request.body initially
+     */
     const request = ctx.request.body
 
     //Now let's check for a duplicate company
@@ -49,8 +55,10 @@ class UserController {
 
     //Ok, at this point we can sign them up.
     try {
-      //FIXME: make the 3 following creations in a transaction
-      // Create the new company
+      /*
+       *FIXME: make the 3 following creations in a transaction
+       * Create the new company
+       */
       var company = await Company.create({name: request.companyname, subdomain: request.subdomain}) //.then( company => {return company})
       // create the user
       console.log(request)
@@ -60,30 +68,32 @@ class UserController {
 
       //Let's send a welcome email.
       if (process.env.NODE_ENV !== 'testing') {
-      //Let's turn off welcome emails for the moment
-      // let email = await fse.readFile(
-      //     './src/email/welcome.html',
-      //     'utf8'
-      // )
-      // const emailData = {
-      //     to: request.email,
-      //     from: process.env.APP_EMAIL,
-      //     subject: 'Welcome To Koa-Vue-Notes-Api',
-      //     html: email,
-      //     categories: ['koa-vue-notes-api-new-user'],
-      //     substitutions: {
-      //         appName: process.env.APP_NAME,
-      //         appEmail: process.env.APP_EMAIL,
-      //     },
-      // }
-      // await sgMail.send(emailData)
+      /*
+       *Let's turn off welcome emails for the moment
+       * let email = await fse.readFile(
+       *     './src/email/welcome.html',
+       *     'utf8'
+       * )
+       * const emailData = {
+       *     to: request.email,
+       *     from: process.env.APP_EMAIL,
+       *     subject: 'Welcome To Koa-Vue-Notes-Api',
+       *     html: email,
+       *     categories: ['koa-vue-notes-api-new-user'],
+       *     substitutions: {
+       *         appName: process.env.APP_NAME,
+       *         appEmail: process.env.APP_EMAIL,
+       *     },
+       * }
+       * await sgMail.send(emailData)
+       */
       }
 
       //Generate the refreshToken data
       let refreshTokenData = await this.generateRefreshToken(ctx,user)
 
       //increment the login count of the user
-      User.incrementLoginCount(user.id );
+      User.incrementLoginCount(user.id )
 
       //Ok, they've made it, send them their jsonwebtoken with their data, accessToken and refreshToken
       const accessToken = jsonwebtoken.sign(
@@ -157,7 +167,7 @@ class UserController {
 
     //increment the login count of the user
     try {
-      User.incrementLoginCount(userbyemail.id );
+      User.incrementLoginCount(userbyemail.id )
     } catch (error) {
       console.log(error)
       ctx.throw(400, 'INVALID_DATA')
@@ -194,10 +204,10 @@ class UserController {
     }
     //Let's find that user
     let refreshTokenDatabaseData = await RefreshToken
-    .findOne({ where: {
-      refreshToken: request.refreshToken,
-      isValid: true,} })
-    .then( refreshtoken => { return refreshtoken })
+      .findOne({ where: {
+        refreshToken: request.refreshToken,
+        isValid: true,} })
+      .then( refreshtoken => { return refreshtoken })
 
     if (refreshTokenDatabaseData === null) {
       ctx.throw(400, 'INVALID_REFRESH_TOKEN')
@@ -216,7 +226,7 @@ class UserController {
 
     //Ok, everthing checked out. So let's invalidate the refresh token they just confirmed, and get them hooked up with a new one.
     try {
-      refreshTokenDatabaseData.update({ isValid: false, updatedAt: dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss') });
+      refreshTokenDatabaseData.update({ isValid: false, updatedAt: dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss') })
     } catch (error) {
       ctx.throw(400, 'INVALID_DATA1')
     }
@@ -259,193 +269,195 @@ class UserController {
     }
   }
 
-/*
+  /*
+   *
+   * async invalidateAllRefreshTokens(ctx) {
+   * const request = ctx.request.body
+   * try {
+   * await db('refresh_tokens')
+   * .update({
+   * isValid: false,
+   * updatedAt: dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'),
+   * })
+   * .where({ username: request.username })
+   * ctx.body = { message: 'SUCCESS' }
+   * } catch (error) {
+   * ctx.throw(400, 'INVALID_DATA')
+   * }
+   * }
+   *
+   * async invalidateRefreshToken(ctx) {
+   * const request = ctx.request.body
+   * if (!request.refreshToken) {
+   * ctx.throw(404, 'INVALID_DATA')
+   * }
+   * try {
+   * await db('refresh_tokens')
+   * .update({
+   * isValid: false,
+   * updatedAt: dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'),
+   * })
+   * .where({
+   * username: ctx.state.user.username,
+   * refreshToken: request.refreshToken,
+   * })
+   * ctx.body = { message: 'SUCCESS' }
+   * } catch (error) {
+   * ctx.throw(400, 'INVALID_DATA')
+   * }
+   * }
+   *
+   * async forgot(ctx) {
+   * const request = ctx.request.body
+   *
+   * if (!request.email || !request.url || !request.type) {
+   * ctx.throw(404, 'INVALID_DATA')
+   * }
+   *
+   * let resetData = {
+   * passwordResetToken: new rand(/[a-zA-Z0-9_-]{64,64}/).gen(),
+   * passwordResetExpiration: dateAddMinutes(new Date(), 30),
+   * }
+   *
+   * try {
+   * var result = await db('users')
+   * .update(resetData)
+   * .where({ email: request.email })
+   * .returning('id')
+   * if (!result) {
+   * ctx.throw(400, 'INVALID_DATA')
+   * }
+   * } catch (error) {
+   * ctx.throw(400, 'INVALID_DATA')
+   * }
+   *
+   * //Now for the email if they've chosen the web type of forgot password
+   * if (request.type === 'web') {
+   * let email = await fse.readFile('./src/email/forgot.html', 'utf8')
+   * let resetUrlCustom =
+   * request.url +
+   * '?passwordResetToken=' +
+   * resetData.passwordResetToken +
+   * '&email=' +
+   * request.email
+   *
+   * const emailData = {
+   * to: request.email,
+   * from: process.env.APP_EMAIL,
+   * subject: 'Password Reset For ' + process.env.APP_NAME,
+   * html: email,
+   * categories: ['koa-vue-notes-api-forgot'],
+   * substitutions: {
+   * appName: process.env.APP_NAME,
+   * email: request.email,
+   * resetUrl: resetUrlCustom,
+   * },
+   * }
+   *
+   * // Let's only send the email if we're not testing
+   * if (process.env.NODE_ENV !== 'testing') {
+   * await sgMail.send(emailData)
+   * }
+   * }
+   *
+   * ctx.body = { passwordResetToken: resetData.passwordResetToken }
+   * }
+   *
+   * async checkPasswordResetToken(ctx) {
+   * const request = ctx.request.body
+   *
+   * if (!request.passwordResetToken || !request.email) {
+   * ctx.throw(404, 'INVALID_DATA')
+   * }
+   *
+   * let [passwordResetData] = await db('users')
+   * .select('passwordResetExpiration')
+   * .where({
+   * email: request.email,
+   * passwordResetToken: request.passwordResetToken,
+   * })
+   * if (!passwordResetData.passwordResetExpiration) {
+   * ctx.throw(404, 'INVALID_TOKEN')
+   * }
+   *
+   * //Let's make sure the refreshToken is not expired
+   * var tokenIsValid = dateCompareAsc(
+   * dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'),
+   * passwordResetData.passwordResetExpiration
+   * )
+   * if (tokenIsValid !== -1) {
+   * ctx.throw(400, 'RESET_TOKEN_EXPIRED')
+   * }
+   *
+   * ctx.body = { message: 'SUCCESS' }
+   * }
+   *
+   * async resetPassword(ctx) {
+   * const request = ctx.request.body
+   *
+   * //First do validation on the input
+   * const validator = joi.validate(request, userSchemaResetPassword)
+   * if (validator.error) {
+   * ctx.throw(400, validator.error.details[0].message)
+   * }
+   *
+   * //Ok, let's make sure their token is correct again, just to be sure since it could have
+   * //been some time between page entrance and form submission
+   * let [passwordResetData] = await db('users')
+   * .select('passwordResetExpiration')
+   * .where({
+   * email: request.email,
+   * passwordResetToken: request.passwordResetToken,
+   * })
+   * if (!passwordResetData.passwordResetExpiration) {
+   * ctx.throw(404, 'INVALID_TOKEN')
+   * }
+   *
+   * var tokenIsValid = dateCompareAsc(
+   * dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'),
+   * passwordResetData.passwordResetExpiration
+   * )
+   * if (tokenIsValid !== -1) {
+   * ctx.throw(400, 'RESET_TOKEN_EXPIRED')
+   * }
+   *
+   * //Ok, so we're good. Let's reset their password with the new one they submitted.
+   *
+   * //Hash it
+   * try {
+   * request.password = await bcrypt.hash(request.password, 12)
+   * } catch (error) {
+   * ctx.throw(400, 'INVALID_DATA')
+   * }
+   *
+   * //Make sure to null out the password reset token and expiration on insertion
+   * request.passwordResetToken = null
+   * request.passwordResetExpiration = null
+   * try {
+   * await db('users')
+   * .update({
+   * password: request.password,
+   * passwordResetToken: request.passwordResetToken,
+   * passwordResetExpiration: request.passwordResetExpiration,
+   * })
+   * .where({ email: request.email })
+   * } catch (error) {
+   * ctx.throw(400, 'INVALID_DATA')
+   * }
+   * ctx.body = { message: 'SUCCESS' }
+   * }
+   */
 
-    async invalidateAllRefreshTokens(ctx) {
-        const request = ctx.request.body
-        try {
-            await db('refresh_tokens')
-                .update({
-                    isValid: false,
-                    updatedAt: dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'),
-                })
-                .where({ username: request.username })
-            ctx.body = { message: 'SUCCESS' }
-        } catch (error) {
-            ctx.throw(400, 'INVALID_DATA')
-        }
-    }
+  ////////////////////////////////////////////////////////////////////////////////
+  // Helpers
+  ////////////////////////////////////////////////////////////////////////////////
 
-    async invalidateRefreshToken(ctx) {
-        const request = ctx.request.body
-        if (!request.refreshToken) {
-            ctx.throw(404, 'INVALID_DATA')
-        }
-        try {
-            await db('refresh_tokens')
-                .update({
-                    isValid: false,
-                    updatedAt: dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'),
-                })
-                .where({
-                    username: ctx.state.user.username,
-                    refreshToken: request.refreshToken,
-                })
-            ctx.body = { message: 'SUCCESS' }
-        } catch (error) {
-            ctx.throw(400, 'INVALID_DATA')
-        }
-    }
-
-    async forgot(ctx) {
-        const request = ctx.request.body
-
-        if (!request.email || !request.url || !request.type) {
-            ctx.throw(404, 'INVALID_DATA')
-        }
-
-        let resetData = {
-            passwordResetToken: new rand(/[a-zA-Z0-9_-]{64,64}/).gen(),
-            passwordResetExpiration: dateAddMinutes(new Date(), 30),
-        }
-
-        try {
-            var result = await db('users')
-                .update(resetData)
-                .where({ email: request.email })
-                .returning('id')
-            if (!result) {
-                ctx.throw(400, 'INVALID_DATA')
-            }
-        } catch (error) {
-            ctx.throw(400, 'INVALID_DATA')
-        }
-
-        //Now for the email if they've chosen the web type of forgot password
-        if (request.type === 'web') {
-            let email = await fse.readFile('./src/email/forgot.html', 'utf8')
-            let resetUrlCustom =
-                request.url +
-                '?passwordResetToken=' +
-                resetData.passwordResetToken +
-                '&email=' +
-                request.email
-
-            const emailData = {
-                to: request.email,
-                from: process.env.APP_EMAIL,
-                subject: 'Password Reset For ' + process.env.APP_NAME,
-                html: email,
-                categories: ['koa-vue-notes-api-forgot'],
-                substitutions: {
-                    appName: process.env.APP_NAME,
-                    email: request.email,
-                    resetUrl: resetUrlCustom,
-                },
-            }
-
-            // Let's only send the email if we're not testing
-            if (process.env.NODE_ENV !== 'testing') {
-                await sgMail.send(emailData)
-            }
-        }
-
-        ctx.body = { passwordResetToken: resetData.passwordResetToken }
-    }
-
-    async checkPasswordResetToken(ctx) {
-        const request = ctx.request.body
-
-        if (!request.passwordResetToken || !request.email) {
-            ctx.throw(404, 'INVALID_DATA')
-        }
-
-        let [passwordResetData] = await db('users')
-            .select('passwordResetExpiration')
-            .where({
-                email: request.email,
-                passwordResetToken: request.passwordResetToken,
-            })
-        if (!passwordResetData.passwordResetExpiration) {
-            ctx.throw(404, 'INVALID_TOKEN')
-        }
-
-        //Let's make sure the refreshToken is not expired
-        var tokenIsValid = dateCompareAsc(
-            dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'),
-            passwordResetData.passwordResetExpiration
-        )
-        if (tokenIsValid !== -1) {
-            ctx.throw(400, 'RESET_TOKEN_EXPIRED')
-        }
-
-        ctx.body = { message: 'SUCCESS' }
-    }
-
-    async resetPassword(ctx) {
-        const request = ctx.request.body
-
-        //First do validation on the input
-        const validator = joi.validate(request, userSchemaResetPassword)
-        if (validator.error) {
-            ctx.throw(400, validator.error.details[0].message)
-        }
-
-        //Ok, let's make sure their token is correct again, just to be sure since it could have
-        //been some time between page entrance and form submission
-        let [passwordResetData] = await db('users')
-            .select('passwordResetExpiration')
-            .where({
-                email: request.email,
-                passwordResetToken: request.passwordResetToken,
-            })
-        if (!passwordResetData.passwordResetExpiration) {
-            ctx.throw(404, 'INVALID_TOKEN')
-        }
-
-        var tokenIsValid = dateCompareAsc(
-            dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'),
-            passwordResetData.passwordResetExpiration
-        )
-        if (tokenIsValid !== -1) {
-            ctx.throw(400, 'RESET_TOKEN_EXPIRED')
-        }
-
-        //Ok, so we're good. Let's reset their password with the new one they submitted.
-
-        //Hash it
-        try {
-            request.password = await bcrypt.hash(request.password, 12)
-        } catch (error) {
-            ctx.throw(400, 'INVALID_DATA')
-        }
-
-        //Make sure to null out the password reset token and expiration on insertion
-        request.passwordResetToken = null
-        request.passwordResetExpiration = null
-        try {
-            await db('users')
-                .update({
-                    password: request.password,
-                    passwordResetToken: request.passwordResetToken,
-                    passwordResetExpiration: request.passwordResetExpiration,
-                })
-                .where({ email: request.email })
-        } catch (error) {
-            ctx.throw(400, 'INVALID_DATA')
-        }
-        ctx.body = { message: 'SUCCESS' }
-    }
-    */
-
-////////////////////////////////////////////////////////////////////////////////
-// Helpers
-////////////////////////////////////////////////////////////////////////////////
-
-  // Function to factorise the Refresh token generation
-  //   Input: ctx => http request context
-  //          user => user to who we need to generate a refresh token
-  //   Output: refreshToken
+  /*
+   * Function to factorise the Refresh token generation
+   *   Input: ctx => http request context
+   *          user => user to who we need to generate a refresh token
+   *   Output: refreshToken
+   */
   async generateRefreshToken(ctx,user) {
     //Generate the refreshToken data
     let refreshTokenData = {

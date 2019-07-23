@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('offices', {
@@ -44,22 +44,22 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        field: "created_at"
+        field: 'created_at'
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        field: "updated_at"
+        field: 'updated_at'
       },
       deletedAt: {
         allowNull: true,
         default: undefined,
         type: Sequelize.DATE,
-        field: "deleted_at"
+        field: 'deleted_at'
       }
-    });
+    })
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('offices');
+    return queryInterface.dropTable('offices')
   }
-};
+}

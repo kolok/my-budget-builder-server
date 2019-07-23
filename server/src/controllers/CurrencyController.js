@@ -1,7 +1,7 @@
 import jsonwebtoken from 'jsonwebtoken'
 
 import db from '../models'
-const Currency = db.Currency;
+const Currency = db.Currency
 
 class CurrencyController {
   constructor() {}

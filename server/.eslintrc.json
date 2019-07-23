@@ -1,15 +1,17 @@
 {
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "sourceType": "module",
+        "allowImportExportEverywhere": true
+    },
     "env": {
         "es6": true,
         "node": true
     },
     "extends": "eslint:recommended",
-    "parserOptions": {
-        "ecmaVersion": 2017
-    },
     "rules": {
         "indent": [
-            "error",
+            "warn",
             2
         ],
         "max-len": [

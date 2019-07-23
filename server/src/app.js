@@ -1,12 +1,14 @@
-'use strict';
-//const env = process.env.NODE_ENV || 'development';
-//const port = env === 'test' ? 4001 : process.env.PORT || 4000;
+'use strict'
+/*
+ *const env = process.env.NODE_ENV || 'development';
+ *const port = env === 'test' ? 4001 : process.env.PORT || 4000;
+ */
 
 const dotenv = require('dotenv')
 const fs = require('fs')
 
 if (!process.env.NODE_ENV) {
-    throw new Error('NODE_ENV not set')
+  throw new Error('NODE_ENV not set')
 }
 
 //We need to overwrite ENV configuration for test
@@ -19,20 +21,23 @@ if (process.env.NODE_ENV === 'test') {
   dotenv.config()
 }
 
-const port =  process.env.PORT || 4000;
-const src = process.env.NODE_ENV === 'production' ? '../build/index' : './index';
+const port =  process.env.PORT || 4000
+const src = process.env.NODE_ENV === 'production' ? '../build/index' : './index'
 
-require('babel-polyfill');
-if (process.env.NODE_ENV === 'development') { require('babel-register'); }
-if (process.env.NODE_ENV === 'test') { require('babel-register'); }
+require('babel-polyfill')
+if (process.env.NODE_ENV === 'development') { require('babel-register') }
+if (process.env.NODE_ENV === 'test') { require('babel-register') }
 
-const app = require(src).default;
+const app = require(src).default
 
-//Here we're assigning the server to a variable because
-//we're going to want to manually rip down the server in testing
-const server = app.listen(port);
-console.log('Server running at ' + port);
-console.log("Running in "  + process.env.NODE_ENV + " v" + process.env.npm_package_version);
+/*
+ *Here we're assigning the server to a variable because
+ *we're going to want to manually rip down the server in testing
+ */
+const server = app.listen(port)
+console.log('Server running at ' + port)
+console.log('Running in '  + process.env.NODE_ENV +
+            ' v' + process.env.npm_package_version)
 
 //Exporting the actual server here for testing availability
 module.exports = {server}

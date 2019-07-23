@@ -1,8 +1,8 @@
-'use strict';
+'use strict'
 
 module.exports  = function(sequelize, DataTypes) {
 
-  var Company = sequelize.define("Company", {
+  var Company = sequelize.define('Company', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -35,47 +35,53 @@ module.exports  = function(sequelize, DataTypes) {
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
-      field: "created_at"
+      field: 'created_at'
     },
     updatedAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
-      field: "updated_at"
+      field: 'updated_at'
     },
     deletedAt: {
       type: DataTypes.DATE,
-      field: "deleted_at"
+      field: 'deleted_at'
     }
-  }, {underscored: true, tableName: 'companies'});
+  }, {underscored: true, tableName: 'companies'})
 
-  //FIXME : the relation between company and usuers should be a many to many
-  // relationship using a typed link to handle the roles of the user in the
-  // company
+  /*
+   *FIXME : the relation between company and usuers should be a many to many
+   * relationship using a typed link to handle the roles of the user in the
+   * company
+   */
   Company.associate = function(models) {
     Company.hasMany(models.UserCompany, {
       foreignKey: 'company_id',
       as: 'userCompanies'
-    });
+    })
     Company.belongsToMany(models.User, {
       through: 'UserCompany',
       as: 'users',
       foreignKey: 'company_id'
-    });
+    })
 
-    // The company has a default currency
-    // So the company belongs to a currency
+    /*
+     * The company has a default currency
+     * So the company belongs to a currency
+     */
     Company.belongsTo(models.Currency, {
       foreignKey: 'default_currency_id',
       as: 'default_currency'
-    });
+    })
 
-    // Also, a company can defined its own currency
-    // So a company can have many currencies
+    /*
+     * Also, a company can defined its own currency
+     * So a company can have many currencies
+     */
     Company.hasMany(models.Currency, {
       foreignKey: 'company_id',
       as: 'currencies',
-    });
-  };
+    })
+  }
 
   return Company
 }

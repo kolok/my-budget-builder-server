@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 module.exports  = function(sequelize, DataTypes) {
   var Country = sequelize.define('Country', {
@@ -16,18 +16,18 @@ module.exports  = function(sequelize, DataTypes) {
       allowNull: false,
       type: DataTypes.STRING
     }
-  }, {underscored: true, tableName: 'countries'});
+  }, {underscored: true, tableName: 'countries'})
 
   Country.associate = function(models) {
     Country.hasMany(models.Entity, {
       foreignKey: 'country_id',
       as: 'entities'
-    });
+    })
     Country.hasMany(models.Office, {
       foreignKey: 'country_id',
       as: 'offices'
-    });
-  };
+    })
+  }
 
   return Country
 }

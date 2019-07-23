@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 module.exports  = function(sequelize, DataTypes) {
   var Entity = sequelize.define('Entity', {
@@ -33,44 +33,44 @@ module.exports  = function(sequelize, DataTypes) {
       allowNull: false,
       type: DataTypes.DATE,
       defaultValue: sequelize.fn('NOW'),
-      field: "created_at"
+      field: 'created_at'
     },
     updatedAt: {
       allowNull: false,
       type: DataTypes.DATE,
       defaultValue: sequelize.fn('NOW'),
-      field: "updated_at"
+      field: 'updated_at'
     },
     deletedAt: {
       allowNull: true,
       default: undefined,
       type: DataTypes.DATE,
-      field: "deleted_at"
+      field: 'deleted_at'
     }
-  }, {underscored: true, tableName: 'entities'});
+  }, {underscored: true, tableName: 'entities'})
 
   Entity.associate = function(models) {
     Entity.hasMany(models.Office, {
       foreignKey: 'entity_id',
       as: 'offices'
-    });
+    })
 
     Entity.belongsTo(models.Company, {
       foreignKey: 'company_id',
       as: 'company'
-    });
+    })
 
     Entity.belongsTo(models.Country, {
       foreignKey: 'country_id',
       as: 'country'
-    });
+    })
 
     Entity.belongsTo(models.Currency, {
       foreignKey: 'default_currency_id',
       as: 'currency'
-    });
+    })
 
-  };
+  }
 
   return Entity
 }

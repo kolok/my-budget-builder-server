@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('refresh_tokens', {
@@ -15,7 +15,7 @@ module.exports = {
       refreshToken: {
         allowNull: false,
         type: Sequelize.STRING,
-        field: "refresh_token"
+        field: 'refresh_token'
       },
       info: {
         type: Sequelize.STRING
@@ -23,7 +23,7 @@ module.exports = {
       isValid: {
         allowNull: false,
         type: Sequelize.BOOLEAN,
-        field: "is_valid",
+        field: 'is_valid',
         defaultValue: false
       },
       expiration: {
@@ -33,16 +33,16 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        field: "created_at"
+        field: 'created_at'
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        field: "updated_at"
+        field: 'updated_at'
       }
-    });
+    })
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('refresh_tokens');
+    return queryInterface.dropTable('refresh_tokens')
   }
-};
+}

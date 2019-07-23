@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 module.exports  = function(sequelize, DataTypes) {
   var UserCompany = sequelize.define('UserCompany', {
@@ -30,7 +30,7 @@ module.exports  = function(sequelize, DataTypes) {
       values: ['client_admin', 'client_user'],
       allowNull: false
     }
-  }, {underscored: true, tableName: 'users_companies'});
+  }, {underscored: true, tableName: 'users_companies'})
 
   //FIXME add unicity user_id, company_id
 
@@ -39,12 +39,12 @@ module.exports  = function(sequelize, DataTypes) {
     UserCompany.belongsTo(models.Company, {
       foreignKey: 'company_id',
       as: 'company'
-    });
+    })
     //So UserCompany belongs to User
     UserCompany.belongsTo(models.User, {
       foreignKey: 'user_id',
       as: 'user'
-    });
+    })
   }
 
   return UserCompany

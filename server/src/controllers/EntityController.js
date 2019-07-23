@@ -1,7 +1,7 @@
 import dateFormat from 'date-fns/format'
 
 import db from '../models'
-const Entity = db.Entity;
+const Entity = db.Entity
 const Op = db.Sequelize.Op
 
 class EntityController {
@@ -19,7 +19,7 @@ class EntityController {
     }
   }
 
-// get entity
+  // get entity
   async get(ctx) {
     const request = ctx.request.body
     //Make sure they've specified a entity id
@@ -33,7 +33,7 @@ class EntityController {
     ctx.body = entity
   }
 
-// create entity
+  // create entity
   async create(ctx) {
     const request = ctx.request.body
     request.company_id = ctx.state.company.id
@@ -47,7 +47,7 @@ class EntityController {
     }
   }
 
-// update entity
+  // update entity
   async update(ctx) {
     const request = ctx.request.body
     //Make sure they've specified a entity id
@@ -75,7 +75,7 @@ class EntityController {
     }
   }
 
-// soft delete entity
+  // soft delete entity
   async delete(ctx) {
     const request = ctx.request.body
     //Make sure they've specified a entity id
@@ -102,15 +102,15 @@ class EntityController {
   // CRUD with offices
 
   // List entities with offices
-    async listWithOffices(ctx) {
-      try {
-        let result = await Entity.findAll( { where: { company_id: ctx.state.company.id, status : {[Op.ne]: 'deleted'} }, include: ['offices', 'currency', 'country'] } )
-        ctx.body = result
-      } catch (error) {
-        console.log(error)
-        ctx.throw(400, 'INVALID_DATA')
-      }
+  async listWithOffices(ctx) {
+    try {
+      let result = await Entity.findAll( { where: { company_id: ctx.state.company.id, status : {[Op.ne]: 'deleted'} }, include: ['offices', 'currency', 'country'] } )
+      ctx.body = result
+    } catch (error) {
+      console.log(error)
+      ctx.throw(400, 'INVALID_DATA')
     }
+  }
 
 }
 

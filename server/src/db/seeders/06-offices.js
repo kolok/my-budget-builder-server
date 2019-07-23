@@ -1,12 +1,12 @@
-'use strict';
+'use strict'
 
 if (!process.env.NODE_ENV) {
-    throw new Error('NODE_ENV not set')
+  throw new Error('NODE_ENV not set')
 }
 
 //We don't want seeds to run in production
 if (process.env.NODE_ENV === 'production') {
-    throw new Error("Can't run seeds in production")
+  throw new Error('Can\'t run seeds in production')
 }
 
 module.exports = {
@@ -36,12 +36,12 @@ module.exports = {
         created_at: new Date(),
         updated_at: new Date()
       }
-    ], {});
-    await queryInterface.sequelize.query(`select setval('offices_id_seq', (select max(id) from offices), true)`);
-    return result;
+    ], {})
+    await queryInterface.sequelize.query('select setval(\'offices_id_seq\', (select max(id) from offices), true)')
+    return result
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('offices', null, {});
+    return queryInterface.bulkDelete('offices', null, {})
   }
-};
+}

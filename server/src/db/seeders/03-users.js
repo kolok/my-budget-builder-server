@@ -1,12 +1,12 @@
-'use strict';
+'use strict'
 
 if (!process.env.NODE_ENV) {
-    throw new Error('NODE_ENV not set')
+  throw new Error('NODE_ENV not set')
 }
 
 //We don't want seeds to run in production
 if (process.env.NODE_ENV === 'production') {
-    throw new Error("Can't run seeds in production")
+  throw new Error('Can\'t run seeds in production')
 }
 
 const bcrypt = require('bcrypt')
@@ -16,7 +16,7 @@ module.exports = {
   up: async function(queryInterface, Sequelize) {
     let password = 'azerty'
     try {
-      password = await bcrypt.hash("azerty", 12)
+      password = await bcrypt.hash('azerty', 12)
     } catch (error) {
       console.log('encrypt error')
     }
@@ -48,12 +48,12 @@ module.exports = {
         created_at: new Date(),
         updated_at: new Date()
       }
-    ], {});
-    await queryInterface.sequelize.query(`select setval('users_id_seq', (select max(id) from users), true)`);
-    return result;
+    ], {})
+    await queryInterface.sequelize.query('select setval(\'users_id_seq\', (select max(id) from users), true)')
+    return result
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('users', null, {});
+    return queryInterface.bulkDelete('users', null, {})
   }
-};
+}

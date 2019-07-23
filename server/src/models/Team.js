@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 module.exports  = function(sequelize, DataTypes) {
   var Team = sequelize.define('Team', {
@@ -25,29 +25,29 @@ module.exports  = function(sequelize, DataTypes) {
       allowNull: false,
       type: DataTypes.DATE,
       defaultValue: sequelize.fn('NOW'),
-      field: "created_at"
+      field: 'created_at'
     },
     updatedAt: {
       allowNull: false,
       type: DataTypes.DATE,
       defaultValue: sequelize.fn('NOW'),
-      field: "updated_at"
+      field: 'updated_at'
     },
     deletedAt: {
       allowNull: true,
       default: undefined,
       type: DataTypes.DATE,
-      field: "deleted_at"
+      field: 'deleted_at'
     }
-  }, {underscored: true, tableName: 'teams'});
+  }, {underscored: true, tableName: 'teams'})
 
   Team.associate = function(models) {
     Team.belongsTo(models.Company, {
       foreignKey: 'company_id',
       as: 'company'
-    });
+    })
 
-  };
+  }
 
   return Team
 }

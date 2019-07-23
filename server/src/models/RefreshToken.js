@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
 module.exports  = function(sequelize, DataTypes) {
-  var RefreshToken = sequelize.define("RefreshToken", {
+  var RefreshToken = sequelize.define('RefreshToken', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -15,7 +15,7 @@ module.exports  = function(sequelize, DataTypes) {
     refreshToken: {
       allowNull: false,
       type: DataTypes.STRING,
-      field: "refresh_token"
+      field: 'refresh_token'
     },
     info: {
       type: DataTypes.STRING
@@ -23,7 +23,7 @@ module.exports  = function(sequelize, DataTypes) {
     isValid: {
       allowNull: false,
       type: DataTypes.BOOLEAN,
-      field: "is_valid",
+      field: 'is_valid',
       defaultValue: false
     },
     expiration: {
@@ -34,15 +34,15 @@ module.exports  = function(sequelize, DataTypes) {
       allowNull: false,
       type: DataTypes.DATE,
       defaultValue: sequelize.fn('NOW'),
-      field: "created_at"
+      field: 'created_at'
     },
     updatedAt: {
       allowNull: false,
       type: DataTypes.DATE,
       defaultValue: sequelize.fn('NOW'),
-      field: "updated_at"
+      field: 'updated_at'
     }
-  }, {underscored: true, tableName: 'refresh_tokens'});
+  }, {underscored: true, tableName: 'refresh_tokens'})
 
   return RefreshToken
 }
