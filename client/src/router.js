@@ -28,6 +28,10 @@ let router = new VueRouter({
         } else {
           next()
         }
+      },
+      meta: {
+        requiresAuth: false,
+        title: 'Komber - Sign in'
       }
     },
     {
@@ -42,6 +46,10 @@ let router = new VueRouter({
         } else {
           next()
         }
+      },
+      meta: {
+        requiresAuth: false,
+        title: 'Komber - Sign up'
       }
     },
     {
@@ -56,7 +64,8 @@ let router = new VueRouter({
         './views/team/Dashboard.vue'
       ),
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        title: 'Komber - Teams'
       }
     },
     {
@@ -67,7 +76,8 @@ let router = new VueRouter({
         './views/team/Teams.vue'
       ),
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        title: 'Komber - Teams'
       }
     },
     {
@@ -78,7 +88,8 @@ let router = new VueRouter({
         './views/team/Positions.vue'
       ),
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        title: 'Komber - Positions'
       }
     },
     {
@@ -89,7 +100,8 @@ let router = new VueRouter({
         './views/team/Employees.vue'
       ),
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        title: 'Komber - Employees'
       }
     },
     {
@@ -100,18 +112,20 @@ let router = new VueRouter({
         './views/planning/Planning.vue'
       ),
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        title: 'Komber - Planning'
       }
     },
     {
-      path: '/reporting',
+      path: '/execution',
       name: 'Reporting',
       component: () => import(
         /* webpackChunkName: "group-common" */
         './views/execution/Reporting.vue'
       ),
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        title: 'Komber - Reporting'
       }
     },
     {
@@ -122,7 +136,8 @@ let router = new VueRouter({
         './views/company/Company.vue'
       ),
       meta: {
-        requiresAuth: true, title: 'Loop - Your Company'
+        requiresAuth: true,
+        title: 'Komber - Company'
       }
     },
     {
@@ -133,7 +148,8 @@ let router = new VueRouter({
         './views/company/Entities.vue'
       ),
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        title: 'Komber - Entities'
       }
     },
     {
@@ -144,7 +160,8 @@ let router = new VueRouter({
         './views/account/Profile.vue'
       ),
       meta: {
-        requiresAuth: true, title: 'Your profile'
+        requiresAuth: true,
+        title: 'Komber - Profile'
       }
     },
     {
@@ -155,7 +172,8 @@ let router = new VueRouter({
         './views/account/Settings.vue'
       ),
       meta: {
-        requiresAuth: true, title: 'Your profile'
+        requiresAuth: true,
+        title: 'Komber - Profile'
       }
     },
     {
@@ -166,7 +184,9 @@ let router = new VueRouter({
         './views/admin/Users.vue'
       ),
       meta: {
-        requiresAuth: true, roles: ['admin'], title: 'Users'
+        roles: ['client_admin'],
+        requiresAuth: true,
+        title: 'Komber - Users'
       }
     }
   ]
