@@ -85,12 +85,6 @@
             roles: ['admin']
             },
           {
-            index: 'things',
-            name: 'Things',
-            path: '/things',
-            icon: 'el-icon-user'
-            },
-          {
             index: 'logout',
             name: 'Logout',
             path: '/logout',

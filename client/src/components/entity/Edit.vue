@@ -56,7 +56,7 @@
             <el-option
               v-for="currency in currencies"
               :key="currency.id"
-              :label="currency.name"
+              :label="currency.longName"
               :value="currency.id">
             </el-option>
           </el-select>
@@ -80,7 +80,6 @@ export default {
   },
   data() {
     return {
-      currencyList: [],
       createDialog: false,
       entityRule: {
         name: [

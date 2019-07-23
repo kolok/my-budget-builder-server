@@ -39,7 +39,7 @@
             <el-option
               v-for="currency in currencies"
               :key="currency.id"
-              :label="currency.name"
+              :label="currency.longName"
               :value="currency.id">
             </el-option>
           </el-select>

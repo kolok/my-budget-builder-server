@@ -30,7 +30,19 @@ export default {
     getCurrencies: ({ commit }) => {
       return CurrencyResource.list()
         .then(response => {
-          commit('SET_CURRENCIES', response.data)
+          var currencyList = []
+          response.data
+          .sort(function(a, b){
+            if (a.name < b.name) {return -1;}
+            if (a.name > b.name) {return 1;}
+            return 0;
+          })
+          .forEach(function(currency){
+            currency.id = currency.id
+            currency.longName = currency.name + ' (' + currency.symbol + ')'
+            currencyList.push(currency)
+          })
+          commit('SET_CURRENCIES', currencyList)
         })
         .catch(err => {
           throw err

@@ -19,9 +19,9 @@
       <el-form-item label="Currency">
         <el-select v-model="companyForm.default_currency_id" placeholder="Select a currency">
           <el-option
-            v-for="currency in currencyList"
+            v-for="currency in currencies"
             :key="currency.id"
-            :label="currency.combineName"
+            :label="currency.longName"
             :value="currency.id">
           </el-option>
         </el-select>
@@ -46,11 +46,14 @@
 
 <script>
 import CompanyResource from '../../api/company.service'
-import CurrencyResource from '../../api/currency.service'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  components: {
+  computed: {
+    ...mapGetters(['currencies'])
+  },
+  created() {
+    this.$store.dispatch('getCurrencies')
   },
   props: {
     'id': {
@@ -98,19 +101,16 @@ export default {
           value: '12',
           label: 'December'
         }],
-      currencyList: [],
       value: ''
     }
   },
   beforeMount(){
     this.getCompany()
-    this.getCurrencyList()
   },
   methods: {
     ...mapActions(['editCompany']),
 
     getCompany: function() {
-      // Load specific thing infomation
       CompanyResource.get(this.id)
         .then(response => {
           this.companyForm = response.data
@@ -119,25 +119,6 @@ export default {
           this.$Message.error(err.message)
         })
     },
-
-    getCurrencyList: function() {
-      // Load specific thing infomation
-      CurrencyResource.list()
-        .then(response => {
-          this.currencyList = response.data
-          let currencyList = []
-          response.data.forEach(function(currency){
-            currency.id = currency.id
-            currency.combineName = currency.name + ' (' + currency.symbol + ')'
-            currencyList.push(currency)
-          })
-          this.currencyList = currencyList
-        })
-        .catch(err => {
-          this.$Message.error(err.message)
-        })
-    },
-
     onSubmit: function() {
       let payload = { _id: this.id, content: this.companyForm }
       this.editCompany(payload)

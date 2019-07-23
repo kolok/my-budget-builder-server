@@ -3,6 +3,7 @@
     <el-table
       :data="entities"
       style="width: 100%;margin-bottom: 20px;"
+      :default-sort = "{prop: 'name', order: 'descending'}"
       row-key="id"
       border
       default-collapse-all
@@ -49,31 +50,6 @@
             </div>
           </div>
         </template>
-
-        <div id='boo' style="min-width:400px;min-height:150px;float:left;padding:25px;">
-
-        <el-button style="float: right; padding: 3px 0" type="text">Bouton</el-button>
-        </div>
-
-
-
-
-
-        <div style="min-width:400px;min-height:150px;float:left;padding:25px;">
-          <el-card class="box-card">
-            <div slot="header" class="card-header">
-              <span>Add an Office</span>
-            </div>
-            <div class="text item" style="min-height:90px;">
-              <el-button
-                style="float: right; padding: 3px 0"
-                type="text"
-                icon="el-icon-delete"
-                @click="handleAddOffice()"
-              />
-            </div>
-          </el-card>
-        </div>
       </el-table-column>
       <el-table-column
         label="Country"

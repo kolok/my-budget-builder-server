@@ -7,29 +7,7 @@ import HTTP from './common/http'
 let UserResource = {
   get() { // Get current user
     return HTTP.get('users/me')
-  },
-
-/*
-  show() { // Show all the users
-    return HTTP.get('users/')
-  },
-
-  create(body) {
-    return HTTP.post('users/', body)
-  },
-
-  signup(body) {
-    return HTTP.post('users/signup', body)
-  },
-
-  changePassword(body) {
-    return HTTP.put('users/me/password', body)
-  },
-
-  delete(id) { // Delete a thing
-    return HTTP.delete('users/' + id)
   }
-*/
 }
 
 export default UserResource

@@ -21,19 +21,19 @@ let EntityResource = {
     return HTTP.get('entities')
   },
 
-  get(id) { // Get a specific thing
+  get(id) { // Get a specific entity
     return HTTP.get('entities/' + id)
   },
 
-  create(body) { // Create a thing
+  create(body) { // Create a entity
     return HTTP.post('entities', body)
   },
 
-  delete(id) { // Delete a thing
+  delete(id) { // Delete a entity
     return HTTP.delete('entities/' + id)
   },
 
-  update(id, body) { // Update a thing
+  update(id, body) { // Update a entity
     return HTTP.put('entities/' + id, body)
   }
 }

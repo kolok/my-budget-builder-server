@@ -4,11 +4,6 @@ import VueRouter from 'vue-router'
 /** Store **/
 import store from './store/'
 
-const Common = () => import(
-  /* webpackChunkName: "group-common" */
-  './views/Common.vue'
-)
-
 /** Vue Router **/
 Vue.use(VueRouter)
 
@@ -172,17 +167,6 @@ let router = new VueRouter({
       ),
       meta: {
         requiresAuth: true, roles: ['admin'], title: 'Users'
-      }
-    },
-    {
-      path: '/things',
-      name: 'Things',
-      component: () => import(
-        /* webpackChunkName: "group-common" */
-        './views/Things.vue'
-      ),
-      meta: {
-        requiresAuth: true
       }
     }
   ]
