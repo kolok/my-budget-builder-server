@@ -1,91 +1,85 @@
-# Koa Vue Fullstack Boilerplate
+# Komber
 
-Project was forked from 
-https://github.com/yunhan0/koa-vue-fullstack.git
-
-
-##### 🎉🎉🎉 Upgrade Webpack to v4!
-<sup> Project based on Webpack3 is in [Releases](https://github.com/yunhan0/koa-vue-fullstack/releases). </sup>
+Komber is a SAAS product to manage Hiring planning and budget. It allows CEO, CFO and HR to plan, share and execute their Hiring plan.
 
 ### Preface
-##### Vue.js, Koa.js, Node.js, and MongoDB fullstack lightweight example application. Authentication, CRUD, and access control included.
-This project aims to build a small but structured full-stack application, so it would be relatively clear for a programmer/beginner to understand how to build a website from scratch.
+##### Vue.js, Koa.js, Node.js, Postgresql
+
+Main technologies used are the following
+ * Postgresql as a high performance structured database
+ *
 
 ### Demo:
-Click [here](http://yunhan.li/koa-vue-fullstack) to see demo website. Server is deployed on heroku's free plan :) 🐢🐢🐢.<br>
+Click [here](http://demo.komber.io) to see our demo website.
+
+You can sign up or use the following access:
 <pre>
-email: admin@example.com
-password: 123456
+email: admin1@komber.io
+password: azerty
 </pre>
 
 ### Environment:
 - Server
     - [Koa](http://koajs.com/)
     - Koa Router, Koa Cors, Koa Bodyparser
-    - Mongoose
-    - Node ~~v8.9.4~~ v10.12.0
+    - Postgresql, Sequelize
+    - Node ~~8.14.0~~
 - Client
     - [Vue](https://vuejs.org/)
-    - [iView](https://www.iviewui.com/)
+    - [ElementUI](https://element.eleme.io/#/en-US)
     - [Axios](https://github.com/axios/axios) (HTTP Client Library)
-    - ~~Webpack 3~~ Webpack 4
+    - Webpack 4
     - WebpackDevServer (Development mode only)
 
 ### Architecture
 
     ├─client               # frontend folder
     │  ├─src               # frontend src
-    │  │  ├─api
-    │  │  ├─router
-    │  │  ├─styles
-    │  │  ├─components
+    │  │  ├─api            # api services
+    │  │  │  └─common      # api common components (used by services)
+    │  │  ├─components     # Vue components
+    │  │  │  ├─common      # Vue common component
+    │  │  │  └─_packages_    # Vue component stored by package
     │  │  ├─store          # state management
     │  │  │  └─modules
-    │  │  └─view           # app pages
-    │  │     └─auth
-    │  └─static            # static folder
+    │  │  ├─styles
+    │  │  ├─view           # app pages
+    │  │  │  └─_packages_    # pages are stored by packages
+    │  │  ├─router.js      # app router
+    │  │  ├─main.js        # main js: start point of the app
+    │  │  └─App.vue        # Main App page
+    │  └─_config_files_
     |
     └─server               # server folder
-       └─src               # server src
-          ├─api            # server api list
-          │  ├─auth        # completely token-based authentication
-          │  ├─thing
-          │  └─user
-          ├─config         # server configurations
-          │  ├─index       # default server port, mongo uri, etc settings
-          │  ├─security    # security settins
-          │  └─seed        # populate database with sample data on server start
-          ├─entry.js       # entry file for environment setup
-          ├─main.js        # main file after entry
-          └─routes.js      # router
+       ├─src               # server src
+       │  ├─controllers
+       │  │  └─_Controllers_ # by objects/routes
+       │  ├─db
+       │  │  ├─config      # connection and credentials config for db
+       │  │  ├─migrations  # db migrations
+       │  │  └─seeders     # seeds db
+       │  ├─middleware
+       │  │  └─jwt.js      # Manage authentication process with jsonwebtoken
+       │  ├─models
+       │  │  ├─_Models_      # Sequelize models
+       │  │  └─index.js    # Sequelize builder (config and association management)
+       │  ├─routes
+       │  │  └─_routers_     # router by object type
+       │  ├─app.js         # main js file which launch the server depending of the environment
+       │  └─index.js       # server and router
+       └─_config_files_
 
 ### Run through Docker
+
+install docker and docker-compose
+
 ```bash
-    cd server # You can boost the server by using Docker
-    docker-compose up
-    # Open a new tab
-    cd client
-    npm install
-    npm start
+    docker-compose up # it will launch server and client side
 ```
 
 ### Setup Locally:
-- Steps:
-The server and client are completely seperated in this project, so go to each client and server folder and run:
 
-```bash
-    cd client
-    npm install
-    npm start # Running dev client
-    # Open a new tab
-    mongod    # Boost Mongo DB
-    # Open a new tab
-    cd server
-    # CREATE a .env file under server folder, and copy and paste the contents of .env.default file into this .env, and assign values
-    touch .env
-    npm install
-    npm start # Running dev server
-```
+To migrate and populate the database, you should follow the ./README.sequelize.md file
 
 - Others:
 ```bash
