@@ -7,7 +7,8 @@ Komber is a SAAS product to manage Hiring planning and budget. It allows CEO, CF
 
 Main technologies used are the following
  * Postgresql as a high performance structured database
- *
+ * Node.js / Koa.js as a RESTFul API
+ * Vue.js as a client side framework
 
 ### Demo:
 Click [here](http://demo.komber.io) to see our demo website.
@@ -33,40 +34,40 @@ password: azerty
 
 ### Architecture
 
-    ├─client               # frontend folder
-    │  ├─src               # frontend src
-    │  │  ├─api            # api services
-    │  │  │  └─common      # api common components (used by services)
-    │  │  ├─components     # Vue components
-    │  │  │  ├─common      # Vue common component
-    │  │  │  └─_packages_    # Vue component stored by package
-    │  │  ├─store          # state management
+    ├─client                  # frontend folder
+    │  ├─src                  # frontend src
+    │  │  ├─api               # api services
+    │  │  │  └─common         # api common components (used by services)
+    │  │  ├─components        # Vue components
+    │  │  │  ├─common         # Vue common component
+    │  │  │  └─_packages_     # Vue component stored by package
+    │  │  ├─store             # state management
     │  │  │  └─modules
     │  │  ├─styles
-    │  │  ├─view           # app pages
-    │  │  │  └─_packages_    # pages are stored by packages
-    │  │  ├─router.js      # app router
-    │  │  ├─main.js        # main js: start point of the app
-    │  │  └─App.vue        # Main App page
+    │  │  ├─view              # app pages
+    │  │  │  └─_packages_     # pages are stored by packages
+    │  │  ├─router.js         # app router
+    │  │  ├─main.js           # main js: start point of the app
+    │  │  └─App.vue           # Main App page
     │  └─_config_files_
     |
-    └─server               # server folder
-       ├─src               # server src
+    └─server                  # server folder
+       ├─src                  # server src
        │  ├─controllers
-       │  │  └─_Controllers_ # by objects/routes
+       │  │  └─_Controllers_  # by objects/routes
        │  ├─db
-       │  │  ├─config      # connection and credentials config for db
-       │  │  ├─migrations  # db migrations
-       │  │  └─seeders     # seeds db
+       │  │  ├─config         # connection and credentials config for db
+       │  │  ├─migrations     # db migrations
+       │  │  └─seeders        # seeds db
        │  ├─middleware
-       │  │  └─jwt.js      # Manage authentication process with jsonwebtoken
+       │  │  └─jwt.js         # Manage authentication process with jsonwebtoken
        │  ├─models
-       │  │  ├─_Models_      # Sequelize models
-       │  │  └─index.js    # Sequelize builder (config and association management)
+       │  │  ├─_Models_       # Sequelize models
+       │  │  └─index.js       # Sequelize builder (config and association management)
        │  ├─routes
-       │  │  └─_routers_     # router by object type
-       │  ├─app.js         # main js file which launch the server depending of the environment
-       │  └─index.js       # server and router
+       │  │  └─_routers_      # router by object type
+       │  ├─app.js            # main js file which launch the server depending of the environment
+       │  └─index.js          # server and router
        └─_config_files_
 
 ### Run through Docker
