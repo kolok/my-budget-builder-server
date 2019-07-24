@@ -1,4 +1,5 @@
 import EntityResource from '../../api/entity.service'
+import OfficeResource from '../../api/office.service'
 
 export default {
   state: {
@@ -23,7 +24,33 @@ export default {
     },
     REMOVE_ENTITY: (state, id) => {
       state.entities = state.entities.filter(item => item.id !== id)
-    }
+    },
+
+
+    ADD_OFFICE: (state, office) => {
+      state.entities.forEach(item => {
+        if (item.id === office.entity_id) {
+          item.offices.push(office)
+          var officeNames = []
+          item.offices.forEach( office => {officeNames.push(office.name)})
+          item.officeNames = officeNames.join(', ')
+        }
+      })
+    },
+    async REMOVE_OFFICE (state, office) {
+      state.entities.forEach(item => {
+        if (item.id === office.entity_id) {
+          console.log('REMOVE_OFFICE inside:', item)
+
+          item.offices = item.offices.filter(off => off.id !== office.id)
+          var officeNames = []
+          item.offices.forEach( off => { officeNames.push(off.name) } )
+          item.officeNames = officeNames.join(', ')
+        }
+      })
+    },
+
+
   },
   actions: {
     getEntitiesWithOffices: ({ commit }) => {
@@ -60,7 +87,16 @@ export default {
     editEntity: ({commit}, payload) => {
       return EntityResource.update(payload.id, payload)
         .then(response => {
-          commit('EDIT_ENTITY', response.data)
+          /*
+           * FIXME: update currencyName and country.name, it is not updated in table after update,
+           * we need to refresh with a F5 to see the updated
+           */
+          var entity = response.data
+          if (entity.currency !== null) {
+            entity.currencyName = entity.currency.name + ' ( ' + entity.currency.symbol + ' )'
+          }
+          console.log('Entity', entity)
+          commit('EDIT_ENTITY', entity)
         })
         .catch(err => {
           throw err
@@ -75,6 +111,31 @@ export default {
         .catch(err => {
           throw err
         })
-    }
+    },
+
+
+
+
+
+    addOffice: ({commit}, office) => {
+      return OfficeResource.create(office)
+        .then(response => {
+          var office = response.data
+          commit('ADD_OFFICE', office)
+        })
+        .catch(err => {
+          throw err
+        })
+    },
+    removeOffice: ({commit}, id) => {
+      return OfficeResource.delete(id)
+        .then(response => {
+          commit('REMOVE_OFFICE', response.data)
+        })
+        .catch(err => {
+          throw err
+        })
+    },
+
   }
 }

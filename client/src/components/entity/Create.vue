@@ -66,10 +66,10 @@
         slot="footer"
         class="dialog-footer"
       >
-        <el-button @click="cancelAddEntity">Annuler</el-button>
+        <el-button @click="handleCancel">Annuler</el-button>
         <el-button
           type="primary"
-          @click="createEntity('entityForm')"
+          @click="handleCreateEntity('entityForm')"
         >Confirmer</el-button>
       </span>
     </el-dialog>
@@ -110,7 +110,7 @@ export default {
   methods: {
     ...mapActions(['addEntity']),
     /*eslint no-unused-vars: ["error", { "args": "none" }]*/
-    createEntity: function(formName) { // Create entity
+    handleCreateEntity: function(formName) { // Create entity
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.addEntity(this.entityForm)
@@ -127,7 +127,7 @@ export default {
         }
       })
     },
-    cancelAddEntity: function(){
+    handleCancel: function(){
       this.createDialog = false
     }
   }

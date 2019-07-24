@@ -113,7 +113,11 @@ class EntityController {
     try {
       let result = await Entity.findAll(
         { where: { company_id: ctx.state.company.id, status: {[Op.ne]: 'deleted'} },
-          include: ['offices', 'currency', 'country'] }
+          include: [
+            {association: 'offices', required:false, where: { status : {[Op.ne]: 'deleted'} }},
+            'currency',
+            'country'
+          ] }
       )
       ctx.body = result
     } catch (error) {

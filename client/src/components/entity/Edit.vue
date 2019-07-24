@@ -5,7 +5,7 @@
         type="primary"
         icon="el-icon-edit"
         size="mini"
-        @click="createDialog = true"
+        @click="addDialog = true"
       >
         Edit
       </el-button>
@@ -23,7 +23,7 @@
 
     <el-dialog
       title="Create an entity"
-      :visible.sync="createDialog"
+      :visible.sync="addDialog"
     >
       <el-form
         ref="entityForm"
@@ -78,11 +78,13 @@
         slot="footer"
         class="dialog-footer"
       >
-        <el-button @click="cancel('entityForm')">Annuler</el-button>
+        <el-button @click="handleCancel('entityForm')">Cancel</el-button>
         <el-button
           type="primary"
           @click="handleEdit('entityForm')"
-        >Confirmer</el-button>
+        >
+          Save
+        </el-button>
       </span>
     </el-dialog>
   </div>
@@ -100,7 +102,7 @@ export default {
   },
   data() {
     return {
-      createDialog: false,
+      addDialog: false,
       entityRule: {
         name: [
           { required: true, message: 'Entity name can\'t be blank' },
@@ -127,7 +129,7 @@ export default {
         if (valid) {
           this.editEntity(this.entityForm)
             .then(response => {
-              this.createDialog = false
+              this.addDialog = false
             })
             .catch(e => {
               console.log(e)
@@ -138,9 +140,9 @@ export default {
         }
       })
     },
-    cancel: function(formName){
+    handleCancel: function(formName){
       this.$refs[formName].resetFields()
-      this.createDialog = false
+      this.addDialog = false
     },
     handleDelete() {
       this.$confirm('Do you really want to delete this Entity?', 'Warning', {
