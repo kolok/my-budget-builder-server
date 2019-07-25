@@ -8,7 +8,7 @@ export default {
     companies: state => state.all
   },
   mutations: {
-    EDIT_COMPANY: (state, company) => {
+    UPDATE_COMPANY: (state, company) => {
       state.all.forEach(item => {
         if (item._id === company._id) {
           item.name = company.name
@@ -18,10 +18,10 @@ export default {
     }
   },
   actions: {
-    editCompany: ({commit}, payload) => {
+    updateCompany: ({commit}, payload) => {
       return CompanyResource.update(payload._id, payload.content)
         .then(response => {
-          commit('EDIT_COMPANY', response.data)
+          commit('UPDATE_COMPANY', response.data)
         })
         .catch(err => {
           throw err

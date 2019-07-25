@@ -61,14 +61,14 @@
     computed: {
     },
     methods: {
-      ...mapActions(['removeOffice']),
+      ...mapActions(['deleteOffice']),
       handleDeleteOffice(office) {
         this.$confirm('Do you really want to delete this Office?', 'Warning', {
           confirmButtonText: 'Yes',
           cancelButtonText: 'No',
           type: 'warning'
         }).then(() => {
-          this.removeOffice(office.id)
+          this.deleteOffice(office.id)
         })
       }
     }

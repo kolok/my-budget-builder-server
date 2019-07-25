@@ -108,12 +108,12 @@ export default {
     ...mapGetters(['currencies', 'countries'])
   },
   methods: {
-    ...mapActions(['addEntity']),
+    ...mapActions(['createEntity']),
     /*eslint no-unused-vars: ["error", { "args": "none" }]*/
     handleCreateEntity: function(formName) { // Create entity
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.addEntity(this.entityForm)
+          this.createEntity(this.entityForm)
             .then(response => {
               // reset form data
               this.$refs[formName].resetFields()

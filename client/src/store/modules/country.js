@@ -5,7 +5,10 @@ export default {
     countries: []
   },
   getters: {
-    countries: state => state.countries
+    countries: state => state.countries,
+    getCountryById: (state) => (id) => {
+      return state.countries.find(country => country.id === id)
+    }
   },
   mutations: {
     SET_COUNTRIES: (state, countries) => {

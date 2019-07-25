@@ -122,12 +122,12 @@ export default {
     ...mapGetters(['currencies', 'countries'])
   },
   methods: {
-    ...mapActions(['editEntity', 'removeEntity']),
+    ...mapActions(['updateEntity', 'deleteEntity']),
     /*eslint no-unused-vars: ["error", { "args": "none" }]*/
     handleEdit: function(formName) { // Create entity
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.editEntity(this.entityForm)
+          this.updateEntity(this.entityForm)
             .then(response => {
               this.addDialog = false
             })
@@ -150,7 +150,7 @@ export default {
         cancelButtonText: 'No',
         type: 'warning'
       }).then(() => {
-        this.removeEntity(this.entityForm.id)
+        this.deleteEntity(this.entityForm.id)
       })
     }
   }

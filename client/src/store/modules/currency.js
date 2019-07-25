@@ -5,16 +5,19 @@ export default {
     currencies: []
   },
   getters: {
-    currencies: state => state.currencies
+    currencies: state => state.currencies,
+    getCurrencyById: (state) => (id) => {
+      return state.currencies.find(country => country.id === id)
+    }
   },
   mutations: {
     SET_CURRENCIES: (state, currencies) => {
       state.currencies = currencies
     },
-    ADD_CURRENCY: (state, currency) => {
+    CREATE_CURRENCY: (state, currency) => {
       state.currencies.push(currency)
     },
-    EDIT_CURRENCY: (state, currency) => {
+    UPDATE_CURRENCY: (state, currency) => {
       state.currencies.forEach(item => {
         if (item._id === currency._id) {
           item.name = currency.name
@@ -22,7 +25,7 @@ export default {
         }
       })
     },
-    REMOVE_CURRENCY: (state, id) => {
+    DELETE_CURRENCY: (state, id) => {
       state.currencies = state.currencies.filter(item => item._id !== id)
     }
   },
@@ -48,29 +51,29 @@ export default {
           throw err
         })
     },
-    addCurrency: ({commit}, currency) => {
+    createCurrency: ({commit}, currency) => {
       return CurrencyResource.create(currency)
         .then(response => {
-          commit('ADD_CURRENCY', response.data)
+          commit('CREATE_CURRENCY', response.data)
         })
         .catch(err => {
           throw err
         })
     },
-    editCurrency: ({commit}, payload) => {
+    updateCurrency: ({commit}, payload) => {
       return CurrencyResource.update(payload._id, payload.content)
         .then(response => {
-          commit('EDIT_CURRENCY', response.data)
+          commit('UPDATE_CURRENCY', response.data)
         })
         .catch(err => {
           throw err
         })
     },
     /*eslint no-unused-vars: [2, { "args": "none" }]*/
-    removeCurrency: ({commit}, id) => {
+    deleteCurrency: ({commit}, id) => {
       return CurrencyResource.delete(id)
         .then(response => {
-          commit('REMOVE_CURRENCY', id)
+          commit('DELETE_CURRENCY', id)
         })
         .catch(err => {
           throw err

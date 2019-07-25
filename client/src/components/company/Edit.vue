@@ -127,7 +127,7 @@ export default {
     this.$store.dispatch('getCurrencies')
   },
   methods: {
-    ...mapActions(['editCompany']),
+    ...mapActions(['updateCompany']),
 
     getCompany: function() {
       CompanyResource.get(this.id)
@@ -140,7 +140,7 @@ export default {
     },
     onSubmit: function() {
       let payload = { _id: this.id, content: this.companyForm }
-      this.editCompany(payload)
+      this.updateCompany(payload)
         .then(() => {
           const h = this.$createElement
           this.$notify({

@@ -21,18 +21,28 @@
       </el-table-column>
       <el-table-column
         label="Country"
-        prop="country.name"
         sortable
-      />
+      >
+        <template slot-scope="props">
+          {{ getCountry(props.row.country_id) }}
+        </template>
+      </el-table-column>
       <el-table-column
         label="Currency"
-        prop="currencyName"
         sortable
-      />
+      >
+        <template slot-scope="props">
+          {{ getCurrency(props.row.default_currency_id) }}
+        </template>
+      </el-table-column>
       <el-table-column
         label="Offices"
-        prop="officeNames"
-      />
+        sortable
+      >
+        <template slot-scope="props">
+          {{ getOfficeNames(props.row.offices) }}
+        </template>
+      </el-table-column>
       <el-table-column
         label="Actions"
       >
@@ -69,6 +79,16 @@ export default {
     })
   },
   methods: {
+    getCountry: function(country_id) {
+      return this.$store.getters.getCountryById(country_id).name
+    },
+    getCurrency: function(currency_id) {
+      var currency = this.$store.getters.getCurrencyById(currency_id)
+      return currency.name + '( ' + currency.symbol + ' )'
+    },
+    getOfficeNames: function(offices) {
+      return offices.map( office => office.name).join(', ')
+    }
   }
 }
 </script>

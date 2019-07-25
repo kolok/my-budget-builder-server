@@ -153,7 +153,7 @@ export default {
     ...mapGetters(['countries'])
   },
   methods: {
-    ...mapActions(['addOffice']),
+    ...mapActions(['createOffice']),
     handleAddOffice: function(id) {
       // display the form to add an office
       this.addOfficeDialog = true
@@ -161,7 +161,7 @@ export default {
     handleCreateOffice: function(formName) { // Create office
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.addOffice(this.officeForm)
+          this.createOffice(this.officeForm)
             .then(() => {
               // reset form data
               this.$refs[formName].resetFields()
@@ -176,11 +176,6 @@ export default {
         }
       })
     },
-
-
-
-
-
     handleCancel: function(formName){
       this.$refs[formName].resetFields()
       this.addOfficeDialog = false
