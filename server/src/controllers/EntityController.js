@@ -89,17 +89,28 @@ class EntityController {
 
     //Find and set that company
     let entity = await Entity.findOne(
-      { where: { id: params.id, company_id: ctx.state.company.id, status : {[Op.ne]: 'deleted'} } }
+      { where: { id: params.id, company_id: ctx.state.company.id, status : {[Op.ne]: 'deleted'} },
+        include: [
+          {association: 'offices', required:false, where: { status : {[Op.ne]: 'deleted'} }}
+        ]
+      }
     )
     if (!entity) ctx.throw(400, 'INVALID_DATA')
 
-    //Add the soft delete values
-    entity.updatedAt = dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss')
-    entity.deletedAt = dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss')
-    entity.status = 'deleted'
 
     try {
+      //Add the soft delete values
+      var now = dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss')
+      entity.updatedAt = now
+      entity.deletedAt = now
+      entity.status = 'deleted'
       await entity.save()
+      await entity.offices.forEach( office => {
+        office.updatedAt = now
+        office.deletedAt = now
+        office.status = 'deleted'
+        office.save()
+      })
       ctx.body = { message: 'SUCCESS' }
     } catch (error) {
       ctx.throw(400, 'INVALID_DATA')

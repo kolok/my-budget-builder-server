@@ -36,6 +36,18 @@ export default {
         }
       })
     },
+    UPDATE_OFFICE: (state, office) => {
+      state.entities.forEach(item => {
+        if (item.id === office.entity_id) {
+          var offices = []
+          item.offices.forEach(entityOffice => {
+            if (entityOffice.id === office.id) {
+              entityOffice = office
+            }
+          })
+        }
+      })
+    },
     async DELETE_OFFICE (state, office) {
       state.entities.forEach(item => {
         if (item.id === office.entity_id) {
@@ -90,11 +102,22 @@ export default {
     /*
      * Manage the Office related interactions
      */
-    createOffice: ({commit}, office) => {
-      return OfficeResource.create(office)
+    createOffice: ({commit}, payload) => {
+      return OfficeResource.create(payload)
         .then(response => {
           var office = response.data
           commit('CREATE_OFFICE', office)
+        })
+        .catch(err => {
+          throw err
+        })
+    },
+    updateOffice: ({commit}, payload) => {
+      return OfficeResource.update(payload.id, payload)
+        .then(response => {
+          var office = response.data
+          commit('UPDATE_OFFICE', office)
+          return office
         })
         .catch(err => {
           throw err

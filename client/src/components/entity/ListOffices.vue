@@ -11,12 +11,15 @@
           class="card-header"
         >
           <span>{{ item.name }}</span>
-          <el-button
-            style="float: right; padding: 3px 0"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDeleteOffice(item)"
-          />
+          <div style="float: right; padding: 3px 0">
+            <el-button
+              style="float: right; padding: 3px 0"
+              type="text"
+              icon="el-icon-delete"
+              @click="handleDeleteOffice(item)"
+            />
+          </div>
+          <EditOffice :officeForm="item"/>
         </div>
         <div
           class="text item"
@@ -42,6 +45,7 @@
 
 <script>
   import CreateOffice from '../../components/entity/CreateOffice.vue'
+  import EditOffice from '../../components/entity/EditOffice.vue'
   import { mapGetters, mapActions } from 'vuex'
 
   export default {
@@ -52,7 +56,8 @@
       }
     },
     components: {
-      CreateOffice
+      CreateOffice,
+      EditOffice
     },
     data() {
       return {
