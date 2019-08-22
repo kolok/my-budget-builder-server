@@ -4,6 +4,10 @@ import jsonwebtoken from 'jsonwebtoken'
 import dateFormat from 'date-fns/format'
 import dateAddMonths from 'date-fns/add_months'
 import dateCompareAsc from 'date-fns/compare_asc'
+import nodeMailer from 'nodemailer'
+import fse from 'fs-extra'
+
+
 
 /*
  * FIXME: needed for the forgot password process
@@ -12,7 +16,6 @@ import dateCompareAsc from 'date-fns/compare_asc'
 
 /*
  *FIXME: Email inactive yet
- *import fse from 'fs-extra'
  *import sgMail from '@sendgrid/mail'
  *sgMail.setApiKey(process.env.SENDGRID_API_KEY)
  */
@@ -89,6 +92,37 @@ class UserController {
        * }
        * await sgMail.send(emailData)
        */
+
+       let transporter = nodeMailer.createTransport({
+         host: 'smtp.gmail.com',
+         port: 465,
+         secure: true,
+         auth: {
+           user: 'joe@oudard.org',
+           pass: 'Joe://Oudard'
+         }
+       });
+
+       let welcomeEmail = await fse.readFile(
+           './src/email/welcome.html',
+           'utf8'
+       )
+       const Email = require('email-templates');
+
+       let mailOptions = {
+         from: '"Joe Oudard" <joe@oudard.org>', // sender address
+         to: request.email, // list of receivers
+         subject: "Welcome to Komber", // Subject line
+         text: "Yeah ! You're IN.", // plain text body
+         html: welcomeEmail // html body
+       };
+
+       transporter.sendMail(mailOptions, (error, info) => {
+         if (error) {
+           return console.log(error);
+         }
+         console.log('Message %s sent: %s', info.messageId, info.response);
+       });
       }
 
       //Generate the refreshToken data
