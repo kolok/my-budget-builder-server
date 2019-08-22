@@ -1,5 +1,5 @@
-# Use an node 8 runtime as a parent image
-FROM node:8.14.0-jessie
+# Use an node 10 runtime as a parent image
+FROM node:10.16.3-jessie
 
 # Set the working directory to /server
 WORKDIR /usr/client
