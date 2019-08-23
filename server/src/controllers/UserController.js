@@ -4,10 +4,10 @@ import jsonwebtoken from 'jsonwebtoken'
 import dateFormat from 'date-fns/format'
 import dateAddMonths from 'date-fns/add_months'
 import dateCompareAsc from 'date-fns/compare_asc'
-import nodeMailer from 'nodemailer'
-import fse from 'fs-extra'
 
-
+// Mailer instance to proxify the mail sending
+import Mailer from '../utils/Mailer'
+const mailer = new Mailer()
 
 /*
  * FIXME: needed for the forgot password process
@@ -73,56 +73,7 @@ class UserController {
 
       //Let's send a welcome email.
       if (process.env.NODE_ENV !== 'testing') {
-      /*
-       *Let's turn off welcome emails for the moment
-       * let email = await fse.readFile(
-       *     './src/email/welcome.html',
-       *     'utf8'
-       * )
-       * const emailData = {
-       *     to: request.email,
-       *     from: process.env.APP_EMAIL,
-       *     subject: 'Welcome To Koa-Vue-Notes-Api',
-       *     html: email,
-       *     categories: ['koa-vue-notes-api-new-user'],
-       *     substitutions: {
-       *         appName: process.env.APP_NAME,
-       *         appEmail: process.env.APP_EMAIL,
-       *     },
-       * }
-       * await sgMail.send(emailData)
-       */
-
-       let transporter = nodeMailer.createTransport({
-         host: 'smtp.gmail.com',
-         port: 465,
-         secure: true,
-         auth: {
-           user: 'joe@oudard.org',
-           pass: 'Joe://Oudard'
-         }
-       });
-
-       let welcomeEmail = await fse.readFile(
-           './src/email/welcome.html',
-           'utf8'
-       )
-       const Email = require('email-templates');
-
-       let mailOptions = {
-         from: '"Joe Oudard" <joe@oudard.org>', // sender address
-         to: request.email, // list of receivers
-         subject: "Welcome to Komber", // Subject line
-         text: "Yeah ! You're IN.", // plain text body
-         html: welcomeEmail // html body
-       };
-
-       transporter.sendMail(mailOptions, (error, info) => {
-         if (error) {
-           return console.log(error);
-         }
-         console.log('Message %s sent: %s', info.messageId, info.response);
-       });
+        await mailer.signUpMail(request.email, request.name)
       }
 
       //Generate the refreshToken data
