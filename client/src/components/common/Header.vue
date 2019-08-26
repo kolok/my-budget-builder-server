@@ -1,7 +1,9 @@
 <template>
   <el-row style="width:100%;height:64px;padding-top:4px;background-color:#545c64;">
     <el-col :span="4">
-      <div class="layout-logo" />
+      <div class="layout-logo">
+        <img src="/static/images/komber-logo.png" width="100%" height="100%"/>
+      </div>
     </el-col>
     <el-col :span="20">
       <div
