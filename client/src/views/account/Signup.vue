@@ -1,17 +1,15 @@
 <template>
-  <div class="default-main-content">
+  <div class="CardContainer">
     <el-card
-      class="box-card signup-card"
-      style="max-width:400px;width: 100%;margin: 0px auto;"
+      class="Card"
     >
       <div
         slot="header"
-        class="clearfix"
-        style="font-size: 14px;font-weight: bold;"
+        class="Card__Header"
       >
         <span>Sign up</span>
       </div>
-      <div class="signupform">
+      <div class="Card__FormContainer">
         <el-form
           ref="signupForm"
           :model="signupForm"
@@ -35,9 +33,9 @@
             <el-input
               v-model="signupForm.subdomain"
               placeholder="subdomain"
-              class="subdomain"
+              class="Card__Input--Shorter"
             />
-            <span class="domain">.komber.io</span>
+            <span class="Card__Text--Suffix">.komber.io</span>
           </el-form-item>
           <el-form-item
             prop="name"
@@ -104,7 +102,8 @@
 <script>
 import { mapActions } from 'vuex'
 
-export default {
+export default {      <div class="loginform">
+
   data() {
     return {
       signupForm: {
@@ -186,13 +185,33 @@ export default {
 }
 </script>
 
-<style>
-.subdomain {
-  width: 200px;
-  float: left;
-  clear: both;
-}
-.domain {
-  float: left;
-}
+<style scoped>
+
+  .CardContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .Card {
+    max-width:400px;
+    width: 100%;
+    margin: 0px auto;
+  }
+
+  .Card__Header {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .Card__Input--Shorter {
+    width: 200px;
+    float: left;
+    clear: both;
+  }
+
+  .Card__Text--Suffix {
+    float: left;
+  }
 </style>

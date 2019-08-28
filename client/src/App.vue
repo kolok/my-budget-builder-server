@@ -21,7 +21,7 @@ export default {
 
 <style>
   .Layout{
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -35,7 +35,6 @@ export default {
     background-color:#545c64;
   }
   .Content{
-    height: 100vh;
-    padding:10px;
+    height: 100%;
   }
 </style>

@@ -5,10 +5,10 @@
       :key="item.id"
       style="min-width:400px;min-height:150px;float:left;padding:25px;"
     >
-      <el-card class="box-card">
+      <el-card>
         <div
           slot="header"
-          class="card-header"
+          class="Card__Header"
         >
           <span>{{ item.name }}</span>
           <div style="float: right; padding: 3px 0">
@@ -22,8 +22,7 @@
           <EditOffice :officeForm="item"/>
         </div>
         <div
-          class="text item"
-          style="min-height:90px;"
+          class="Card__Body"
         >
           <ul style="list-style: none;">
             <li style="font:14px;font-style:bold;">
@@ -81,9 +80,11 @@
 </script>
 
 <style scoped>
-  .card-header {
+  .Card__Header {
     font-weight:bold;
     font-size:18px;
   }
-
+  .Card__Body {
+    min-height:90px;
+  }
 </style>

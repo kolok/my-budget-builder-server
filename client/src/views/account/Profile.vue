@@ -1,22 +1,5 @@
 <template>
   <div>
-    <p> Profile </p>
+    <h1 class="Content__Head1">Profile</h1>
   </div>
 </template>
-
-<script>
-export default {
-  components: {
-
-  },
-  data() {
-    return {
-
-    }
-  }
-}
-</script>
-
-<style scoped>
-
-</style>

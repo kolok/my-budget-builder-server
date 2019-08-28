@@ -1,7 +1,7 @@
 <template>
   <el-row>
     <el-col :span="4">
-      <div class="Header__LogoPlacement">
+      <div class="Header__LogoContainer">
         <img class="Header__Logo" src="/static/images/komber-logo.png" width="100%" height="100%"/>
       </div>
     </el-col>
@@ -29,6 +29,7 @@
               {{ item.name }}
             </template>
             <el-menu-item
+              class="Header__MenuItem"
               v-for="subitem in item.children"
               :key="subitem.index"
               :index="subitem.index"
@@ -40,7 +41,7 @@
 
           <el-submenu
             index="adminsettings"
-            class="Header__MenuItem--Right"
+            class="Header__MenuItem Header__MenuItem--Right"
           >
             <template slot="title">
               {{ getCurrentUser.name }}
@@ -218,7 +219,7 @@ export default {
 </script>
 
 <style scoped>
-  .Header__LogoPlacement{
+  .Header__LogoContainer {
       width: 100px;
       height: 30px;
       background: #5b6270;
@@ -234,12 +235,13 @@ export default {
     height:100%;
   }
 
+  .Header__MenuContainer {
+      width: 100 %;
+      margin: 0;
+  }
+
   .Header__MenuItem--Right {
     float: right;
   }
 
-  .Header__MenuContainer{
-      width: 100 %;
-      margin: 0;
-  }
 </style>

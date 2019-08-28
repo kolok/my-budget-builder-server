@@ -1,22 +1,5 @@
 <template>
   <div>
-    <p> Positions </p>
+    <h1 class="Content__Head1">Positions</h1>
   </div>
 </template>
-
-<script>
-export default {
-  components: {
-
-  },
-  data() {
-    return {
-
-    }
-  }
-}
-</script>
-
-<style scoped>
-
-</style>

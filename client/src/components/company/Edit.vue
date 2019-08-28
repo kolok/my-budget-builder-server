@@ -1,10 +1,10 @@
 <template>
-  <div style="display:inline">
+  <div class="Content__FormContainer">
     <el-form
+      class="Content__Form"
       ref="companyForm"
       :model="companyForm"
       label-width="250px"
-      style="max-width:600px"
     >
       <el-form-item label="Company name">
         <el-input v-model="companyForm.name" />
@@ -45,10 +45,10 @@
         <el-input
           v-model="companyForm.subdomain"
           placeholder="subdomain"
-          class="subdomain"
+          class="Content__Input--Inactive"
           :disabled="true"
         />
-        <span class="domain">.komber.io</span>
+        <span class="Content__Text--Suffix">.komber.io</span>
       </el-form-item>
 
       <el-form-item>
@@ -164,12 +164,22 @@ export default {
 </script>
 
 <style>
-.subdomain {
-  width: 200px;
-  float: left;
-  clear: none;
-}
-.domain {
-  float: left;
-}
+  .Content__FormContainer {
+    display:inline;
+  }
+
+  .Content__Form {
+    max-width:600px;
+  }
+
+  .Content__Input--Inactive {
+    width: 200px;
+    float: left;
+    clear: none;
+    disabled: disabled;
+  }
+
+  .Content__Text--Suffix {
+    float: left;
+  }
 </style>

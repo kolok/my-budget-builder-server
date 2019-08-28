@@ -2,7 +2,7 @@
   <div>
     <el-table
       :data="entities"
-      style="width: 100%;margin-bottom: 20px;"
+      class="Content__Table"
       :default-sort="{prop: 'name', order: 'descending'}"
       row-key="id"
       border
@@ -93,13 +93,8 @@ export default {
 }
 </script>
 <style scoped>
-.card-header {
-  font-weight:bold;
-  font-size:18px;
-}
-
-.card-header-action {
-  font-style:italic;
-  font-size:18px;
-}
+  .Content__Table {
+    width: 100%;
+    margin-bottom: 20px;
+  }
 </style>

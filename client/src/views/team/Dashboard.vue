@@ -1,22 +1,5 @@
 <template>
   <div>
-    <p> Dashboard </p>
+    <h1 class="Content__Head1">Dashboard</h1>
   </div>
 </template>
-
-<script>
-export default {
-  components: {
-
-  },
-  data() {
-    return {
-
-    }
-  }
-}
-</script>
-
-<style scoped>
-
-</style>

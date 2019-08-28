@@ -1,17 +1,5 @@
 <template>
   <div>
-    <Row>
-      <Col />
-      User Table ?
-      </Col>
-    </Row>
+    <h1 class="Content__Head1">Users</h1>
   </div>
 </template>
-
-<script>
-
-export default {
-  components: {
-  }
-}
-</script>

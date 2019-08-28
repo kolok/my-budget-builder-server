@@ -1,17 +1,15 @@
 <template>
-  <div class="default-main-content">
+  <div class="CardContainer">
     <el-card
-      class="box-card"
-      style="max-width:300px;width: 100%;margin: 0px auto;"
+      class="Card"
     >
       <div
         slot="header"
-        class="clearfix"
-        style="font-size: 14px;font-weight: bold;"
+        class="Card__Header"
       >
         <span>Login</span>
       </div>
-      <div class="loginform">
+      <div class="Card__FormContainer">
         <el-form
           ref="loginForm"
           :model="loginForm"
@@ -98,3 +96,25 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+  .CardContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .Card {
+    max-width:400px;
+    width: 100%;
+    margin: 0px auto;
+  }
+
+  .Card__Header {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+</style>

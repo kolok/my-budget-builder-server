@@ -18,7 +18,7 @@
         :model="entityForm"
         :rules="entityRule"
         label-width="250px"
-        style="max-width:600px"
+        class="Dialog__Form"
       >
         <el-form-item
           prop="name"
@@ -64,7 +64,6 @@
       </el-form>
       <span
         slot="footer"
-        class="dialog-footer"
       >
         <el-button @click="handleCancel">Annuler</el-button>
         <el-button
@@ -133,3 +132,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  Dialog__Form {
+    max-width:600px;
+  }
+</style>

@@ -16,7 +16,7 @@
         :model="officeForm"
         :rules="officeRule"
         label-width="250px"
-        style="max-width:600px"
+        class="Dialog__Form"
       >
         <el-form-item
           prop="name"
