@@ -132,9 +132,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  Dialog__Form {
-    max-width:600px;
-  }
-</style>

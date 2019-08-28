@@ -92,9 +92,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-  .Content__Table {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-</style>

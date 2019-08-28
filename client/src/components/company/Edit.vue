@@ -162,24 +162,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  .Content__FormContainer {
-    display:inline;
-  }
-
-  .Content__Form {
-    max-width:600px;
-  }
-
-  .Content__Input--Inactive {
-    width: 200px;
-    float: left;
-    clear: none;
-    disabled: disabled;
-  }
-
-  .Content__Text--Suffix {
-    float: left;
-  }
-</style>

@@ -4,7 +4,7 @@
       <el-card class="box-card">
         <div
           slot="header"
-          class="card-header-action"
+          class="Card__Header Card__Header--italic"
         >
           <span>Create a new Office</span>
         </div>
@@ -183,10 +183,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-  .card-header-action {
-    font-style:italic;
-    font-size:18px;
-  }
-</style>

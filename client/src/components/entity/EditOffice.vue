@@ -157,10 +157,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-  .card-header-action {
-    font-style:italic;
-    font-size:18px;
-  }
-</style>

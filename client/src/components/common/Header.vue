@@ -2,7 +2,7 @@
   <el-row>
     <el-col :span="4">
       <div class="Header__LogoContainer">
-        <img class="Header__Logo" src="/static/images/komber-logo.png" width="100%" height="100%"/>
+        <img class="Header__Logo" src="/static/images/komber-logo.png"/>
       </div>
     </el-col>
     <el-col :span="20">
@@ -219,29 +219,7 @@ export default {
 </script>
 
 <style scoped>
-  .Header__LogoContainer {
-      width: 100px;
-      height: 30px;
-      background: #5b6270;
-      border-radius: 3px;
-      float: left;
-      position: relative;
-      top: 15px;
-      left: 20px;
-  }
-
-  .Header__Logo {
-    width:100%;
-    height:100%;
-  }
-
-  .Header__MenuContainer {
-      width: 100 %;
-      margin: 0;
-  }
-
   .Header__MenuItem--Right {
     float: right;
   }
-
 </style>

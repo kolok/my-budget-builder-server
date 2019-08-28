@@ -102,7 +102,7 @@
 <script>
 import { mapActions } from 'vuex'
 
-export default {      <div class="loginform">
+export default {
 
   data() {
     return {
@@ -184,34 +184,3 @@ export default {      <div class="loginform">
   }
 }
 </script>
-
-<style scoped>
-
-  .CardContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-  }
-
-  .Card {
-    max-width:400px;
-    width: 100%;
-    margin: 0px auto;
-  }
-
-  .Card__Header {
-    font-size: 14px;
-    font-weight: bold;
-  }
-
-  .Card__Input--Shorter {
-    width: 200px;
-    float: left;
-    clear: both;
-  }
-
-  .Card__Text--Suffix {
-    float: left;
-  }
-</style>

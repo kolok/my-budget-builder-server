@@ -96,25 +96,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-  .CardContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-  }
-
-  .Card {
-    max-width:400px;
-    width: 100%;
-    margin: 0px auto;
-  }
-
-  .Card__Header {
-    font-size: 14px;
-    font-weight: bold;
-  }
-
-</style>

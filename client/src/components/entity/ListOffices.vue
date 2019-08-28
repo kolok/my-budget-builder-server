@@ -78,13 +78,3 @@
     }
   }
 </script>
-
-<style scoped>
-  .Card__Header {
-    font-weight:bold;
-    font-size:18px;
-  }
-  .Card__Body {
-    min-height:90px;
-  }
-</style>
