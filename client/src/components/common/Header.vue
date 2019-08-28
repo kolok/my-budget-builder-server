@@ -93,7 +93,7 @@ export default {
           path: '/users',
           name: 'Users',
           icon: 'el-icon-user',
-          roles: ['admin']
+          roles: ['client_admin']
         },
         {
           index: 'logout',

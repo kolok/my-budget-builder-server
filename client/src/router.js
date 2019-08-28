@@ -168,8 +168,7 @@ let router = new VueRouter({
       path: '/credentials',
       name: 'Credentials',
       component: () => import(
-        /* webpackChunkName: "group-account" */
-        './views/account/Settings.vue'
+        './views/account/ChangePassword.vue'
       ),
       meta: {
         requiresAuth: true,
@@ -180,13 +179,34 @@ let router = new VueRouter({
       path: '/users',
       name: 'Users',
       component: () => import(
-        /* webpackChunkName: "group-admin" */
-        './views/admin/Users.vue'
+        './views/account/Users.vue'
       ),
       meta: {
         roles: ['client_admin'],
         requiresAuth: true,
         title: 'Komber - Users'
+      }
+    },
+    {
+      path: '/account',
+      name: 'Account',
+      component: () => import(
+        './views/account/Account.vue'
+      ),
+      meta: {
+        requiresAuth: true,
+        title: 'Komber - Account'
+      }
+    },
+    {
+      path: '/denied',
+      name: 'Denied',
+      component: () => import(
+        './views/account/Denied.vue'
+      ),
+      meta: {
+        requiresAuth: true,
+        title: 'Komber - Denied'
       }
     }
   ]
@@ -230,7 +250,7 @@ router.beforeEach((to, from, next) => {
     return next()
   }
   // Otherwise, denied.
-  next('/')
+  next('/denied')
 })
 
 router.afterEach((to, from) => {
