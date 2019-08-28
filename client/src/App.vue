@@ -1,13 +1,11 @@
 <template>
-  <div class="layout">
-    <el-container style="min-height: 100vh">
-      <el-header style="height: 64px;padding:0;">
-        <app-header />
-      </el-header>
-      <el-main style="height: 100vh;padding:10px;">
-        <router-view />
-      </el-main>
-    </el-container>
+  <div class="Layout">
+    <div class="Header">
+      <Header />
+    </div>
+    <div class="Content">
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -16,15 +14,28 @@ import Header from './components/common/Header.vue'
 
 export default {
   components: {
-    'app-header': Header,
-  },
-  data() {
-    return {
-    }
+    Header
   }
 }
 </script>
 
 <style>
-
+  .Layout{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .Header{
+    height: 64px;
+    padding:0;
+    width:100%;
+    height:64px;
+    padding-top:4px;
+    background-color:#545c64;
+  }
+  .Content{
+    height: 100vh;
+    padding:10px;
+  }
 </style>

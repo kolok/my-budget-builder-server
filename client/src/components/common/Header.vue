@@ -1,18 +1,18 @@
 <template>
-  <el-row style="width:100%;height:64px;padding-top:4px;background-color:#545c64;">
+  <el-row>
     <el-col :span="4">
-      <div class="layout-logo">
-        <img src="/static/images/komber-logo.png" width="100%" height="100%"/>
+      <div class="Header__LogoPlacement">
+        <img class="Header__Logo" src="/static/images/komber-logo.png" width="100%" height="100%"/>
       </div>
     </el-col>
     <el-col :span="20">
       <div
         v-if="isAuthenticated"
-        class="layout-nav"
+        class="Header__MenuContainer"
       >
         <el-menu
           :default-active="defaultMenu"
-          class="header-menu"
+          class="Header__Menu"
           mode="horizontal"
           background-color="#545c64"
           text-color="#fff"
@@ -40,7 +40,7 @@
 
           <el-submenu
             index="adminsettings"
-            style="float:right"
+            class="Header__MenuItem--Right"
           >
             <template slot="title">
               {{ getCurrentUser.name }}
@@ -218,14 +218,7 @@ export default {
 </script>
 
 <style scoped>
-  .layout{
-      border: 1px solid #d7dde4;
-      background: #f5f7f9;
-      position: relative;
-      border-radius: 4px;
-      overflow: hidden;
-  }
-  .layout-logo{
+  .Header__LogoPlacement{
       width: 100px;
       height: 30px;
       background: #5b6270;
@@ -235,11 +228,18 @@ export default {
       top: 15px;
       left: 20px;
   }
-  .layout-nav{
+
+  .Header__Logo {
+    width:100%;
+    height:100%;
+  }
+
+  .Header__MenuItem--Right {
+    float: right;
+  }
+
+  .Header__MenuContainer{
       width: 100 %;
       margin: 0;
-  }
-  .layout-dropdown{
-      float: right;
   }
 </style>
