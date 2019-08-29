@@ -6,7 +6,7 @@ All vue button action will be prefixed by "handle" vs the service actions which 
 
 ### Update an object
 
-Edit: display a form to update an object
+Edit: display a form to update an object\\
 Update: action to update an object
 
 Example:
@@ -15,7 +15,7 @@ Example:
 
 ### Create an object
 
-Add: display the form to add an object
+Add: display the form to add an object\\
 Create: action to save this new element in DB
 
 Example:
