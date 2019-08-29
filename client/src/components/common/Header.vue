@@ -1,57 +1,40 @@
 <template>
   <div class="Header">
-    <div class="Header__LogoContainer">
-      <img class="Header__Logo" src="/static/images/komber-logo.png"/>
+    <div class="Header--Left">
+
+      <div class="Header__LogoContainer">
+        <img class="Header__Logo" src="/static/images/komber-logo.png"/>
+      </div>
+      <div
+        v-if="isAuthenticated"
+      >
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item :to="{ path: '/' }"><i class="el-icon-user"/>Team</el-breadcrumb-item>
+          <el-breadcrumb-item>Dashboard</el-breadcrumb-item>
+        </el-breadcrumb>
+      </div>
     </div>
     <div
       v-if="isAuthenticated"
-      class="Header__MenuContainer"
+      class="Header--Right"
     >
-      <el-menu
-        :default-active="defaultMenu"
-        class="Header__Menu"
-        mode="horizontal"
-        background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#ffd04b"
-        @select="handleClickHeader"
-      >
-        <el-submenu
-          v-for="item in menuItems"
-          :key="item.index"
-          :index="item.index"
-        >
-          <template slot="title">
-            <i :class="item.icon" />
-            {{ item.name }}
-          </template>
-          <el-menu-item
-            v-for="subitem in item.children"
-            :key="subitem.index"
-            :index="subitem.index"
-          >
-            <i :class="subitem.icon" />
-            {{ subitem.name }}
-          </el-menu-item>
-        </el-submenu>
-
-        <el-submenu
-          index="adminsettings"
-          style="float:right"
-        >
-          <template slot="title">
-            {{ getCurrentUser.name }}
-          </template>
-          <el-menu-item
+      <el-dropdown @command="handleClickDropdown">
+        <span class="el-dropdown-link">
+          {{ getCurrentUser.name }}<i class="el-icon-arrow-down el-icon--right"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item
             v-for="adminitem in adminMenuItems"
+            :command="adminitem.path"
+            :icon="el-icon-plus"
             :key="adminitem.index"
             :index="adminitem.index"
           >
             <i :class="adminitem.icon" />
             {{ adminitem.name }}
-          </el-menu-item>
-        </el-submenu>
-      </el-menu>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
   </div>
 </template>
@@ -107,7 +90,7 @@ export default {
       this.$store.dispatch('logout')
       this.$router.push('/login')
     },
-    handleClickHeader: function(name) {
+    handleClickDropdown: function(name) {
       if (name === 'logout') {
         this.logout()
       } else {

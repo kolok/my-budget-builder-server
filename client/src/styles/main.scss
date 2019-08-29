@@ -1,7 +1,8 @@
 //this is a test
 @import "./base";
 
-$header-background-color: #545c64;
+$header-background-color: #fff;
+$color: #495060;
 
 //Order of properties to follow:
 // Positioning
@@ -38,23 +39,25 @@ $header-background-color: #545c64;
   // Positioning
   display: flex;
   flex-direction: row;
-  align-content: flex-start;
+  align-items: center;
+  justify-content:space-between;
   // BoxModel
   padding: 0;
   padding-top: 4px;
-  width: 100%;
   height: 60px;
   // Typography
   // Visual
   background-color: $header-background-color;
+  border-bottom: solid 1px #e6e6e6;
   // OtherProperties
   &__LogoContainer {
     @extend .Header;
     // Positioning
     // BoxModel
     padding-top: 0px;
-    width: 200px;
+    width: 300px;
     height: 60px;
+    border: 0 none;
     // Typography
     // Visual
     // OtherProperties
@@ -64,16 +67,34 @@ $header-background-color: #545c64;
     // Positioning
     position: relative;
     float: left;
-    top: 15px;
-    left: 20px;
     // BoxModel
     padding-top: 0px;
     width: 100px;
     height: 30px;
+    border: 0 none;
     // Typography
     // Visual
-    background: #5b6270;
     border-radius: 3px;
+    // OtherProperties
+  }
+  &--Left {
+    @extend .Header;
+    // Positioning
+    // BoxModel
+    padding-top: 0px;
+    padding-left: 20px;
+    // Typography
+    // Visual
+    // OtherProperties
+  }
+  &--Right {
+    @extend .Header;
+    // Positioning
+    // BoxModel
+    padding-top: 0px;
+    padding-right: 20px;
+    // Typography
+    // Visual
     // OtherProperties
   }
 }
@@ -81,10 +102,17 @@ $header-background-color: #545c64;
 .Sider {
   width: 300px;
   height: 100%;
+  border-right: solid 1px #e6e6e6;
+  &__MenuContainer {
+    @extend .Sider
+  }
 }
 
 .Content {
   width: 100%;
+  margin: 20px;
+  padding: 20px;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
 }
 
 
@@ -114,17 +142,6 @@ $header-background-color: #545c64;
 
 .Dialog__Form {
   max-width:600px;
-}
-
-// Will be deprecated
-.Header__MenuContainer {
-    width: 100%;
-    margin: 0;
-}
-
-// Will be deprecated
-.Header__MenuItem--Right {
-  float: right;
 }
 
 .CardContainer {
