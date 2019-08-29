@@ -37,6 +37,7 @@ Here are some examples:
 
 In a Scss file we will construct our BEM CSS like following:
 
+```
   .BlockName {
     &__ElementName{
       @extend .BlockName;
@@ -51,9 +52,11 @@ In a Scss file we will construct our BEM CSS like following:
       prop: value;
     }
   }
+```
 
 Let's organize our classes like following
 
+```
   .MyClass {
     // Positioning
     position: absolute;
@@ -83,6 +86,7 @@ Let's organize our classes like following
     pointer-events: none;
     opacity: .5;
   }
+```
 
 Useful link :
 * https://sass-lang.com/guide
