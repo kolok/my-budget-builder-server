@@ -1,64 +1,59 @@
 <template>
-  <el-row>
-    <el-col :span="4">
-      <div class="Header__LogoContainer">
-        <img class="Header__Logo" src="/static/images/komber-logo.png"/>
-      </div>
-    </el-col>
-    <el-col :span="20">
-      <div
-        v-if="isAuthenticated"
-        class="Header__MenuContainer"
+  <div class="Header">
+    <div class="Header__LogoContainer">
+      <img class="Header__Logo" src="/static/images/komber-logo.png"/>
+    </div>
+    <div
+      v-if="isAuthenticated"
+      class="Header__MenuContainer"
+    >
+      <el-menu
+        :default-active="defaultMenu"
+        class="Header__Menu"
+        mode="horizontal"
+        background-color="#545c64"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+        @select="handleClickHeader"
       >
-        <el-menu
-          :default-active="defaultMenu"
-          class="Header__Menu"
-          mode="horizontal"
-          background-color="#545c64"
-          text-color="#fff"
-          active-text-color="#ffd04b"
-          @select="handleClickHeader"
+        <el-submenu
+          v-for="item in menuItems"
+          :key="item.index"
+          :index="item.index"
         >
-          <el-submenu
-            v-for="item in menuItems"
-            :key="item.index"
-            :index="item.index"
+          <template slot="title">
+            <i :class="item.icon" />
+            {{ item.name }}
+          </template>
+          <el-menu-item
+            v-for="subitem in item.children"
+            :key="subitem.index"
+            :index="subitem.index"
           >
-            <template slot="title">
-              <i :class="item.icon" />
-              {{ item.name }}
-            </template>
-            <el-menu-item
-              class="Header__MenuItem"
-              v-for="subitem in item.children"
-              :key="subitem.index"
-              :index="subitem.index"
-            >
-              <i :class="subitem.icon" />
-              {{ subitem.name }}
-            </el-menu-item>
-          </el-submenu>
+            <i :class="subitem.icon" />
+            {{ subitem.name }}
+          </el-menu-item>
+        </el-submenu>
 
-          <el-submenu
-            index="adminsettings"
-            class="Header__MenuItem Header__MenuItem--Right"
+        <el-submenu
+          index="adminsettings"
+          style="float:right"
+        >
+          <template slot="title">
+            {{ getCurrentUser.name }}
+          </template>
+          <el-menu-item
+            v-for="adminitem in adminMenuItems"
+            :key="adminitem.index"
+            :index="adminitem.index"
           >
-            <template slot="title">
-              {{ getCurrentUser.name }}
-            </template>
-            <el-menu-item
-              v-for="adminitem in adminMenuItems"
-              :key="adminitem.index"
-              :index="adminitem.index"
-            >
-              <i :class="adminitem.icon" />
-              {{ adminitem.name }}
-            </el-menu-item>
-          </el-submenu>
-        </el-menu>
-      </div>
-    </el-col>
-  </el-row>
+            <i :class="adminitem.icon" />
+            {{ adminitem.name }}
+          </el-menu-item>
+        </el-submenu>
+      </el-menu>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -93,7 +88,7 @@ export default {
           path: '/users',
           name: 'Users',
           icon: 'el-icon-user',
-          roles: ['client_admin']
+          roles: ['admin']
         },
         {
           index: 'logout',
@@ -101,103 +96,11 @@ export default {
           path: '/logout',
           icon: 'el-icon-logout'
         }
-      ],
-      menuItems: [
-        {
-          index: 'teamDashboard',
-          name: 'Team',
-          path: '/teamDashboard',
-          icon: 'el-icon-user',
-          children : [
-            {
-              index: 'teamDashboard',
-              name: 'Dashboard',
-              path: '/teamDashboard',
-              icon: 'el-icon-pie-chart'
-            },
-            {
-              index: 'teams',
-              name: 'Teams',
-              path: '/teams',
-              icon: 'el-icon-user'
-            },
-            {
-              index: 'positions',
-              path: '/positions',
-              name: 'Positions',
-              icon: 'el-icon-refresh-right'
-            },
-            {
-              index: 'employees',
-              name: 'Employees',
-              path: '/employees',
-              icon: 'el-icon-user'
-            }
-          ]
-        },
-        {
-          index: 'planning',
-          name: 'Planning',
-          path: '/planning',
-          icon: 'el-icon-c-scale-to-original',
-          children : [
-            {
-              index: 'planning',
-              name: 'Planning',
-              path: '/planning',
-              icon: 'el-icon-c-scale-to-original'
-            }
-          ]
-        },
-        {
-          index: 'execution',
-          name: 'Execution',
-          path: '/execution',
-          icon: 'el-icon-folder-checked',
-          children : [
-            {
-              index: 'execution',
-              name: 'Execution',
-              path: '/execution',
-              icon: 'el-icon-folder-checked'
-            }
-          ]
-        },
-        {
-          index: 'company',
-          name: 'Settings',
-          path: '/company',
-          icon: 'el-icon-setting',
-          children : [
-            {
-              index: 'company',
-              name: 'Settings',
-              path: '/company',
-              icon: 'el-icon-house'
-            },
-            {
-              index: 'entities',
-              name: 'Entities',
-              path: '/entities',
-              icon: 'el-icon-files'
-            },
-            {
-              index: 'teams',
-              name: 'Teams',
-              path: '/teams',
-              icon: 'el-icon-user'
-            }
-          ]
-        }
-      ],
-      defaultMenu : ''
+      ]
     }
   },
   computed: {
     ...mapGetters(['isAuthenticated', 'getCurrentUser'])
-  },
-  beforeMount(){
-    this.getDefaultMenu()
   },
   methods: {
     logout: function() {
@@ -211,15 +114,6 @@ export default {
         this.$router.push(name)
       }
     },
-    getDefaultMenu: function () {
-      this.defaultMenu = this.menuItems[0].index
-    }
   }
 }
 </script>
-
-<style scoped>
-  .Header__MenuItem--Right {
-    float: right;
-  }
-</style>

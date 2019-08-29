@@ -3,42 +3,126 @@
 
 $header-background-color: #545c64;
 
+//Order of properties to follow:
+// Positioning
+// BoxModel
+// Typography
+// Visual
+// OtherProperties
+
 .Layout{
-  height: 100vh;
+  // Positioning
   display: flex;
   flex-direction: column;
   align-items: stretch;
-}
-.Header{
-  height: 64px;
-  padding:0;
-  width:100%;
-  height:64px;
-  padding-top:4px;
-  background-color: $header-background-color;
+  // BoxModel
+  height: 100vh;
+  // Typography
+  // Visual
+  // OtherProperties
 }
 
-.Header__LogoContainer {
-    width: 100px;
-    height: 30px;
-    background: #5b6270;
-    border-radius: 3px;
-    float: left;
+.Body {
+  // Positioning
+  display: flex;
+  flex-direction: row;
+  align-content: flex-start;
+  // BoxModel
+  height: 100%;
+  // Typography
+  // Visual
+  // OtherProperties
+}
+
+.Header{
+  // Positioning
+  display: flex;
+  flex-direction: row;
+  align-content: flex-start;
+  // BoxModel
+  padding: 0;
+  padding-top: 4px;
+  width: 100%;
+  height: 60px;
+  // Typography
+  // Visual
+  background-color: $header-background-color;
+  // OtherProperties
+  &__LogoContainer {
+    @extend .Header;
+    // Positioning
+    // BoxModel
+    padding-top: 0px;
+    width: 200px;
+    height: 60px;
+    // Typography
+    // Visual
+    // OtherProperties
+  }
+  &__Logo {
+    @extend .Header;
+    // Positioning
     position: relative;
+    float: left;
     top: 15px;
     left: 20px;
+    // BoxModel
+    padding-top: 0px;
+    width: 100px;
+    height: 30px;
+    // Typography
+    // Visual
+    background: #5b6270;
+    border-radius: 3px;
+    // OtherProperties
+  }
 }
 
-.Header__Logo {
-  width:100%;
-  height:100%;
+.Sider {
+  width: 300px;
+  height: 100%;
 }
 
+.Content {
+  width: 100%;
+}
+
+
+.Content__Table {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.Content__FormContainer {
+  display:inline;
+}
+
+.Content__Form {
+  max-width:600px;
+}
+
+.Content__Input--Inactive {
+  width: 200px;
+  float: left;
+  clear: none;
+  disabled: disabled;
+}
+
+.Content__Text--Suffix {
+  float: left;
+}
+
+.Dialog__Form {
+  max-width:600px;
+}
+
+// Will be deprecated
 .Header__MenuContainer {
     width: 100%;
     margin: 0;
 }
 
+// Will be deprecated
 .Header__MenuItem--Right {
   float: right;
 }
@@ -78,36 +162,4 @@ $header-background-color: #545c64;
 
 .Card__Body {
   min-height:90px;
-}
-
-.Content{
-  height: 100%;
-}
-
-.Content__Table {
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.Content__FormContainer {
-  display:inline;
-}
-
-.Content__Form {
-  max-width:600px;
-}
-
-.Content__Input--Inactive {
-  width: 200px;
-  float: left;
-  clear: none;
-  disabled: disabled;
-}
-
-.Content__Text--Suffix {
-  float: left;
-}
-
-.Dialog__Form {
-  max-width:600px;
 }

@@ -56,102 +56,116 @@ let router = new VueRouter({
       path: '/',
       redirect: '/teamDashboard'
     },
+
+// Team menu
+
     {
       path: '/teamDashboard',
       name: 'Dashboard',
       component: () => import(
-        /* webpackChunkName: "group-common" */
         './views/team/Dashboard.vue'
       ),
       meta: {
         requiresAuth: true,
-        title: 'Komber - Teams'
+        title: 'Komber - Team Dashboard'
       }
     },
     {
-      path: '/teams',
-      name: 'Teams',
+      path: '/teamMovements',
+      name: 'Movements',
       component: () => import(
-        /* webpackChunkName: "group-common" */
-        './views/team/Teams.vue'
+        './views/team/Movements.vue'
       ),
       meta: {
         requiresAuth: true,
-        title: 'Komber - Teams'
+        title: 'Komber - Team movements'
       }
     },
     {
-      path: '/positions',
-      name: 'Positions',
+      path: '/teamIndividual',
+      name: 'Individual',
       component: () => import(
-        /* webpackChunkName: "group-common" */
-        './views/team/Positions.vue'
+        './views/team/Individual.vue'
       ),
       meta: {
         requiresAuth: true,
-        title: 'Komber - Positions'
+        title: 'Komber - Team Individual'
       }
     },
+
+// Budget menu
+
     {
-      path: '/employees',
-      name: 'Employees',
+      path: '/budgetDashboard',
+      name: 'Budget',
       component: () => import(
-        /* webpackChunkName: "group-common" */
-        './views/team/Employees.vue'
+        './views/budget/Dashboard.vue'
       ),
       meta: {
         requiresAuth: true,
-        title: 'Komber - Employees'
+        title: 'Komber - Budget Dashboard'
       }
     },
+
+// Execution menu
+
     {
-      path: '/planning',
-      name: 'Planning',
+      path: '/executionDashboard',
+      name: 'Execution',
       component: () => import(
-        /* webpackChunkName: "group-common" */
-        './views/planning/Planning.vue'
+        './views/execution/Dashboard.vue'
       ),
       meta: {
         requiresAuth: true,
-        title: 'Komber - Planning'
+        title: 'Komber - Execution Dashboard'
       }
     },
+
+// Execution menu
+
     {
-      path: '/execution',
-      name: 'Reporting',
-      component: () => import(
-        /* webpackChunkName: "group-common" */
-        './views/execution/Reporting.vue'
-      ),
-      meta: {
-        requiresAuth: true,
-        title: 'Komber - Reporting'
-      }
-    },
-    {
-      path: '/company',
+      path: '/settingsCompany',
       name: 'Company',
       component: () => import(
         /* webpackChunkName: "group-common" */
-        './views/company/Company.vue'
+        './views/settings/Company.vue'
       ),
       meta: {
         requiresAuth: true,
-        title: 'Komber - Company'
+        title: 'Komber - Settings Company'
       }
     },
     {
-      path: '/entities',
+      path: '/settingsEntities',
       name: 'Entities',
       component: () => import(
         /* webpackChunkName: "group-common" */
-        './views/company/Entities.vue'
+        './views/settings/Entities.vue'
       ),
       meta: {
         requiresAuth: true,
-        title: 'Komber - Entities'
+        title: 'Komber - Settings Entities'
       }
     },
+    {
+      path: '/settingsTeams',
+      name: 'Teams',
+      component: () => import(
+        /* webpackChunkName: "group-common" */
+        './views/settings/Teams.vue'
+      ),
+      meta: {
+        requiresAuth: true,
+        title: 'Komber - Settings Teams'
+      }
+    },
+
+
+
+
+
+
+
     {
       path: '/profile',
       name: 'Your Profile',
