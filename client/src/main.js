@@ -2,8 +2,14 @@
 import 'es6-promise/auto'
 
 import Vue from 'vue'
+/** ElementUI library **/
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+/** Google Chart library **/
+import VueGoogleCharts from 'vue-google-charts'
+Vue.use(VueGoogleCharts)
+
+/** Load App **/
 import App from './App.vue'
 
 /** Router **/
