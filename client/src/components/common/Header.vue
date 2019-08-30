@@ -1,7 +1,6 @@
 <template>
   <div class="Header">
     <div class="Header--Left">
-
       <div class="Header__LogoContainer">
         <img class="Header__Logo" src="/static/images/komber-logo.png"/>
       </div>
@@ -9,8 +8,10 @@
         v-if="isAuthenticated"
       >
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item :to="{ path: '/' }"><i class="el-icon-user"/>Team</el-breadcrumb-item>
-          <el-breadcrumb-item>Dashboard</el-breadcrumb-item>
+          <el-breadcrumb-item
+            v-for="item in breadcrumbItems"
+            :key=item.name
+          ><i :class="item.icon" v-if="item.icon"/>{{ item.name }}</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
     </div>
@@ -19,19 +20,20 @@
       class="Header--Right"
     >
       <el-dropdown @command="handleClickDropdown">
-        <span class="el-dropdown-link">
-          {{ getCurrentUser.name }}<i class="el-icon-arrow-down el-icon--right"></i>
-        </span>
+        <div style="width:200px;display:flex;flex-direction:row;align-items:center;justify-content:flex-end;">
+          <div>{{ getCurrentUser.name }}</div>
+          <div><el-avatar size="large" :src="avatarURL"></el-avatar></div>
+          <div><i class="el-icon-arrow-down el-icon--right"></i></div>
+        </div>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item
-            v-for="adminitem in adminMenuItems"
-            :command="adminitem.path"
-            :icon="el-icon-plus"
-            :key="adminitem.index"
-            :index="adminitem.index"
+            v-for="adminMenuItem in adminMenuItems"
+            :command="adminMenuItem.path"
+            :icon="adminMenuItem.icon"
+            :key="adminMenuItem.index"
+            :index="adminMenuItem.index"
           >
-            <i :class="adminitem.icon" />
-            {{ adminitem.name }}
+            {{ adminMenuItem.name }}
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -47,43 +49,11 @@ export default {
   },
   data() {
     return {
-      adminMenuItems: [
-        {
-          index: 'profile',
-          name: 'Your profile',
-          path: '/profile',
-          icon: 'el-icon-user'
-        },
-        {
-          index: 'credentials',
-          name: 'Credentials',
-          path: '/credentials',
-          icon: 'el-icon-user'
-        },
-        {
-          index: 'account',
-          path: '/account',
-          name: 'Account',
-          icon: 'el-icon-house',
-        },
-        {
-          index: 'users',
-          path: '/users',
-          name: 'Users',
-          icon: 'el-icon-user',
-          roles: ['admin']
-        },
-        {
-          index: 'logout',
-          name: 'Logout',
-          path: '/logout',
-          icon: 'el-icon-logout'
-        }
-      ]
+      avatarURL: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
     }
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'getCurrentUser'])
+    ...mapGetters(['isAuthenticated', 'getCurrentUser', 'adminMenuItems', 'breadcrumbItems'])
   },
   methods: {
     logout: function() {
@@ -91,7 +61,8 @@ export default {
       this.$router.push('/login')
     },
     handleClickDropdown: function(name) {
-      if (name === 'logout') {
+    console.log(name)
+      if (name === '/logout') {
         this.logout()
       } else {
         this.$router.push(name)

@@ -1,101 +1,45 @@
 <template>
   <div>
     <h1 class="Content__Head1">Teams</h1>
-
-      <el-input
-        v-model="search"
-        style="max-width:400px;margin:20px 0;"
-        placeholder="Type to search"
-      />
-      <el-tree
-        :data="teamData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-        node-key="id"
-        default-expand-all
-        :expand-on-click-node="false">
-        <span class="custom-tree-node" slot-scope="{ node, data }">
-          <span>{{ node.label }}</span>
-          <span>
-            <el-button
-              type="text"
-              size="mini"
-              @click="() => append(data)">
-              Ajouter
-            </el-button>
-            <el-button
-              type="text"
-              size="mini"
-              @click="() => remove(node, data)">
-              Supprimer
-            </el-button>
-          </span>
-        </span>
-      </el-tree>
-
-
-
-    <el-table
-      :data="teamData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-      empty-text="No data"
-      style="width: 100%;margin-bottom: 20px;"
-      row-key="id"
-      border
-      default-expand-all
-    >
-      <el-table-column
-        prop="name"
-        label="Name"
-        sortable
-        width="auto"
-      />
-      <el-table-column
-        prop="entity"
-        label="Entity"
-        sortable
-        width="auto"
-      />
-      <el-table-column
-        prop="office"
-        label="Office"
-        sortable
-        width="auto"
-      />
-      <el-table-column
-        prop="manager"
-        label="Manager"
-        sortable
-        width="auto"
-      />
-      <el-table-column
-        prop="ft"
-        label="Full time"
-        sortable
-        width="auto"
-      />
-      <el-table-column
-        label="Actions"
-        width="auto"
-      >
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="primary"
-            @click="handleEdit(scope.$index, scope.row)"
-          >
-            Edit
-          </el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)"
-          >
-            Delete
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-button type="primary">
-      Create a new team
+    <el-input
+      v-model="search"
+      style="max-width:400px;margin:20px 0;"
+      placeholder="Type to search"
+    />
+    <br>
+    <el-button
+      type="text"
+      size="mini"
+      @click="() => append(data)">
+      <i class="el-icon-plus" />
+      Add a root team
     </el-button>
+    <el-tree
+      :data="teamData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+      node-key="id"
+      default-expand-all
+      draggable
+      :allow-drop="allowDrop"
+      :allow-drag="allowDrag"
+      :expand-on-click-node="false">
+      <span class="custom-tree-node" slot-scope="{ node, data }">
+        <span>{{ node.label }}</span>
+        <span>
+          <el-button
+            type="text"
+            size="mini"
+            @click="() => append(data)">
+            Ajouter
+          </el-button>
+          <el-button
+            type="text"
+            size="mini"
+            @click="() => remove(node, data)">
+            Supprimer
+          </el-button>
+        </span>
+      </span>
+    </el-tree>
   </div>
 </template>
 

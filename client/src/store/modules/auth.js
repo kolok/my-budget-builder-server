@@ -4,12 +4,6 @@ import AuthService from '../../api/auth.service'
 
 export default {
   state: {
-    // store the current user in the state
-    // FIXME: if you reload the page, the current user is lost.
-    // 2 ways to solve this issue :
-    //   1. store the user (or user.email) in the localStorage
-    //   2. do not use the user.email in the refresh token action
-    //   3. manage this case using autoLogin
     user: null,
     company: null,
     userCompany: null,

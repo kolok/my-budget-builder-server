@@ -1,40 +1,44 @@
 <template>
   <div
     v-if="isAuthenticated"
-    class="Sider__MenuContainer"
-  >
-    <el-menu
-      :default-active="defaultMenu"
-      class="Header__Menu"
-      mode="vertical"
-      @select="handleClickHeader"
+    class="Sider">
+    <div
+      v-if="isAuthenticated"
+      class="Sider__MenuContainer"
     >
-      <el-submenu
-        v-for="item in menuItems"
-        :key="item.index"
-        :index="item.index"
+      <el-menu
+        :default-active="mainActiveMenuItem"
+        class="Header__Menu"
+        mode="vertical"
+        @select="handleClickHeader"
       >
-        <template slot="title">
-          <i :class="item.icon" />
-          {{ item.name }}
-        </template>
-        <el-menu-item
-          v-for="subitem in item.children"
-          :key="subitem.index"
-          :index="subitem.index"
+        <el-submenu
+          v-for="item in mainMenuItems"
+          :key="item.index"
+          :index="item.index"
         >
-          {{ subitem.name }}
-        </el-menu-item>
-      </el-submenu>
-    </el-menu>
+          <template slot="title">
+            <i :class="item.icon" />
+            {{ item.name }}
+          </template>
+          <el-menu-item
+            v-for="subitem in item.children"
+            :key="subitem.index"
+            :index="subitem.index"
+          >
+            {{ subitem.name }}
+          </el-menu-item>
+        </el-submenu>
+      </el-menu>
+    </div>
   </div>
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
   export default {
     computed: {
-      ...mapGetters(['isAuthenticated'])
+      ...mapGetters(['isAuthenticated', 'mainMenuItems', 'mainActiveMenuItem']),
     },
     data() {
       return {
@@ -119,14 +123,17 @@
       this.getDefaultMenu()
     },
     methods: {
+      ...mapActions(['updateBreadcrumbItems', 'initBreadcrumb']),
       handleClickHeader: function(name) {
         if (name === 'logout') {
           this.logout()
         } else {
+          this.updateBreadcrumbItems(name);
           this.$router.push(name)
         }
       },
       getDefaultMenu: function () {
+        this.initBreadcrumb()
         this.defaultMenu = this.menuItems[0].index
       }
     }
