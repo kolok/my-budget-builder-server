@@ -6,18 +6,24 @@
     data: () => ({
       data: {
         labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+
+// Bleu: 74/88/137
+// Rouge: 181/52/70
+// Jaune: 255/195/0
+// Vert: 54/127/110
+
         datasets: [{
           label: 'dataset 1',
           data: [12, 19, 3, 5, 2, 3],
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgba(255, 99, 132, 1)',
+          backgroundColor: 'rgba(74,88,137, 1)',
+          borderColor: 'rgba(74,88,137, 1)',
           borderWidth: 1
         },
         {
           label: 'dataset 2',
           data: [12, 19, 3, 5, 2, 3],
-          backgroundColor: 'rgba(54, 162, 235, 0.2)',
-          borderColor: 'rgba(54, 162, 235, 1)',
+          backgroundColor: 'rgba(181,52,70, 1)',
+          borderColor: 'rgba(181,52,705, 1)',
           borderWidth: 1
         }]
       },
