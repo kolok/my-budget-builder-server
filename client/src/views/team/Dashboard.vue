@@ -1,8 +1,11 @@
 <template>
   <div>
-    <h1 class="Content__Head1">Team dashboard</h1>
-    <h2 class="Content__Head2">Google charts</h2>
-    <div style="display:flex;flex-direction:row">
+    <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tab-pane label="Google Chart" name="google"></el-tab-pane>
+      <el-tab-pane label="Chart.js" name="chartjs">
+      </el-tab-pane>
+    </el-tabs>
+    <div class="GoogleChart" style="display:flex;flex-direction:row">
       <div>
         <GChart
           type="PieChart"
@@ -19,10 +22,10 @@
       </div>
     </div>
     <div style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
-    <svg height="20" width="20" class="dot">
-      <circle cx="10" cy="10" r="7" stroke="#4A5889" stroke-width="4" fill="white" />
-      <span class="dot--blue"></span>
-    </svg>
+      <svg height="20" width="20" class="dot">
+        <circle cx="10" cy="10" r="7" stroke="#4A5889" stroke-width="4" fill="white" />
+        <span class="dot--blue"></span>
+      </svg>
       <p>New-York</p>
       <svg height="20" width="20" class="dot">
         <circle cx="10" cy="10" r="7" stroke="#B53446" stroke-width="4" fill="white" />
@@ -37,25 +40,55 @@
         <span class="dot--green"></span>
       </svg><p>Paris</p>
     </div>
-    <h2 class="Content__Head2">Chart.js charts</h2>
-    <div style="width: 600px;height: 400px">
-      <BarChart />
+    <div style="display:flex;flex-direction:row;justify-content:start;align-items:center;">
+      <div style="margin-left:20px;">
+        <el-button type="primary" icon="el-icon-plus" @click="updateData">New Hire</el-button>
+      </div>
+      <div style="margin-left:20px;">
+        <el-dropdown>
+          <span class="el-dropdown-link" style="padding:10px 20px;border:1px solid;width:200px;">
+            Filter<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>blah blah blah</el-dropdown-item>
+            <el-dropdown-item>blah blah blah</el-dropdown-item>
+            <el-dropdown-item>blah blah blah</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+      <div style="margin-left:20px;">
+        <el-dropdown>
+          <span class="el-dropdown-link" style="padding:10px 20px;border:1px solid;">
+            Sort by<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>blah blah blah</el-dropdown-item>
+            <el-dropdown-item>blah blah blah</el-dropdown-item>
+            <el-dropdown-item>blah blah blah</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { GChart } from 'vue-google-charts'
+// Color for the Graph
+// Bleu: 74/88/137 , #4A5889
+// Rouge: 181/52/70 , #5B3446
+// Jaune: 255/195/0 , #FFC300
+// Vert: 54/127/110 , #347F6E
 
-import BarChart from '../../components/charts/BarChart.vue'
+
+import { GChart } from 'vue-google-charts'
 
 export default {
   components: {
-    GChart,
-    BarChart
+    GChart
   },
   data () {
     return {
+      activeName: 'google',
       barChartData: [
         [
           '',
@@ -77,6 +110,11 @@ export default {
         ['SEP 19', 150, 118, 46, 30, 344]
       ],
       barChartOptions: {
+        animation: {
+          duration: 1000,
+          easing: 'out',
+          startup: true
+        },
         isStacked: true,
         width: 600,
         height: 400,
@@ -116,10 +154,6 @@ export default {
             color: '#606266',
           }
         },
-        // Bleu: 74/88/137 , #4A5889
-        // Rouge: 181/52/70 , #5B3446
-        // Jaune: 255/195/0 , #FFC300
-        // Vert: 54/127/110 , #347F6E
       },
       donutChartData: [
         ['Office', 'Headcount'],
@@ -129,7 +163,7 @@ export default {
         ['Paris', 30],
       ],
       donutChartOptions: {
-        width: 600,
+        width: 400,
         height: 400,
         legend: {
           position: 'none',
@@ -149,9 +183,54 @@ export default {
           2: {color: "#FFC300"},
           3: {color: "#347F6E"},
         },
+        animation: {
+          duration: 1000,
+          //easing: 'out',
+          startup: true
+        },
         // TOTAL in the middle
         // https://codepen.io/cireriddler/pen/yyeLpE
       },
+    }
+  },
+  methods: {
+    handleClick(tab, event) {
+      console.log('handleClick1');
+      if (this.activeName === 'google') {
+        this.$router.push('/teamDashboard')
+      }
+      if (this.activeName === 'chartjs') {
+        this.$router.push('/teamDashboard2')
+      }
+    },
+    updateData: function() {
+      this.donutChartData = [
+        ['Office', 'Headcount'],
+        ['New-York', 15],
+        ['Los Angeles', 112],
+        ['London', 49],
+        ['Paris', 3],
+      ];
+      this.barChartData= [
+        [
+          '',
+          'New-York',
+          'Los Angeles',
+          'London',
+          'Paris',
+          { role: 'annotation' }
+        ],
+        ['JAN 19', 150, 125, 40, 20, 335],
+        ['FEV 19', 151, 117, 46, 25, 339],
+        ['MAR 19', 152, 118, 46, 30, 345],
+        ['AVR 19', 153, 118, 46, 30, 346],
+        ['MAI 19', 154, 118, 46, 30, 347],
+        ['JUN 19', 155, 118, 46, 30, 348],
+        ['TODAY', 156, 118, 46, 30, 349],
+        ['JUL 19', 157, 118, 46, 30, 350],
+        ['AGU 19', 158, 118, 46, 30, 351],
+        ['SEP 19', 159, 118, 46, 30, 352]
+      ]
     }
   }
 }
