@@ -20,9 +20,8 @@
       class="Header--Right"
     >
       <el-dropdown @command="handleClickDropdown">
-        <div style="width:200px;display:flex;flex-direction:row;align-items:center;justify-content:flex-end;">
-          <div>{{ getCurrentUser.name }}</div>
-          <div><el-avatar size="large" :src="avatarURL"></el-avatar></div>
+        <div class="Header__Dorpdown">
+          <div><el-avatar size="medium" :src="avatarURL"></el-avatar></div>
           <div><i class="el-icon-arrow-down el-icon--right"></i></div>
         </div>
         <el-dropdown-menu slot="dropdown">

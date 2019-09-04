@@ -78,6 +78,21 @@ $min-sider_width: 200px;
     border-radius: 3px;
     // OtherProperties
   }
+  &__Dorpdown {
+    @extend .Header;
+    // Positioning
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content:flex-end;
+    // BoxModel
+    padding-top: 0px;
+    border: 0 none;
+    width: 200px;
+    // Typography
+    // Visual
+    // OtherProperties
+  }
   &--Left {
     @extend .Header;
     // Positioning

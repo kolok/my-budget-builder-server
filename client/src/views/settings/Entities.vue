@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1 class="Content__Head1">Entities</h1>
     <EntityList />
     <EntityCreate />
   </div>

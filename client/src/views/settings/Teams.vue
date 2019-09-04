@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1 class="Content__Head1">Teams</h1>
     <el-input
       v-model="search"
       style="max-width:400px;margin:20px 0;"
