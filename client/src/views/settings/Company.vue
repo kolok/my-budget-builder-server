@@ -1,7 +1,6 @@
 <template>
   <div>
     <div v-if="userCompanyExists">
-      <h1 class="Content__Head1">Edit your company settings</h1>
       <CompanyEdit :id="getCurrentCompany.id" />
     </div>
     <div v-else>
