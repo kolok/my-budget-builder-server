@@ -1,10 +1,6 @@
 <template>
   <div>
-    <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="Google Chart" name="google"></el-tab-pane>
-      <el-tab-pane label="Chart.js" name="chartjs">
-      </el-tab-pane>
-    </el-tabs>
+    <ContentMenu activeName='google'/>
     <div class="GoogleChart" style="display:flex;flex-direction:row">
       <div>
         <GChart
@@ -21,54 +17,12 @@
         />
       </div>
     </div>
-    <div style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
-      <svg height="20" width="20" class="dot">
-        <circle cx="10" cy="10" r="7" stroke="#4A5889" stroke-width="4" fill="white" />
-        <span class="dot--blue"></span>
-      </svg>
-      <p>New-York</p>
-      <svg height="20" width="20" class="dot">
-        <circle cx="10" cy="10" r="7" stroke="#B53446" stroke-width="4" fill="white" />
-        <span class="dot--red"></span>
-      </svg><p>Los Angeles</p>
-      <svg height="20" width="20" class="dot">
-        <circle cx="10" cy="10" r="7" stroke="#FFC300" stroke-width="4" fill="white" />
-        <span class="dot--yellow"></span>
-      </svg><p>London</p>
-      <svg height="20" width="20" class="dot">
-        <circle cx="10" cy="10" r="7" stroke="#347F6E" stroke-width="4" fill="white" />
-        <span class="dot--green"></span>
-      </svg><p>Paris</p>
+    <ChartLegend/>
+
+    <div style="margin-left:20px;">
+      <el-button type="primary" icon="el-icon-plus" @click="updateData">Update data</el-button>
     </div>
-    <div style="display:flex;flex-direction:row;justify-content:start;align-items:center;">
-      <div style="margin-left:20px;">
-        <el-button type="primary" icon="el-icon-plus" @click="updateData">New Hire</el-button>
-      </div>
-      <div style="margin-left:20px;">
-        <el-dropdown>
-          <span class="el-dropdown-link" style="padding:10px 20px;border:1px solid;width:200px;">
-            Filter<i class="el-icon-arrow-down el-icon--right"></i>
-          </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>blah blah blah</el-dropdown-item>
-            <el-dropdown-item>blah blah blah</el-dropdown-item>
-            <el-dropdown-item>blah blah blah</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div>
-      <div style="margin-left:20px;">
-        <el-dropdown>
-          <span class="el-dropdown-link" style="padding:10px 20px;border:1px solid;">
-            Sort by<i class="el-icon-arrow-down el-icon--right"></i>
-          </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>blah blah blah</el-dropdown-item>
-            <el-dropdown-item>blah blah blah</el-dropdown-item>
-            <el-dropdown-item>blah blah blah</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div>
-    </div>
+
   </div>
 </template>
 
@@ -79,16 +33,20 @@
 // Jaune: 255/195/0 , #FFC300
 // Vert: 54/127/110 , #347F6E
 
+import ContentMenu from '../../components/common/ContentMenu.vue'
+import ChartLegend from '../../components/charts/ChartLegend.vue'
 
 import { GChart } from 'vue-google-charts'
 
 export default {
   components: {
-    GChart
+    GChart,
+    ContentMenu,
+    ChartLegend
   },
   data () {
     return {
-      activeName: 'google',
+      dataVersion: 2,
       barChartData: [
         [
           '',
@@ -98,16 +56,16 @@ export default {
           'Paris',
           { role: 'annotation' }
         ],
-        ['JAN 19', 150, 125, 40, 20, 335],
-        ['FEV 19', 150, 117, 46, 25, 338],
-        ['MAR 19', 150, 118, 46, 30, 344],
-        ['AVR 19', 150, 118, 46, 30, 344],
-        ['MAI 19', 150, 118, 46, 30, 344],
-        ['JUN 19', 150, 118, 46, 30, '344'],
-        ['TODAY', 150, 118, 46, 30, 344],
-        ['JUL 19', 150, 118, 46, 30, 344],
-        ['AGU 19', 150, 118, 46, 30, 344],
-        ['SEP 19', 150, 118, 46, 30, 344]
+        ['JAN 19', 140, 125, 40, 20, 325],
+        ['FEV 19', 141, 122, 40, 25, 328],
+        ['MAR 19', 144, 121, 40, 30, 335],
+        ['AVR 19', 144, 121, 41, 32, 338],
+        ['MAI 19', 144, 121, 41, 35, 341],
+        ['JUN 19', 146, 125, 41, 40, 352],
+        ['TODAY',  148, 128, 42, 42, 360],
+        ['JUL 19', 150, 130, 43, 45, 368],
+        ['AGU 19', 152, 130, 45, 50, 377],
+        ['SEP 19', 160, 140, 46, 60, 406]
       ],
       barChartOptions: {
         animation: {
@@ -204,70 +162,69 @@ export default {
       }
     },
     updateData: function() {
-      this.donutChartData = [
-        ['Office', 'Headcount'],
-        ['New-York', 15],
-        ['Los Angeles', 112],
-        ['London', 49],
-        ['Paris', 3],
-      ];
-      this.barChartData= [
-        [
-          '',
-          'New-York',
-          'Los Angeles',
-          'London',
-          'Paris',
-          { role: 'annotation' }
+      if (this.dataVersion != 2)
+      {
+        this.dataVersion = 2
+        this.barChartData= [
+          [
+            '',
+            'New-York',
+            'Los Angeles',
+            'London',
+            'Paris',
+            { role: 'annotation' }
+          ],
+          ['JAN 19', 130, 125, 40, 20, 315],
+          ['FEV 19', 131, 122, 40, 25, 318],
+          ['MAR 19', 134, 121, 40, 30, 325],
+          ['AVR 19', 134, 121, 41, 32, 328],
+          ['MAI 19', 134, 121, 41, 35, 331],
+          ['JUN 19', 136, 125, 51, 40, 352],
+          ['TODAY',  138, 128, 52, 42, 360],
+          ['JUL 19', 150, 130, 53, 45, 378],
+          ['AGU 19', 152, 130, 55, 50, 387],
+          ['SEP 19', 160, 140, 56, 60, 416]
         ],
-        ['JAN 19', 150, 125, 40, 20, 335],
-        ['FEV 19', 151, 117, 46, 25, 339],
-        ['MAR 19', 152, 118, 46, 30, 345],
-        ['AVR 19', 153, 118, 46, 30, 346],
-        ['MAI 19', 154, 118, 46, 30, 347],
-        ['JUN 19', 155, 118, 46, 30, 348],
-        ['TODAY', 156, 118, 46, 30, 349],
-        ['JUL 19', 157, 118, 46, 30, 350],
-        ['AGU 19', 158, 118, 46, 30, 351],
-        ['SEP 19', 159, 118, 46, 30, 352]
-      ]
+        this.donutChartData = [
+          ['Office', 'Headcount'],
+          ['New-York', 138],
+          ['Los Angeles', 128],
+          ['London', 52],
+          ['Paris', 42],
+        ];
+      }
+      else
+      {
+        this.dataVersion = 1
+        this.barChartData= [
+          [
+            '',
+            'New-York',
+            'Los Angeles',
+            'London',
+            'Paris',
+            { role: 'annotation' }
+          ],
+          ['JAN 19', 140, 125, 40, 20, 325],
+          ['FEV 19', 141, 122, 40, 25, 328],
+          ['MAR 19', 144, 121, 40, 30, 335],
+          ['AVR 19', 144, 121, 41, 32, 338],
+          ['MAI 19', 144, 121, 41, 35, 341],
+          ['JUN 19', 146, 125, 41, 40, 352],
+          ['TODAY',  148, 128, 42, 42, 360],
+          ['JUL 19', 150, 130, 43, 45, 368],
+          ['AGU 19', 152, 130, 45, 50, 377],
+          ['SEP 19', 160, 140, 46, 60, 406]
+        ]
+        this.donutChartData = [
+          ['Office', 'Headcount'],
+          ['New-York', 150],
+          ['Los Angeles', 118],
+          ['London', 46],
+          ['Paris', 30],
+        ];
+      }
     }
   }
 }
 </script>
-
-<style>
-  .dot {
-    margin-left:10px;
-    margin-right:5px;
-  }
-  .dot--blue {
-    background-color: #4A5889;
-    height: 15px;
-    width: 15px;
-    border-radius: 50%;
-    display: inline-block;
-  }
-  .dot--red {
-    background-color: #B53446;
-    height: 15px;
-    width: 15px;
-    border-radius: 50%;
-    display: inline-block;
-  }
-  .dot--yellow {
-    background-color: #FFC300;
-    height: 15px;
-    width: 15px;
-    border-radius: 50%;
-    display: inline-block;
-  }
-  .dot--green {
-    background-color: #347F6E;
-    height: 15px;
-    width: 15px;
-    border-radius: 50%;
-    display: inline-block;
-  }
-
-</style>
