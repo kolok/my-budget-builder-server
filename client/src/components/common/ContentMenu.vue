@@ -1,8 +1,8 @@
 <template>
   <el-tabs v-model="activeName" @tab-click="handleClick">
     <el-tab-pane label="Google Chart" name="google"></el-tab-pane>
-    <el-tab-pane label="ApexChart" name="apex">
-    </el-tab-pane>
+    <el-tab-pane label="ApexChart" name="apex"></el-tab-pane>
+    <el-tab-pane label="EChart" name="echarts"></el-tab-pane>
   </el-tabs>
 </template>
 
@@ -23,6 +23,9 @@
         }
         if (this.activeName === 'apex') {
           this.$router.push('/teamDashboard2')
+        }
+        if (this.activeName === 'echarts') {
+          this.$router.push('/teamDashboard3')
         }
       }
     }

@@ -19,11 +19,13 @@
     "babel-polyfill": "^6.26.0",
     "chart.js": "^2.8.0",
     "chartjs-plugin-datalabels": "^0.6.0",
+    "echarts": "^4.2.1",
     "element-ui": "^2.9.1",
     "es6-promise": "^4.2.8",
     "vue": "^2.5.13",
     "vue-apexcharts": "^1.4.0",
     "vue-chartjs": "^3.4.2",
+    "vue-echarts": "^4.0.3",
     "vue-google-charts": "^0.3.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
