@@ -2,7 +2,7 @@
 
 Komber is a SAAS product to manage Hiring planning and budget. It allows CEO, CFO and HR to plan, share and execute their Hiring plan.
 
-### Preface
+### technologies
 ##### Vue.js, Koa.js, Node.js, Postgresql
 
 Main technologies used are the following
@@ -10,27 +10,29 @@ Main technologies used are the following
  * Node.js / Koa.js as a RESTFul API
  * Vue.js as a client side framework
 
+### Environment:
+- Server
+   - [Koa](http://koajs.com/)
+   - Koa Router, Koa Cors, Koa Bodyparser
+   - Postgresql, Sequelize
+   - Node ~~8.14.0~~
+- Client
+   - [Vue](https://vuejs.org/)
+   - [ElementUI](https://element.eleme.io/#/en-US)
+   - [Axios](https://github.com/axios/axios) (HTTP Client Library)
+   - Webpack 4
+   - WebpackDevServer (Development mode only)
+
 ### Demo:
-Click [here](http://demo.komber.io) to see our demo website.
+The Demo is not available yet.
+TODO: Click [here](http://demo.komber.io) to see our demo website.
 
 You can sign up or use the following access:
 <pre>
-email: admin1@komber.io
-password: azerty
+  email: admin1@komber.io
+  password: azerty
 </pre>
 
-### Environment:
-- Server
-    - [Koa](http://koajs.com/)
-    - Koa Router, Koa Cors, Koa Bodyparser
-    - Postgresql, Sequelize
-    - Node ~~8.14.0~~
-- Client
-    - [Vue](https://vuejs.org/)
-    - [ElementUI](https://element.eleme.io/#/en-US)
-    - [Axios](https://github.com/axios/axios) (HTTP Client Library)
-    - Webpack 4
-    - WebpackDevServer (Development mode only)
 
 ### Architecture
 
@@ -75,7 +77,11 @@ password: azerty
 install docker and docker-compose
 
 ```bash
-    docker-compose up # it will launch server and client side
+    docker-compose up #(-d)# it will launch server and client side
+```
+
+```bash
+    docker-compose logs # display the docker's logs
 ```
 
 ### Setup Locally:
