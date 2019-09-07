@@ -1,9 +1,9 @@
 {
-  "name": "snapshot-client",
+  "name": "Komber-client",
   "version": "1.0.0",
-  "description": "A snapshot of client dev using webpack, vue, babel",
-  "author": "Yunhan",
-  "license": "ISC",
+  "description": "Komber frontend client",
+  "author": "Nicolas Oudard",
+  "license": "private",
   "main": "src/main.js",
   "scripts": {
     "watch": "webpack-dev-server --env=dev --host 0.0.0.0 --inline --content-base --port=80",
