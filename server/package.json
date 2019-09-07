@@ -1,9 +1,9 @@
 {
-  "name": "snapshot-server",
+  "name": "komber-server",
   "version": "1.0.0",
-  "description": "A snapshot of server dev using node, koa, and mongoose",
-  "author": "Yunhan",
-  "license": "ISC",
+  "description": "Komber frontend server",
+  "author": "Nicolas Oudard",
+  "license": "Private",
   "main": "src/server.js",
   "scripts": {
     "watch": "NODE_ENV=development nodemon src/app.js --exec",
