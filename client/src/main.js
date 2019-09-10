@@ -13,8 +13,8 @@ Vue.use(VueGoogleCharts)
 import ECharts from 'vue-echarts' // refers to components/ECharts.vue in webpack
 // import ECharts modules manually to reduce bundle size
 import 'echarts/lib/chart/bar'
+import 'echarts/lib/chart/pie'
 import 'echarts/lib/component/tooltip'
-import 'echarts/lib/component/polar'
 
 
 /** Load App **/

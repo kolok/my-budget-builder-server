@@ -4,7 +4,8 @@
       <ContentMenu activeName="echarts"/>
 
       <div class="GoogleChart" style="display:flex;flex-direction:row">
-        <ECharts :options="polar"/>
+        <ECharts :options="donutOptions"/>
+        <ECharts :options="options"/>
       </div>
 
     </div>
@@ -62,50 +63,158 @@ export default {
     ECharts
   },
   data () {
-    let data = []
-
-    for (let i = 0; i <= 360; i++) {
-        let t = i / 180 * Math.PI
-        let r = Math.sin(2 * t) * Math.cos(2 * t)
-        data.push([r, i])
-    }
     return {
       dataVersion: 1,
-      polar: {
-        title: {
-          text: 'boo'
+      options: {
+        tooltip : {},
+        legend: {
+          data: ['New-York', 'Los Angeles','London','Paris']
+        },
+        grid: {
+          show: false,
+          top: '3%',
+          left: '4%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis:  {
+          showGrid: false,
+          type: 'category',
+          splitLine: {
+            show: false
+          },
+          'axisLabel':{'interval':0,'rotate':45},
+          data: [
+            { value: 'JAN 19', },
+            { value: 'FEV 19', },
+            { value: 'MAR 19', },
+            { value: 'AVR 19', },
+            { value: 'MAI 19', },
+            { value: 'JUN 19', },
+            {
+              value: 'TODAY',
+              textStyle: {'fontWeight':'bolder'}
+            },
+            { value: 'JUL 19', },
+            { value: 'AGU 19', },
+            { value: 'SEP 19', }
+          ],
+        },
+        yAxis: {
+          show: false,
+          showGrid: false,
+          type: 'value',
+          splitLine: {
+            show: false
+          },
+        },
+        color: ['#4A5889', '#B53446', '#FFC300', '#347F6E'],
+        series: [{
+          name: 'New-York',
+          type: 'bar',
+          stack: 'Offices',
+          label: {
+            normal: {
+              show: true,
+              position: 'inside'
+            }
+          },
+          data: [140,141,144,144,144,145,148,150,152,160]
+        },
+        {
+          name: 'Los Angeles',
+          type: 'bar',
+          stack: 'Offices',
+          label: {
+            normal: {
+              show: true,
+              position: 'inside'
+            }
+          },
+          data: [125,122,121,121,121,125,128,130,130,140]
+        },
+        {
+          name: 'London',
+          type: 'bar',
+          stack: 'Offices',
+          label: {
+            normal: {
+              show: true,
+              position: 'inside'
+            }
+          },
+          data: [40,40,40,41,41,41,42,43,45,46]
+        },
+        {
+          name: 'Paris',
+          type: 'bar',
+          stack: 'Offices',
+          label: {
+            normal: {
+              show: true,
+              position: 'inside'
+            }
+          },
+          data: [20,25,30,32,35,40,42,45,50,60]
+        }]
+      },
+      donutOptions: {
+        tooltip: {
+        trigger: 'item',
+        formatter: "{a} <br/>{b}: {c} ({d}%)"
         },
         legend: {
-          data: ['line']
+        orient: 'vertical',
+        x: 'left',
+        data:['New-York','Los Angeles','London','Paris']
         },
-        polar: {
-          center: ['50%', '54%']
-        },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross'
-          }
-        },
-        angleAxis: {
-          type: 'value',
-          startAngle: 0
-        },
-        radiusAxis: {
-          min: 0
-        },
-        series: [
-          {
-            coordinateSystem: 'polar',
-            name: 'line',
-            type: 'line',
-            showSymbol: false,
-            data: data
-          }
-        ],
-        animationDuration: 2000
+        color: ['#4A5889', '#B53446', '#FFC300', '#347F6E'],
+        series: [{
+          name:'Offices',
+          itemStyle : {
+            normal : {
+              label : {
+                show: true, position: 'inner',
+                formatter : function (params){
+                  return  params.name + '\n' + params.value
+                },
+              },
+              labelLine : {
+                show : false
+              }
+            }
+          },
+          type:'pie',
+          radius: ['40%', '70%'],
+          avoidLabelOverlap: false,
+          label: {
+            normal: {
+              show: false,
+              position: 'center'
+            },
+            emphasis: {
+              show: true,
+              textStyle: {
+                fontSize: '20',
+                fontWeight: 'bold'
+              }
+            }
+          },
+          labelLine: {
+            normal: {
+              show: false
+            }
+          },
+          data:[
+            {value:150, name:'New-York'},
+            {value:118, name:'Los Angeles'},
+            {value:46, name:'London'},
+            {value:30, name:'Paris'}
+          ]
+        }]
       }
-    }
+      }
   },
   methods: {
     updateData: function() {}
@@ -120,7 +229,7 @@ export default {
  * don't forget to provide a size for the container).
  */
 .echarts {
-  width: 300px;
+  width: 500px;
   height: 300px;
 }
 </style>
