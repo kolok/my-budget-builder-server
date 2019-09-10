@@ -161,13 +161,13 @@ export default {
       },
       donutOptions: {
         tooltip: {
-        trigger: 'item',
-        formatter: "{a} <br/>{b}: {c} ({d}%)"
+          trigger: 'item',
+          formatter: "{a} <br/>{b}: {c} ({d}%)"
         },
         legend: {
-        orient: 'vertical',
-        x: 'left',
-        data:['New-York','Los Angeles','London','Paris']
+          orient: 'vertical',
+          x: 'left',
+          data:['New-York','Los Angeles','London','Paris']
         },
         color: ['#4A5889', '#B53446', '#FFC300', '#347F6E'],
         series: [{
