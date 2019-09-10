@@ -49,7 +49,7 @@ module.exports  = function(sequelize, DataTypes) {
   }, {underscored: true, tableName: 'companies'})
 
   /*
-   *FIXME : the relation between company and usuers should be a many to many
+   *FIXME : the relation between company and users should be a many to many
    * relationship using a typed link to handle the roles of the user in the
    * company
    */
@@ -62,6 +62,12 @@ module.exports  = function(sequelize, DataTypes) {
       through: 'UserCompany',
       as: 'users',
       foreignKey: 'company_id'
+    })
+
+    /* Relationship with team */
+    Company.hasMany(models.Team, {
+      foreignKey: 'company_id',
+      as: 'team'
     })
 
     /*
