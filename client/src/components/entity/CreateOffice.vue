@@ -1,21 +1,20 @@
 <template>
-  <div>
+  <div class="Content__Card">
     <template>
-      <el-card class="box-card">
+      <el-card class="Content__Card">
         <div
           slot="header"
-          class="Card__Header Card__Header--italic"
+          class="Content__CardHeader--italic"
         >
           <span>Create a new Office</span>
         </div>
         <div
-          class="card-action"
-          style="min-height:90px;display: flex;align-items: center; justify-content: center;"
+          class="Content__CardButtonContainer"
         >
           <el-button
+            class="Content__CardButton--CenterBig"
             icon="el-icon-circle-plus-outline"
             type="text"
-            style="font-size: 50px"
             @click="handleAddOffice"
           />
         </div>

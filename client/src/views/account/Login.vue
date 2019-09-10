@@ -1,15 +1,15 @@
 <template>
-  <div class="CardContainer">
+  <div class="Content__CardContainer">
     <el-card
-      class="Card"
+      class="Content__Card"
     >
       <div
         slot="header"
-        class="Card__Header"
+        class="Content__CardHeader"
       >
         <span>Login</span>
       </div>
-      <div class="Card__FormContainer">
+      <div class="Content__CardFormContainer">
         <el-form
           ref="loginForm"
           :model="loginForm"
@@ -42,14 +42,14 @@
           <el-form-item>
             <el-button
               type="primary"
-              style="width:100%"
+              class="Content__CardButton--Large"
               @click="submit('loginForm')"
             >
               Submit
             </el-button>
           </el-form-item>
         </el-form>
-        <p style="font-size: 14px;">
+        <p>
           Don't have an account?
           <router-link to="/signup">
             Sign up

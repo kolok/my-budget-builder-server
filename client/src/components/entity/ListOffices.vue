@@ -3,17 +3,19 @@
     <div
       v-for="item in entity.offices"
       :key="item.id"
-      style="min-width:400px;min-height:150px;float:left;padding:25px;"
+      class="Content__CardContainer--Small"
     >
-      <el-card>
+      <el-card
+        class="Content__Card"
+      >
         <div
           slot="header"
-          class="Card__Header"
+          class="Content__CardHeader"
         >
           <span>{{ item.name }}</span>
-          <div style="float: right; padding: 3px 0">
+          <div class="Content__ButtonContainer">
             <el-button
-              style="float: right; padding: 3px 0"
+              class="Content__Button"
               type="text"
               icon="el-icon-delete"
               @click="handleDeleteOffice(item)"
@@ -24,8 +26,8 @@
         <div
           class="Card__Body"
         >
-          <ul style="list-style: none;">
-            <li style="font:14px;font-style:bold;">
+          <ul class="Content__List">
+            <li class="Content__ListItem">
               {{ item.name }}
             </li>
             <li>{{ item.address }}</li>
@@ -34,9 +36,7 @@
         </div>
       </el-card>
     </div>
-    <div
-      style="min-width:400px;min-height:150px;float:left;padding:25px;"
-    >
+    <div class="Content__CardContainer--Small">
       <CreateOffice :entityID="entity.id" :countryID="entity.country_id"/>
     </div>
   </div>

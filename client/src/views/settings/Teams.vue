@@ -2,7 +2,7 @@
   <div>
     <el-input
       v-model="search"
-      style="max-width:400px;margin:20px 0;"
+      class="Content__Input--Search"
       placeholder="Type to search"
     />
     <br>

@@ -1,7 +1,7 @@
 <template>
-  <div style="float: right; padding: 3px 0">
+  <div class="Content__ButtonContainer">
     <el-button
-      style="float: right; padding: 3px 0"
+      class="Content__Button"
       type="text"
       icon="el-icon-edit"
       @click="handleEditOffice(officeForm)"

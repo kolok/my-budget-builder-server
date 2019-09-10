@@ -1,15 +1,15 @@
 <template>
-  <div class="CardContainer">
+  <div class="Content__CardContainer">
     <el-card
-      class="Card"
+      class="Content__Card"
     >
       <div
         slot="header"
-        class="Card__Header"
+        class="Content__CardHeader"
       >
         <span>Sign up</span>
       </div>
-      <div class="Card__FormContainer">
+      <div class="Content__CardFormContainer">
         <el-form
           ref="signupForm"
           :model="signupForm"
@@ -33,9 +33,9 @@
             <el-input
               v-model="signupForm.subdomain"
               placeholder="subdomain"
-              class="Card__Input--Shorter"
+              class="Content__CardInput--Shorter"
             />
-            <span class="Card__Text--Suffix">.komber.io</span>
+            <span class="Content__CardText--Suffix">.komber.io</span>
           </el-form-item>
           <el-form-item
             prop="name"
@@ -81,7 +81,7 @@
           <el-form-item>
             <el-button
               type="primary"
-              style="width:100%"
+              class="Content__CardButton--Large"
               @click="submit('signupForm')"
             >
               Sign me up
