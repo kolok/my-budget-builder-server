@@ -42,8 +42,12 @@ class TeamController {
     const request = ctx.request.body
     // force the company id with the user one
     request.company_id = ctx.state.company.id
+    if (request.parent_team_id == '') {
+      request.parent_team_id = null
+    }
 
     try {
+      console.log('request',request)
       let team = await Team.create( request )
       ctx.body = team
     } catch (error) {

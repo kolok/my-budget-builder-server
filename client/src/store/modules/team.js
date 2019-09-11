@@ -1,6 +1,19 @@
 import TeamResource from '../../api/team.service'
 import OfficeResource from '../../api/office.service'
 
+function buildTree(teams) {
+  var root = {id:0, parent_id: null, children: []}
+  var node_list = { 0 : root};
+  for (var i = 0; i < teams.length; i++) {
+    node_list[teams[i].id] = teams[i];
+    node_list[teams[i].id].children = [];
+  }
+  for (var i = 0; i < teams.length; i++) {
+    node_list[teams[i].parent_team_id || 0 ].children.push(node_list[teams[i].id]);
+  }
+  return root.children;
+}
+
 export default {
   state: {
     teams: [],
@@ -15,19 +28,21 @@ export default {
       state.teams = teams
     },
     SET_TEAMTREE: (state, teams) => {
-      var root = {id:0, parent_id: null, children: []}
-      var node_list = { 0 : root};
-      for (var i = 0; i < teams.length; i++) {
-        node_list[teams[i].id] = teams[i];
-        node_list[teams[i].id].children = [];
-      }
-      for (var i = 0; i < teams.length; i++) {
-        node_list[teams[i].parent_team_id || 0 ].children.push(node_list[teams[i].id]);
-      }
-      state.teamTree = root.children;
+      state.teamTree = buildTree(teams);
     },
     CREATE_TEAM: (state, team) => {
       state.teams.push(team)
+      state.teamTree = buildTree(state.teams);
+    },
+    setTeamInTree: (node, team) => {
+      if (node.id == team.parent_team_id) {
+        node.children.push(team);
+        return true;
+      }
+      if (node.children.length == 0) {
+        return false;
+      }
+      return node.children.forEach( subnode => {this.setTeamInTree(subnode, team)} )
     },
     UPDATE_TEAM: (state, team) => {
       state.teams.forEach(item => {
@@ -36,8 +51,15 @@ export default {
         }
       })
     },
-    DELETE_TEAM: (state, id) => {
-      state.teams = state.teams.filter(item => item.id !== id)
+    DELETE_TEAM: (state, team) => {
+      console.log(team)
+      state.teams.forEach( node => {
+        if (node.parent_team_id == team.id) {
+          node.parent_team_id = team.parent_team_id
+        }
+      })
+      state.teams = state.teams.filter(item => item.id !== team.id)
+      state.teamTree = buildTree(state.teams);
     },
   },
   actions: {
@@ -75,7 +97,7 @@ export default {
     deleteTeam: ({commit}, id) => {
       return TeamResource.delete(id)
         .then(response => {
-          commit('DELETE_TEAM', id)
+          commit('DELETE_TEAM', response.data)
         })
         .catch(err => {
           throw err

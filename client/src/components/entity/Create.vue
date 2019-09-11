@@ -65,11 +65,11 @@
       <span
         slot="footer"
       >
-        <el-button @click="handleCancel">Annuler</el-button>
+        <el-button @click="handleCancel">Cancel</el-button>
         <el-button
           type="primary"
           @click="handleCreateEntity('entityForm')"
-        >Confirmer</el-button>
+        >Save</el-button>
       </span>
     </el-dialog>
   </div>
