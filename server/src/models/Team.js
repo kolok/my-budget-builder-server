@@ -16,6 +16,10 @@ module.exports  = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    parent_team_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
     status: {
       allowNull: false,
       defaultValue: 'active',
@@ -46,7 +50,14 @@ module.exports  = function(sequelize, DataTypes) {
       foreignKey: 'company_id',
       as: 'company'
     })
-
+    Team.belongsTo(models.Team, {
+      foreignKey: 'parent_team_id',
+      as: 'parent_team'
+    })
+    Team.hasMany(models.Team, {
+      foreignKey: 'parent_team_id',
+      as: 'children_teams'
+    })
   }
 
   return Team

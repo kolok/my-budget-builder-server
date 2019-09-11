@@ -7,6 +7,16 @@ const teamController = new TeamController()
 const router = new Router()
 const jwtMiddleware = jwt({ secret: process.env.JWT_SECRET })
 
+// list teams
+router.get('/api/v1/teams', jwtMiddleware, async (ctx/*, next*/) => {
+  await teamController.list(ctx)
+})
+
+// get team
+router.get('/api/v1/teams/:id', jwtMiddleware, async (ctx/*, next*/) => {
+  await teamController.get(ctx)
+})
+
 // create team
 router.post('/api/v1/teams', jwtMiddleware, async (ctx/*, next*/) => {
   await teamController.create(ctx)

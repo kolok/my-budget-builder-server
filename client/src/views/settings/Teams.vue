@@ -17,12 +17,11 @@
       :data="teamData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
       node-key="id"
       default-expand-all
+      @node-drop="handleDrop"
       draggable
-      :allow-drop="allowDrop"
-      :allow-drag="allowDrag"
       :expand-on-click-node="false">
       <span class="custom-tree-node" slot-scope="{ node, data }">
-        <span>{{ node.label }}</span>
+        <span>{{ data.name }}</span>
         <span>
           <el-button
             type="text"
@@ -43,96 +42,37 @@
 </template>
 
 <script>
+
+  import TeamList from '../../components/team/List.vue'
+  import { mapGetters, mapActions } from 'vuex'
+
   export default {
     components: {
-
+      TeamList
     },
     data() {
       return {
-        teamData: [{
-          id: 1,
-          name: 'Sales',
-          label: 'Sales',
-          manager: 'Emmanuel Macron',
-          ft:10,
-          children: [{
-            id: 3,
-            name: 'FR Sales',
-            label: 'FR Sales',
-            entity: 'loop SAS',
-            ft:6
-          }, {
-            id: 4,
-            name: 'US Sales',
-            label: 'US Sales',
-            entity: 'loop CO',
-            ft:4,
-            children: [{
-              id: 5,
-              name: 'NY Sales',
-              label: 'NY Sales',
-              entity: 'loop CO',
-              office: 'New York',
-              ft:3
-            }, {
-              id: 6,
-              name: 'SF Sales',
-              label: 'SF Sales',
-              entity: 'loop CO',
-              office: 'San Francisco',
-              ft:1
-            }]
-          }]
-        }, {
-          id: 7,
-          name: 'R&D',
-          label: 'R&D',
-          manager: 'Edouard Philippe',
-          ft: 22.5,
-          children: [{
-            id: 8,
-            name: 'Infra',
-            label: 'Infra',
-            entity: 'loop SAS',
-            office: 'Paris',
-            ft:2
-          }, {
-            id: 9,
-            name: 'Development',
-            label: 'Development',
-            entity: 'loop SAS',
-            office: 'Paris',
-            ft:20.5,
-            children: [{
-              id: 10,
-              name: 'Frontend',
-              label: 'Frontend',
-              entity: 'loop SAS',
-              office: 'Paris',
-              ft:12.5
-            }, {
-              id: 11,
-              name: 'Backend',
-              label: 'Backend',
-              entity: 'loop SAS',
-              office: 'Paris',
-              ft:8
-            }, {
-              id: 12,
-              name: 'This is a very long name of team because it can occur in the real life',
-              label: 'This is a very long name of team because it can occur in the real life',
-              entity: 'loop SAS',
-              office: 'Paris'
-            }]
-          }]
-        }, {
-          id: 2,
-          name: 'Board',
-          label: 'Board',
-          ft:3
-        }],
+        root: {id:0, parent_id: null, children: []},
+        teamData: [],
         search: ''
       }
+    },
+    computed: {
+      ...mapGetters(['teams', 'teamTree'])
+    },
+    created() {
+      this.$store.dispatch('getTeams').then((teams) => {
+        var node_list = { 0 : this.root};
+        for (var i = 0; i < this.teams.length; i++) {
+          node_list[this.teams[i].id] = this.teams[i];
+          node_list[this.teams[i].id].children = [];
+          node_list[this.teams[i].id].label = node_list[this.teams[i].id].name;
+        }
+        for (var i = 0; i < this.teams.length; i++) {
+          node_list[this.teams[i].parent_team_id || 0 ].children.push(node_list[this.teams[i].id]);
+        }
+        this.teamData = this.root.children;
+      })
     },
     methods: {
       handleEdit(index, row) {
@@ -140,6 +80,17 @@
       },
       handleDelete(index, row) {
         console.log(index, row)
+      },
+      handleDrop(draggingNode, dropNode, dropType, ev) {
+        console.log('draggingNode: ', draggingNode.label, dropType);
+        console.log('dropNode: ', dropNode.label, dropType);
+      },
+      append(data) {
+        console.log('data: ', data);
+      },
+      remove(node, data) {
+        console.log('data: ', data);
+        console.log('node: ', node);
       }
     }
   }

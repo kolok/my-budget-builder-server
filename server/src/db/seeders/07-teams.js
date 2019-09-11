@@ -22,6 +22,15 @@ module.exports = {
       },
       {
         id: 2,
+        name: 'R&D - data science',
+        company_id: 1,
+        parent_team_id: 3,
+        status: 'active',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        id: 3,
         name: 'R&D',
         company_id: 1,
         status: 'active',
@@ -29,7 +38,25 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        id: 3,
+        id: 4,
+        name: 'R&D - Infra',
+        company_id: 1,
+        parent_team_id: 3,
+        status: 'active',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        id: 5,
+        name: 'R&D - software',
+        company_id: 1,
+        parent_team_id: 3,
+        status: 'active',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        id: 6,
         name: 'Sales',
         company_id: 2,
         status: 'active',
@@ -37,7 +64,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        id: 4,
+        id: 7,
         name: 'R&D',
         company_id: 2,
         status: 'active',
@@ -45,7 +72,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        id: 5,
+        id: 8,
         name: 'Sales',
         company_id: 3,
         status: 'active',
@@ -53,7 +80,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        id: 6,
+        id: 9,
         name: 'R&D',
         company_id: 3,
         status: 'active',

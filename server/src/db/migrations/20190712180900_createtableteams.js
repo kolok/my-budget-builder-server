@@ -16,6 +16,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false
       },
+      parent_team_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
       status: {
         allowNull: false,
         defaultValue: 'active',

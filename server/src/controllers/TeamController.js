@@ -8,6 +8,35 @@ class TeamController {
 
 // CRUD
 
+// List teams
+  async list(ctx) {
+    try {
+      let result = await Team.findAll(
+        { where: { company_id: ctx.state.company.id, status: {[Op.ne]: 'deleted'} } }
+      )
+      ctx.body = result
+    } catch (error) {
+      console.log(error)
+      ctx.throw(400, 'INVALID_DATA')
+    }
+  }
+
+  // get team
+  async get(ctx) {
+    //Make sure they've specified a team id
+    const params = ctx.params
+    if (!params.id) ctx.throw(400, 'INVALID_DATA')
+
+    //Find and set that company
+    let team = await Team
+      .findOne(
+        { where: { id: params.id, company_id: ctx.state.company.id, status : {[Op.ne]: 'deleted'} } }
+      )
+    if (!team) ctx.throw(400, 'INVALID_DATA')
+
+    ctx.body = team
+  }
+
   // create team
   async create(ctx) {
     const request = ctx.request.body
