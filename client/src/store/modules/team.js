@@ -3,14 +3,28 @@ import OfficeResource from '../../api/office.service'
 
 export default {
   state: {
-    teams: []
+    teams: [],
+    teamTree: []
   },
   getters: {
-    teams: state => state.teams
+    teams: state => state.teams,
+    teamTree: state => state.teamTree
   },
   mutations: {
     SET_TEAMS: (state, teams) => {
       state.teams = teams
+    },
+    SET_TEAMTREE: (state, teams) => {
+      var root = {id:0, parent_id: null, children: []}
+      var node_list = { 0 : root};
+      for (var i = 0; i < teams.length; i++) {
+        node_list[teams[i].id] = teams[i];
+        node_list[teams[i].id].children = [];
+      }
+      for (var i = 0; i < teams.length; i++) {
+        node_list[teams[i].parent_team_id || 0 ].children.push(node_list[teams[i].id]);
+      }
+      state.teamTree = root.children;
     },
     CREATE_TEAM: (state, team) => {
       state.teams.push(team)
@@ -32,6 +46,7 @@ export default {
         .then(response => {
           var teams = response.data
           commit('SET_TEAMS', teams)
+          commit('SET_TEAMTREE', teams)
         })
         .catch(err => {
           throw err

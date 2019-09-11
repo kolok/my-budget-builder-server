@@ -14,14 +14,14 @@
       Add a root team
     </el-button>
     <el-tree
-      :data="teamData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+      :data="filterTree(teamTree)"
       node-key="id"
       default-expand-all
       @node-drop="handleDrop"
       draggable
       :expand-on-click-node="false">
       <span class="custom-tree-node" slot-scope="{ node, data }">
-        <span>{{ data.name }}</span>
+        <span :class="data.search">{{ data.name }}</span>
         <span>
           <el-button
             type="text"
@@ -61,18 +61,7 @@
       ...mapGetters(['teams', 'teamTree'])
     },
     created() {
-      this.$store.dispatch('getTeams').then((teams) => {
-        var node_list = { 0 : this.root};
-        for (var i = 0; i < this.teams.length; i++) {
-          node_list[this.teams[i].id] = this.teams[i];
-          node_list[this.teams[i].id].children = [];
-          node_list[this.teams[i].id].label = node_list[this.teams[i].id].name;
-        }
-        for (var i = 0; i < this.teams.length; i++) {
-          node_list[this.teams[i].parent_team_id || 0 ].children.push(node_list[this.teams[i].id]);
-        }
-        this.teamData = this.root.children;
-      })
+      this.$store.dispatch('getTeams')
     },
     methods: {
       handleEdit(index, row) {
@@ -91,7 +80,45 @@
       remove(node, data) {
         console.log('data: ', data);
         console.log('node: ', node);
+      },
+      filterTree(teamTree) {
+        var result = [];
+        teamTree.forEach( node => {
+          if (filterTree(node, this.search)){
+            result.push(node);
+          }
+        });
+        return result;
+
+
+        if (this.search == ""){
+          return teamTree;
+        }
+        teamTree.forEach( data => {
+          if (data.name.toLowerCase().includes(this.search.toLowerCase()))
+          {
+            result.push(data);
+          }
+        })
+        return result;
+        //return teamTree.filter(data => !this.search || data.name.toLowerCase().includes(this.search.toLowerCase()));
       }
+    }
+  }
+
+  function filterTree( treeNode, search ) {
+
+    if (treeNode.children === undefined || treeNode.children.length == 0 ){
+      return treeNode.name.toLowerCase().includes(search.toLowerCase())
+    }
+    else {
+      var found = false;
+      treeNode.children.forEach( node => {
+        if (filterTree( node, search )) {
+          found = true
+        }
+      });
+      return treeNode.name.toLowerCase().includes(search.toLowerCase()) || found;
     }
   }
 </script>
