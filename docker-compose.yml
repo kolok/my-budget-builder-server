@@ -7,9 +7,9 @@ services:
     container_name: loop-server
 # server sources are locatted into ./server, we need to set the root ./server for the Docker builder
     build:
-      context: ./server
+      context: .
       dockerfile: Dockerfile
-    restart: always
+      #restart: always
 # Open port 3000
 # FIXME: this should be replaced by nginx-proxy
     ports:
@@ -19,36 +19,11 @@ services:
 # Mount root to taken into account code updates
 # ignore /usr/server/node_modules
     volumes:
-      - ./server:/usr/server
+      - .:/usr/server
       - /usr/server/node_modules
 # Waiting for database
     depends_on:
       - db
-# Run nodemon using "npm run watch"
-    command: ["npm", "run", "watch"]
-
-# Client docker
-  client:
-    container_name: loop-client
-# server sources are locatted into ./client, we need to set the root ./client for the Docker builder
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-    restart: always
-# Open port 80
-    ports:
-      - "80:80"
-    environment:
-      NODE_ENV: development
-
-# Mount root to taken into account code updates
-# ignore /usr/server/node_modules
-    volumes:
-      - ./client:/usr/client
-      - /usr/client/node_modules
-# Waiting for server
-    depends_on:
-      - server
 # Run nodemon using "npm run watch"
     command: ["npm", "run", "watch"]
 
