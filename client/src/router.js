@@ -71,6 +71,28 @@ let router = new VueRouter({
       }
     },
     {
+      path: '/teamDashboard2',
+      name: 'Dashboard2',
+      component: () => import(
+        './views/team/Dashboard2.vue'
+      ),
+      meta: {
+        requiresAuth: true,
+        title: 'Komber - Team Dashboard'
+      }
+    },
+    {
+      path: '/teamDashboard3',
+      name: 'Dashboard3',
+      component: () => import(
+        './views/team/Dashboard3.vue'
+      ),
+      meta: {
+        requiresAuth: true,
+        title: 'Komber - Team Dashboard'
+      }
+    },
+    {
       path: '/teamMovements',
       name: 'Movements',
       component: () => import(
