@@ -13,15 +13,35 @@ function buildTree(teams) {
   }
   return root.children;
 }
+function buildTreeSelector(teams) {
+  var root = {value:0, children: []}
+  var node_list = { 0 : root}
+  var teamSelector = []
+  for (var i = 0; i < teams.length; i++) {
+    teamSelector[i] = {
+      value: teams[i].id,
+      label: teams[i].name,
+      parent_team_id: teams[i].parent_team_id,
+      children: []
+    }
+    node_list[teamSelector[i].value] = teamSelector[i];
+  }
+  for (var i = 0; i < teamSelector.length; i++) {
+    node_list[teamSelector[i].parent_team_id || 0 ].children.push(node_list[teamSelector[i].value]);
+  }
+  return root.children;
+}
 
 export default {
   state: {
     teams: [],
-    teamTree: []
+    teamTree: [],
+    teamTreeSelector: []
   },
   getters: {
     teams: state => state.teams,
-    teamTree: state => state.teamTree
+    teamTree: state => state.teamTree,
+    teamTreeSelector: state => state.teamTreeSelector
   },
   mutations: {
     SET_TEAMS: (state, teams) => {
@@ -29,20 +49,12 @@ export default {
     },
     SET_TEAMTREE: (state, teams) => {
       state.teamTree = buildTree(teams);
+      state.teamTreeSelector = buildTreeSelector(teams);
     },
     CREATE_TEAM: (state, team) => {
       state.teams.push(team)
       state.teamTree = buildTree(state.teams);
-    },
-    setTeamInTree: (node, team) => {
-      if (node.id == team.parent_team_id) {
-        node.children.push(team);
-        return true;
-      }
-      if (node.children.length == 0) {
-        return false;
-      }
-      return node.children.forEach( subnode => {this.setTeamInTree(subnode, team)} )
+      state.teamTreeSelector = buildTreeSelector(state.teams);
     },
     UPDATE_TEAM: (state, team) => {
       state.teams.forEach(item => {
@@ -60,6 +72,7 @@ export default {
       })
       state.teams = state.teams.filter(item => item.id !== team.id)
       state.teamTree = buildTree(state.teams);
+      state.teamTreeSelector = buildTreeSelector(state.teams);
     },
   },
   actions: {
@@ -75,6 +88,9 @@ export default {
         })
     },
     createTeam: ({commit}, team) => {
+      if (team.parent_team_id.length !== undefined){
+        team.parent_team_id = team.parent_team_id[ team.parent_team_id.length - 1 ]
+      }
       return TeamResource.create(team)
         .then(response => {
           var team = response.data

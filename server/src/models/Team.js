@@ -56,7 +56,7 @@ module.exports  = function(sequelize, DataTypes) {
     })
     Team.hasMany(models.Team, {
       foreignKey: 'parent_team_id',
-      as: 'children_teams'
+      as: 'subteams'
     })
   }
 

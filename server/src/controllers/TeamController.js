@@ -92,9 +92,18 @@ class TeamController {
 
     //Find and set that company
     let team = await Team.findOne(
-      { where: { id: params.id, company_id: ctx.state.company.id, status : {[Op.ne]: 'deleted'} } }
+      { where: { id: params.id, company_id: ctx.state.company.id, status : {[Op.ne]: 'deleted'} },
+        include: [
+          {association: 'subteams', required:false, where: { status : {[Op.ne]: 'deleted'} }},
+        ]
+      }
     )
     if (!team) ctx.throw(400, 'INVALID_DATA')
+
+    team.subteams.forEach( subteam => {
+      subteam.parent_team_id = team.parent_team_id;
+      subteam.save()
+    })
 
     //Add the soft delete values
     team.updatedAt = dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss')

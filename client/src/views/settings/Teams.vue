@@ -24,6 +24,7 @@
         :rules="teamRule"
         label-width="250px"
         class="Dialog__Form"
+        @keyup.enter.native="handleCreateTeam('teamForm', false)"
       >
         <el-form-item
           prop="name"
@@ -38,17 +39,12 @@
           label="Parent Team"
           prop="parent_team_id"
         >
-          <el-select
+          <el-cascader
             v-model="teamForm.parent_team_id"
-            placeholder="Root"
-          >
-            <el-option
-              v-for="team in teams"
-              :key="team.id"
-              :label="team.name"
-              :value="team.id"
-            />
-          </el-select>
+            :options="teamTreeSelector"
+            :props="{ checkStrictly: true }"
+            clearable>
+          </el-cascader>
         </el-form-item>
       </el-form>
       <span
@@ -57,8 +53,12 @@
         <el-button @click="handleCancel">Cancel</el-button>
         <el-button
           type="primary"
-          @click="handleCreateTeam('teamForm')"
-        >Save</el-button>
+          @click="handleCreateTeam('teamForm', false)"
+        >Save and continue</el-button>
+        <el-button
+          type="primary"
+          @click="handleCreateTeam('teamForm', true)"
+        >Save and close</el-button>
       </span>
     </el-dialog>
 
@@ -81,7 +81,7 @@
           <el-button
             type="text"
             size="mini"
-            @click="() => append(data)">
+            @click="() => showCreateDialog(data)">
             Ajouter
           </el-button>
           <el-button
@@ -126,7 +126,7 @@
       }
     },
     computed: {
-      ...mapGetters(['teams', 'teamTree'])
+      ...mapGetters(['teams', 'teamTree', 'teamTreeSelector'])
     },
     created() {
       this.$store.dispatch('getTeams')
@@ -164,17 +164,27 @@
       // Team Management //
       //////////////////////////
 
-      showCreateDialog() {
+      showCreateDialog(data) {
+        if (data !== undefined) {
+          this.teamForm.parent_team_id = data.id
+        }
         this.createDialog = true;
       },
-      handleCreateTeam: function(formName) { // Create entity
+
+      handleCreateTeam: function(formName, close) { // Create entity
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.createTeam(this.teamForm)
               .then(response => {
                 // reset form data
-                this.$refs[formName].resetFields()
-                this.createDialog = false
+                if (close) {
+                  this.$refs[formName].resetFields()
+                  this.createDialog = false
+                } else {
+                  var parent_team_id = this.teamForm.parent_team_id
+                  this.$refs[formName].resetFields()
+                  this.teamForm.parent_team_id = parent_team_id
+                }
               })
               .catch(e => {
                 console.log(e)
