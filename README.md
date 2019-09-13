@@ -33,35 +33,46 @@ You can sign up or use the following access:
 
 ### Architecture
 
-  komber-server                  # server folder
-   ├─src                  # server src
-   │  ├─controllers
-   │  │  └─_Controllers_  # by objects/routes
-   │  ├─db
-   │  │  ├─config         # connection and credentials config for db
-   │  │  ├─migrations     # db migrations
-   │  │  └─seeders        # seeds db
-   │  ├─middleware
-   │  │  └─jwt.js         # Manage authentication process with jsonwebtoken
-   │  ├─models
-   │  │  ├─_Models_       # Sequelize models
-   │  │  └─index.js       # Sequelize builder (config and association management)
-   │  ├─routes
-   │  │  └─_routers_      # router by object type
-   │  ├─app.js            # main js file which launch the server depending of the environment
-   │  └─index.js          # server and router
-   └─_config_files_
+    komber-server                  # server folder
+     ├─src                  # server src
+     │  ├─controllers
+     │  │  └─_Controllers_  # by objects/routes
+     │  ├─db
+     │  │  ├─config         # connection and credentials config for db
+     │  │  ├─migrations     # db migrations
+     │  │  └─seeders        # seeds db
+     │  ├─middleware
+     │  │  └─jwt.js         # Manage authentication process with jsonwebtoken
+     │  ├─models
+     │  │  ├─_Models_       # Sequelize models
+     │  │  └─index.js       # Sequelize builder (config and association management)
+     │  ├─routes
+     │  │  └─_routers_      # router by object type
+     │  ├─app.js            # main js file which launch the server depending of the environment
+     │  └─index.js          # server and router
+     └─_config_files_
 
 ### Run through Docker
 
 install docker and docker-compose
 
+Launch the server:
+
 ```bash
     docker-compose up #(-d)# it will launch server and client side
 ```
 
+And check the log:
+
 ```bash
     docker-compose logs # display the docker's logs
+```
+
+After adding a npm module (ex : npm i my_lib --save) you'll need to rebuild the docker image and restart it:
+
+```bash
+    docker-compose build --no-cache
+    docker-compose restart
 ```
 
 ### Setup Locally:
