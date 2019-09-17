@@ -4,7 +4,7 @@ services:
 
 # Server docker
   server:
-    container_name: loop-server
+    container_name: komber-server
 # server sources are locatted into ./server, we need to set the root ./server for the Docker builder
     build:
       context: .
@@ -38,14 +38,14 @@ services:
 #      - 5432:5432
     environment:
 # Use a dedicate user for this pproject with a complex password
-      POSTGRES_USER: loop-admin
+      POSTGRES_USER: komber-admin
       POSTGRES_PASSWORD: Aek8Aegaloh1jaD0Rah6ieghOosh9ree
 # PGDATA is the volume where the postgresql data file will be stored
-      PGDATA: /var/lib/postgresql/data/loopdata
+      PGDATA: /var/lib/postgresql/data/komberdata
 # mount posgresql volume on your own computer to persist the data
     volumes:
-        - /var/lib/postgresql/data/loopdata:/var/lib/postgresql/data/loopdata:rw
-    container_name: loop-db
+        - ./data/komberdata:/var/lib/postgresql/data/komberdata:rw
+    container_name: komber-db
 
 # This is an interface to admininstrate db in your docker envirnment on port 8080
 # To access it, open a browser on the url http://localhost:8080
@@ -55,4 +55,4 @@ services:
     restart: always
     ports:
       - 8081:8080
-    container_name: loop-adminer
+    container_name: komber-adminer
