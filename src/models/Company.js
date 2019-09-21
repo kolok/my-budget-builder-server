@@ -18,14 +18,16 @@ module.exports  = function(sequelize, DataTypes) {
       allowNull: false,
       unique: true
     },
-    first_month_fiscal_year: {
+    firstMonthFiscalYear: {
       type: DataTypes.ENUM,
       defaultValue: '1',
-      values: ['1','2','3','4','5','6','7','8','9','10','11','12']
+      values: ['1','2','3','4','5','6','7','8','9','10','11','12'],
+      field: 'first_month_fiscal_year'
     },
-    default_currency_id: {
+    defaultCurrencyID: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      field: 'default_currency_id'
     },
     status: {
       type: DataTypes.ENUM,
@@ -75,7 +77,7 @@ module.exports  = function(sequelize, DataTypes) {
      * So the company belongs to a currency
      */
     Company.belongsTo(models.Currency, {
-      foreignKey: 'default_currency_id',
+      foreignKey: 'defaultCurrencyID',
       as: 'default_currency'
     })
 

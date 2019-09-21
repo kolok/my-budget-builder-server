@@ -17,6 +17,12 @@ module.exports  = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       unique: true
     },
+    defaultLanguage: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      defaultValue: 'en',
+      field: 'default_language'
+    },
     password: {
       allowNull: false,
       type: DataTypes.STRING

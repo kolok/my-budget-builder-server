@@ -17,6 +17,12 @@ module.exports = {
         type: Sequelize.STRING,
         unique: true
       },
+      defaultLanguage: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: 'en',
+        field: 'default_language'
+      },
       password: {
         allowNull: false,
         type: Sequelize.STRING
