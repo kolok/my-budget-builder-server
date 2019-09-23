@@ -259,184 +259,109 @@ class UserController {
     }
   }
 
-  /*
-   *
-   * async invalidateAllRefreshTokens(ctx) {
-   * const request = ctx.request.body
-   * try {
-   * await db('refresh_tokens')
-   * .update({
-   * isValid: false,
-   * updatedAt: dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'),
-   * })
-   * .where({ username: request.username })
-   * ctx.body = { message: 'SUCCESS' }
-   * } catch (error) {
-   * ctx.throw(400, 'INVALID_DATA')
-   * }
-   * }
-   *
-   * async invalidateRefreshToken(ctx) {
-   * const request = ctx.request.body
-   * if (!request.refreshToken) {
-   * ctx.throw(404, 'INVALID_DATA')
-   * }
-   * try {
-   * await db('refresh_tokens')
-   * .update({
-   * isValid: false,
-   * updatedAt: dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'),
-   * })
-   * .where({
-   * username: ctx.state.user.username,
-   * refreshToken: request.refreshToken,
-   * })
-   * ctx.body = { message: 'SUCCESS' }
-   * } catch (error) {
-   * ctx.throw(400, 'INVALID_DATA')
-   * }
-   * }
-   *
-   * async forgot(ctx) {
-   * const request = ctx.request.body
-   *
-   * if (!request.email || !request.url || !request.type) {
-   * ctx.throw(404, 'INVALID_DATA')
-   * }
-   *
-   * let resetData = {
-   * passwordResetToken: new rand(/[a-zA-Z0-9_-]{64,64}/).gen(),
-   * passwordResetExpiration: dateAddMinutes(new Date(), 30),
-   * }
-   *
-   * try {
-   * var result = await db('users')
-   * .update(resetData)
-   * .where({ email: request.email })
-   * .returning('id')
-   * if (!result) {
-   * ctx.throw(400, 'INVALID_DATA')
-   * }
-   * } catch (error) {
-   * ctx.throw(400, 'INVALID_DATA')
-   * }
-   *
-   * //Now for the email if they've chosen the web type of forgot password
-   * if (request.type === 'web') {
-   * let email = await fse.readFile('./src/email/forgot.html', 'utf8')
-   * let resetUrlCustom =
-   * request.url +
-   * '?passwordResetToken=' +
-   * resetData.passwordResetToken +
-   * '&email=' +
-   * request.email
-   *
-   * const emailData = {
-   * to: request.email,
-   * from: process.env.APP_EMAIL,
-   * subject: 'Password Reset For ' + process.env.APP_NAME,
-   * html: email,
-   * categories: ['koa-vue-notes-api-forgot'],
-   * substitutions: {
-   * appName: process.env.APP_NAME,
-   * email: request.email,
-   * resetUrl: resetUrlCustom,
-   * },
-   * }
-   *
-   * // Let's only send the email if we're not testing
-   * if (process.env.NODE_ENV !== 'testing') {
-   * await sgMail.send(emailData)
-   * }
-   * }
-   *
-   * ctx.body = { passwordResetToken: resetData.passwordResetToken }
-   * }
-   *
-   * async checkPasswordResetToken(ctx) {
-   * const request = ctx.request.body
-   *
-   * if (!request.passwordResetToken || !request.email) {
-   * ctx.throw(404, 'INVALID_DATA')
-   * }
-   *
-   * let [passwordResetData] = await db('users')
-   * .select('passwordResetExpiration')
-   * .where({
-   * email: request.email,
-   * passwordResetToken: request.passwordResetToken,
-   * })
-   * if (!passwordResetData.passwordResetExpiration) {
-   * ctx.throw(404, 'INVALID_TOKEN')
-   * }
-   *
-   * //Let's make sure the refreshToken is not expired
-   * var tokenIsValid = dateCompareAsc(
-   * dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'),
-   * passwordResetData.passwordResetExpiration
-   * )
-   * if (tokenIsValid !== -1) {
-   * ctx.throw(400, 'RESET_TOKEN_EXPIRED')
-   * }
-   *
-   * ctx.body = { message: 'SUCCESS' }
-   * }
-   *
-   * async resetPassword(ctx) {
-   * const request = ctx.request.body
-   *
-   * //First do validation on the input
-   * const validator = joi.validate(request, userSchemaResetPassword)
-   * if (validator.error) {
-   * ctx.throw(400, validator.error.details[0].message)
-   * }
-   *
-   * //Ok, let's make sure their token is correct again, just to be sure since it could have
-   * //been some time between page entrance and form submission
-   * let [passwordResetData] = await db('users')
-   * .select('passwordResetExpiration')
-   * .where({
-   * email: request.email,
-   * passwordResetToken: request.passwordResetToken,
-   * })
-   * if (!passwordResetData.passwordResetExpiration) {
-   * ctx.throw(404, 'INVALID_TOKEN')
-   * }
-   *
-   * var tokenIsValid = dateCompareAsc(
-   * dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss'),
-   * passwordResetData.passwordResetExpiration
-   * )
-   * if (tokenIsValid !== -1) {
-   * ctx.throw(400, 'RESET_TOKEN_EXPIRED')
-   * }
-   *
-   * //Ok, so we're good. Let's reset their password with the new one they submitted.
-   *
-   * //Hash it
-   * try {
-   * request.password = await bcrypt.hash(request.password, 12)
-   * } catch (error) {
-   * ctx.throw(400, 'INVALID_DATA')
-   * }
-   *
-   * //Make sure to null out the password reset token and expiration on insertion
-   * request.passwordResetToken = null
-   * request.passwordResetExpiration = null
-   * try {
-   * await db('users')
-   * .update({
-   * password: request.password,
-   * passwordResetToken: request.passwordResetToken,
-   * passwordResetExpiration: request.passwordResetExpiration,
-   * })
-   * .where({ email: request.email })
-   * } catch (error) {
-   * ctx.throw(400, 'INVALID_DATA')
-   * }
-   * ctx.body = { message: 'SUCCESS' }
-   * }
-   */
+  ////////////////////
+  // CRUD for users //
+  ////////////////////
+
+  // List users
+  async list(ctx) {
+    try {
+      let result = await User.findAll(
+        { where: { company_id: ctx.state.company.id, status: {[Op.ne]: 'deleted'} },
+          include: ['userCompanies'] }
+      )
+      ctx.body = result
+    } catch (error) {
+      console.log(error)
+      ctx.throw(400, 'INVALID_DATA')
+    }
+  }
+
+  // get user
+  async get(ctx) {
+    //Make sure they've specified a user id
+    const params = ctx.params
+    if (!params.id) ctx.throw(400, 'INVALID_DATA')
+
+    //Find and set that company
+    let user = await User
+      .findOne(
+        { where: { id: params.id, company_id: ctx.state.company.id, status : {[Op.ne]: 'deleted'} },
+          include: ['userCompanies'] }
+      )
+    if (!user) ctx.throw(400, 'INVALID_DATA')
+
+    ctx.body = user
+  }
+
+  // create user
+  async create(ctx) {
+    const request = ctx.request.body
+    request.company_id = ctx.state.company.id
+
+    try {
+      let user = await User.create( request )
+      ctx.body = user
+    } catch (error) {
+      ctx.throw(400, 'INVALID_DATA')
+    }
+  }
+
+  // update user
+  async update(ctx) {
+    const request = ctx.request.body
+    //Make sure they've specified a user id
+    const params = ctx.params
+    if (!params.id) ctx.throw(400, 'INVALID_DATA')
+
+    //Find and set that company
+    let user = await User.findOne(
+      { where: { id: params.id, company_id: ctx.state.company.id, status : {[Op.ne]: 'deleted'} } }
+    )
+    if (!user) ctx.throw(400, 'INVALID_DATA')
+
+    //Add the updated date value
+    user.updatedAt = dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss')
+
+    //Replace the note data with the new updated note data
+    Object.keys(request).forEach(function(parameter) {
+      user[parameter] = request[parameter]
+    })
+
+    try {
+      await user.save()
+      ctx.body = user //await User.findOne( { where: { id: user.id} } )
+    } catch (error) {
+      ctx.throw(400, 'INVALID_DATA')
+    }
+  }
+
+  // soft delete user
+  async delete(ctx) {
+    //Make sure they've specified a user id
+    const params = ctx.params
+    if (!params.id) ctx.throw(400, 'INVALID_DATA')
+
+    //Find and set that company
+    let user = await User.findOne(
+      { where: { id: params.id, company_id: ctx.state.company.id, status : {[Op.ne]: 'deleted'} }
+      }
+    )
+    if (!user) ctx.throw(400, 'INVALID_DATA')
+
+
+    try {
+      //Add the soft delete values
+      var now = dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss')
+      user.updatedAt = now
+      user.deletedAt = now
+      user.status = 'deleted'
+      await user.save()
+      ctx.body = { message: 'SUCCESS' }
+    } catch (error) {
+      ctx.throw(400, 'INVALID_DATA')
+    }
+  }
 
   /*
    * ===== HELPERS =====

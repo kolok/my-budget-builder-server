@@ -1,6 +1,6 @@
 # Logs
-*.log
-*.log.1
+logs/*.log
+logs/*.log.*
 
 # DB
 data/komberdata/
