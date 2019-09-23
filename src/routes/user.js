@@ -24,50 +24,35 @@ router.post('/api/v1/users/signin', async (ctx/*, next*/) => {
 router.get('/api/v1/users/me', jwtMiddleware, async (ctx/*, next*/) => {
   await userController.me(ctx)
 })
-/*
- * router.get('/api/v1/users/me/company', jwtMiddleware, async (ctx, next) => {
- * await userController.myCompany(ctx)
- * })
- */
-/*
- * router.put('/api/v1/users/me/company', jwtMiddleware, async (ctx, next) => {
- * await userController.saveMyCompany(ctx)
- * })
- */
+
 router.post('/api/v1/users/me/refreshAccessToken', async (ctx/*, next*/) => {
   await userController.refreshAccessToken(ctx)
 })
 
+// list users
+router.get('/api/v1/users', jwtMiddleware, async (ctx/*, next*/) => {
+  await userController.list(ctx)
+})
 
-/*
- *
- * router.post(
- * '/api/user/invalidateAllRefreshTokens',
- * jwtMiddleware,
- * async (ctx, next) => {
- * await userController.invalidateAllRefreshTokens(ctx)
- * }
- * )
- *
- * router.post(
- * '/api/user/invalidateRefreshToken',
- * jwtMiddleware,
- * async (ctx, next) => {
- * await userController.invalidateRefreshToken(ctx)
- * }
- * )
- *
- * router.post('/api/user/forgot', async (ctx, next) => {
- * await userController.forgot(ctx)
- * })
- *
- * router.post('/api/user/checkPasswordResetToken', async (ctx, next) => {
- * await userController.checkPasswordResetToken(ctx)
- * })
- *
- * router.post('/api/user/resetPassword', async (ctx, next) => {
- * await userController.resetPassword(ctx)
- * })
- */
+// get user
+router.get('/api/v1/users/:id', jwtMiddleware, async (ctx/*, next*/) => {
+  await userController.get(ctx)
+})
+
+// create user
+router.post('/api/v1/users', jwtMiddleware, async (ctx/*, next*/) => {
+  await userController.create(ctx)
+})
+
+// update user
+router.put('/api/v1/users/:id', jwtMiddleware, async (ctx/*, next*/) => {
+  await userController.update(ctx)
+})
+
+// delete user
+router.delete('/api/v1/users/:id', jwtMiddleware, async (ctx/*, next*/) => {
+  await userController.delete(ctx)
+})
+
 
 export default router

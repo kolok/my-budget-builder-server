@@ -25,6 +25,7 @@ const User = db.User
 const Company = db.Company
 const UserCompany = db.UserCompany
 const RefreshToken = db.RefreshToken
+const Op = db.Sequelize.Op
 
 class UserController {
   constructor() {}
@@ -267,8 +268,12 @@ class UserController {
   async list(ctx) {
     try {
       let result = await User.findAll(
-        { where: { company_id: ctx.state.company.id, status: {[Op.ne]: 'deleted'} },
-          include: ['userCompanies'] }
+        { where: { status: {[Op.ne]: 'deleted'} },
+          include: [ {
+            association: 'userCompanies',
+            where:  { company_id: ctx.state.company.id}
+          } ]
+        }
       )
       ctx.body = result
     } catch (error) {
@@ -286,8 +291,12 @@ class UserController {
     //Find and set that company
     let user = await User
       .findOne(
-        { where: { id: params.id, company_id: ctx.state.company.id, status : {[Op.ne]: 'deleted'} },
-          include: ['userCompanies'] }
+        { where: { id: params.id, status : {[Op.ne]: 'deleted'} },
+          include: [ {
+            association: 'userCompanies',
+            where:  { company_id: ctx.state.company.id}
+          } ]
+        }
       )
     if (!user) ctx.throw(400, 'INVALID_DATA')
 
