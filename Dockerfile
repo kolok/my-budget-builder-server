@@ -8,3 +8,6 @@ WORKDIR /usr/server
 # node_modules will be ignore because of .dockerignore file
 COPY . .
 RUN npm install --quiet
+
+# Run nodemon using "npm run watch"
+CMD npm run watch
