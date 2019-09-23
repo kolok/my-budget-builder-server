@@ -29,7 +29,19 @@ module.exports = {
         company_id: 3,
         user_id: 3,
         role: 'client_admin'
-      }
+      },
+      {
+        id: 4,
+        company_id: 1,
+        user_id: 4,
+        role: 'client_user'
+      },
+      {
+        id: 5,
+        company_id: 1,
+        user_id: 5,
+        role: 'client_user'
+      },
     ], {})
     await queryInterface.sequelize
       .query('select setval(\'users_companies_id_seq\', (select max(id) from users_companies), true)')

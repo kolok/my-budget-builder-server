@@ -47,7 +47,25 @@ module.exports = {
         status: 'active',
         created_at: new Date(),
         updated_at: new Date()
-      }
+      },
+      {
+        id: 4,
+        name: 'User1',
+        email: 'user1@komber.io',
+        password: password,
+        status: 'active',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        id: 5,
+        name: 'User2',
+        email: 'user2@komber.io',
+        password: password,
+        status: 'active',
+        created_at: new Date(),
+        updated_at: new Date()
+      },
     ], {})
     await queryInterface.sequelize.query('select setval(\'users_id_seq\', (select max(id) from users), true)')
     return result
