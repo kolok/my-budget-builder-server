@@ -12,7 +12,7 @@ class TeamController {
   async list(ctx) {
     try {
       let result = await Team.findAll(
-        { where: { company_id: ctx.state.company.id, status: {[Op.ne]: 'deleted'} } }
+        { where: { companyID: ctx.state.company.id, status: {[Op.ne]: 'deleted'} } }
       )
       ctx.body = result
     } catch (error) {
@@ -30,7 +30,7 @@ class TeamController {
     //Find and set that company
     let team = await Team
       .findOne(
-        { where: { id: params.id, company_id: ctx.state.company.id, status : {[Op.ne]: 'deleted'} } }
+        { where: { id: params.id, companyID: ctx.state.company.id, status : {[Op.ne]: 'deleted'} } }
       )
     if (!team) ctx.throw(400, 'INVALID_DATA')
 
@@ -41,7 +41,7 @@ class TeamController {
   async create(ctx) {
     const request = ctx.request.body
     // force the company id with the user one
-    request.company_id = ctx.state.company.id
+    request.companyID = ctx.state.company.id
     if (request.parent_team_id == '') {
       request.parent_team_id = null
     }
@@ -64,7 +64,7 @@ class TeamController {
 
     //Find and set that company
     let team = await Team.findOne(
-      { where: { id: params.id, company_id: ctx.state.company.id, status : {[Op.ne]: 'deleted'} } }
+      { where: { id: params.id, companyID: ctx.state.company.id, status : {[Op.ne]: 'deleted'} } }
     )
     if (!team) ctx.throw(400, 'INVALID_DATA')
 
@@ -92,7 +92,7 @@ class TeamController {
 
     //Find and set that company
     let team = await Team.findOne(
-      { where: { id: params.id, company_id: ctx.state.company.id, status : {[Op.ne]: 'deleted'} },
+      { where: { id: params.id, companyID: ctx.state.company.id, status : {[Op.ne]: 'deleted'} },
         include: [
           {association: 'subteams', required:false, where: { status : {[Op.ne]: 'deleted'} }},
         ]

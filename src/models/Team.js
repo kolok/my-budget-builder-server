@@ -12,13 +12,15 @@ module.exports  = function(sequelize, DataTypes) {
       allowNull: false,
       type: DataTypes.STRING
     },
-    company_id: {
+    companyID: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      field: 'company_id'
     },
-    parent_team_id: {
+    parentTeamID: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      field: 'parent_team_id'
     },
     status: {
       allowNull: false,

@@ -11,8 +11,9 @@ class OfficeController {
   // create office
   async create(ctx) {
     const request = ctx.request.body
-    request.company_id = ctx.state.company.id
+    request.companyID = ctx.state.company.id
 
+    console.log(request)
     try {
       let office = await Office.create( request )
       ctx.body = office
@@ -30,7 +31,7 @@ class OfficeController {
 
     //Find and set that company
     let office = await Office.findOne(
-      { where: { id: params.id, company_id: ctx.state.company.id, status : {[Op.ne]: 'deleted'} } }
+      { where: { id: params.id, companyID: ctx.state.company.id, status : {[Op.ne]: 'deleted'} } }
     )
     if (!office) ctx.throw(400, 'INVALID_DATA')
 
@@ -58,7 +59,7 @@ class OfficeController {
 
     //Find and set that company
     let office = await Office.findOne(
-      { where: { id: params.id, company_id: ctx.state.company.id, status : {[Op.ne]: 'deleted'} } }
+      { where: { id: params.id, companyID: ctx.state.company.id, status : {[Op.ne]: 'deleted'} } }
     )
     if (!office) ctx.throw(400, 'INVALID_DATA')
 

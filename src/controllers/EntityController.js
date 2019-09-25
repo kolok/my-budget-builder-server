@@ -12,7 +12,7 @@ class EntityController {
   async list(ctx) {
     try {
       let result = await Entity.findAll(
-        { where: { company_id: ctx.state.company.id, status: {[Op.ne]: 'deleted'} } }
+        { where: { companyID: ctx.state.company.id, status: {[Op.ne]: 'deleted'} } }
       )
       ctx.body = result
     } catch (error) {
@@ -30,7 +30,7 @@ class EntityController {
     //Find and set that company
     let entity = await Entity
       .findOne(
-        { where: { id: params.id, company_id: ctx.state.company.id, status : {[Op.ne]: 'deleted'} } }
+        { where: { id: params.id, companyID: ctx.state.company.id, status : {[Op.ne]: 'deleted'} } }
       )
     if (!entity) ctx.throw(400, 'INVALID_DATA')
 
@@ -40,7 +40,7 @@ class EntityController {
   // create entity
   async create(ctx) {
     const request = ctx.request.body
-    request.company_id = ctx.state.company.id
+    request.companyID = ctx.state.company.id
 
     try {
       let entity = await Entity.create( request , {include: ['currency', 'country']})
@@ -60,7 +60,7 @@ class EntityController {
 
     //Find and set that company
     let entity = await Entity.findOne(
-      { where: { id: params.id, company_id: ctx.state.company.id, status : {[Op.ne]: 'deleted'} } }
+      { where: { id: params.id, companyID: ctx.state.company.id, status : {[Op.ne]: 'deleted'} } }
     )
     if (!entity) ctx.throw(400, 'INVALID_DATA')
 
@@ -89,7 +89,7 @@ class EntityController {
 
     //Find and set that company
     let entity = await Entity.findOne(
-      { where: { id: params.id, company_id: ctx.state.company.id, status : {[Op.ne]: 'deleted'} },
+      { where: { id: params.id, companyID: ctx.state.company.id, status : {[Op.ne]: 'deleted'} },
         include: [
           {association: 'offices', required:false, where: { status : {[Op.ne]: 'deleted'} }}
         ]
@@ -123,7 +123,7 @@ class EntityController {
   async listWithOffices(ctx) {
     try {
       let result = await Entity.findAll(
-        { where: { company_id: ctx.state.company.id, status: {[Op.ne]: 'deleted'} },
+        { where: { companyID: ctx.state.company.id, status: {[Op.ne]: 'deleted'} },
           include: [
             {association: 'offices', required:false, where: { status : {[Op.ne]: 'deleted'} }},
             'currency',

@@ -70,7 +70,7 @@ class UserController {
       console.log(request)
       var user = await User.create(request)
       // create the link between user and company with client_admin role
-      var userCompany = await UserCompany.create({user_id: user.id, company_id: company.id, role: 'client_admin'})
+      var userCompany = await UserCompany.create({userID: user.id, companyID: company.id, role: 'client_admin'})
 
       //Let's send a welcome email.
       if (process.env.NODE_ENV !== 'testing') {
@@ -271,7 +271,7 @@ class UserController {
         { where: { status: {[Op.ne]: 'deleted'} },
           include: [ {
             association: 'userCompanies',
-            where:  { company_id: ctx.state.company.id}
+            where:  { companyID: ctx.state.company.id}
           } ]
         }
       )
@@ -294,7 +294,7 @@ class UserController {
         { where: { id: params.id, status : {[Op.ne]: 'deleted'} },
           include: [ {
             association: 'userCompanies',
-            where:  { company_id: ctx.state.company.id}
+            where:  { companyID: ctx.state.company.id}
           } ]
         }
       )
@@ -311,7 +311,7 @@ class UserController {
 
     try {
       let user = await User.create( request )
-      var userCompany = await UserCompany.create({user_id: user.id, company_id: ctx.state.company.id, role: 'client_admin'})
+      var userCompany = await UserCompany.create({userID: user.id, companyID: ctx.state.company.id, role: 'client_admin'})
       ctx.body = user
     } catch (error) {
       ctx.throw(400, 'INVALID_DATA')
@@ -330,7 +330,7 @@ class UserController {
       { where: { id: params.id, status : {[Op.ne]: 'deleted'} },
         include: [ {
           association: 'userCompanies',
-          where:  { company_id: ctx.state.company.id}
+          where:  { companyID: ctx.state.company.id}
         } ]
       }
     )
@@ -362,7 +362,7 @@ class UserController {
 
     //Find and set that company
     let user = await User.findOne(
-      { where: { id: params.id, company_id: ctx.state.company.id, status : {[Op.ne]: 'deleted'} }
+      { where: { id: params.id, companyID: ctx.state.company.id, status : {[Op.ne]: 'deleted'} }
       }
     )
     if (!user) ctx.throw(400, 'INVALID_DATA')
