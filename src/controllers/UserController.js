@@ -306,10 +306,12 @@ class UserController {
   // create user
   async create(ctx) {
     const request = ctx.request.body
-    request.company_id = ctx.state.company.id
+
+    //FIXME: manage right client_admin/client_user
 
     try {
       let user = await User.create( request )
+      var userCompany = await UserCompany.create({user_id: user.id, company_id: ctx.state.company.id, role: 'client_admin'})
       ctx.body = user
     } catch (error) {
       ctx.throw(400, 'INVALID_DATA')
@@ -325,12 +327,19 @@ class UserController {
 
     //Find and set that company
     let user = await User.findOne(
-      { where: { id: params.id, company_id: ctx.state.company.id, status : {[Op.ne]: 'deleted'} } }
+      { where: { id: params.id, status : {[Op.ne]: 'deleted'} },
+        include: [ {
+          association: 'userCompanies',
+          where:  { company_id: ctx.state.company.id}
+        } ]
+      }
     )
     if (!user) ctx.throw(400, 'INVALID_DATA')
 
     //Add the updated date value
     user.updatedAt = dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss')
+
+    //FIXME: manage right client_admin/client_user
 
     //Replace the note data with the new updated note data
     Object.keys(request).forEach(function(parameter) {
