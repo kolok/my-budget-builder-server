@@ -16,9 +16,10 @@ module.exports  = function(sequelize, DataTypes) {
       allowNull: false,
       type: DataTypes.STRING
     },
-    company_id: {
+    companyID: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      field: 'company_id'
     },
     comment: {
       allowNull: true,

@@ -27,11 +27,6 @@ module.exports  = function(sequelize, DataTypes) {
       allowNull: false,
       type: DataTypes.STRING
     },
-    role: {
-      allowNull: false,
-      type: DataTypes.STRING,
-      defaultValue: 'user'
-    },
     loginCount: {
       type: DataTypes.INTEGER,
       allowNull: false,

@@ -22,9 +22,10 @@ module.exports = {
         type: Sequelize.ENUM(['1','2','3','4','5','6','7','8','9','10','11','12']),
         defaultValue: '1'
       },
-      default_currency_id: {
+      defaultCurrencyID: {
         type: Sequelize.INTEGER,
-        allowNull: true
+        allowNull: true,
+        field: 'default_currency_id'
       },
       status: {
         allowNull: false,

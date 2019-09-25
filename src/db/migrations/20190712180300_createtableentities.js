@@ -20,9 +20,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      default_currency_id: {
+      defaultCurrencyID: {
         type: Sequelize.INTEGER,
-        allowNull: true
+        allowNull: true,
+        field: 'default_currency_id'
       },
       status: {
         allowNull: false,
