@@ -61,14 +61,14 @@ module.exports  = function(sequelize, DataTypes) {
   User.associate = function(models) {
 
     User.hasMany(models.UserCompany, {
-      foreignKey: 'user_id',
+      foreignKey: 'userID',
       as: 'userCompanies'
     })
 
     User.belongsToMany(models.Company, {
       through: 'UserCompany',
       as: 'companies',
-      foreignKey: 'user_id'
+      foreignKey: 'userID'
     })
 
   }

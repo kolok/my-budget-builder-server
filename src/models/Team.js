@@ -49,15 +49,15 @@ module.exports  = function(sequelize, DataTypes) {
 
   Team.associate = function(models) {
     Team.belongsTo(models.Company, {
-      foreignKey: 'company_id',
+      foreignKey: 'companyID',
       as: 'company'
     })
     Team.belongsTo(models.Team, {
-      foreignKey: 'parent_team_id',
+      foreignKey: 'parentTeamID',
       as: 'parent_team'
     })
     Team.hasMany(models.Team, {
-      foreignKey: 'parent_team_id',
+      foreignKey: 'parentTeamID',
       as: 'subteams'
     })
   }

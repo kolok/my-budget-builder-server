@@ -30,7 +30,7 @@ module.exports  = function(sequelize, DataTypes) {
   Currency.associate = (models) => {
     // Currency has many companies
     Currency.hasMany(models.Company, {
-      foreignKey: 'default_currency_id',
+      foreignKey: 'defaultCurrencyID',
       as: 'companies',
     })
 
@@ -40,7 +40,7 @@ module.exports  = function(sequelize, DataTypes) {
      * everybody
      */
     Currency.belongsTo(models.Company, {
-      foreignKey: 'company_id',
+      foreignKey: 'companyID',
       as: 'company'
     })
   }

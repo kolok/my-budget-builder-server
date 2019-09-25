@@ -66,15 +66,15 @@ module.exports  = function(sequelize, DataTypes) {
 
   Office.associate = function(models) {
     Office.belongsTo(models.Company, {
-      foreignKey: 'company_id',
+      foreignKey: 'companyID',
       as: 'company'
     })
     Office.belongsTo(models.Entity, {
-      foreignKey: 'entity_id',
+      foreignKey: 'entityID',
       as: 'entity'
     })
     Office.belongsTo(models.Country, {
-      foreignKey: 'country_id',
+      foreignKey: 'countryID',
       as: 'country'
     })
 

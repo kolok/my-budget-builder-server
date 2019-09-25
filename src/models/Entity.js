@@ -54,22 +54,22 @@ module.exports  = function(sequelize, DataTypes) {
 
   Entity.associate = function(models) {
     Entity.hasMany(models.Office, {
-      foreignKey: 'entity_id',
+      foreignKey: 'entityID',
       as: 'offices'
     })
 
     Entity.belongsTo(models.Company, {
-      foreignKey: 'company_id',
+      foreignKey: 'companyID',
       as: 'company'
     })
 
     Entity.belongsTo(models.Country, {
-      foreignKey: 'country_id',
+      foreignKey: 'countryID',
       as: 'country'
     })
 
     Entity.belongsTo(models.Currency, {
-      foreignKey: 'default_currency_id',
+      foreignKey: 'defaultCurrencyID',
       as: 'currency'
     })
 

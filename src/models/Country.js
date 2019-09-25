@@ -20,11 +20,11 @@ module.exports  = function(sequelize, DataTypes) {
 
   Country.associate = function(models) {
     Country.hasMany(models.Entity, {
-      foreignKey: 'country_id',
+      foreignKey: 'countryID',
       as: 'entities'
     })
     Country.hasMany(models.Office, {
-      foreignKey: 'country_id',
+      foreignKey: 'countryID',
       as: 'offices'
     })
   }

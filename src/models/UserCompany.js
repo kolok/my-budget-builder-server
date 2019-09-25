@@ -39,12 +39,12 @@ module.exports  = function(sequelize, DataTypes) {
   UserCompany.associate = (models) => {
     //So UserCompany belongs to Company
     UserCompany.belongsTo(models.Company, {
-      foreignKey: 'company_id',
+      foreignKey: 'companyID',
       as: 'company'
     })
     //So UserCompany belongs to User
     UserCompany.belongsTo(models.User, {
-      foreignKey: 'user_id',
+      foreignKey: 'userID',
       as: 'user'
     })
   }

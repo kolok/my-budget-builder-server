@@ -57,18 +57,18 @@ module.exports  = function(sequelize, DataTypes) {
    */
   Company.associate = function(models) {
     Company.hasMany(models.UserCompany, {
-      foreignKey: 'company_id',
+      foreignKey: 'companyID',
       as: 'userCompanies'
     })
     Company.belongsToMany(models.User, {
       through: 'UserCompany',
       as: 'users',
-      foreignKey: 'company_id'
+      foreignKey: 'companyID'
     })
 
     /* Relationship with team */
     Company.hasMany(models.Team, {
-      foreignKey: 'company_id',
+      foreignKey: 'companyID',
       as: 'team'
     })
 
@@ -86,7 +86,7 @@ module.exports  = function(sequelize, DataTypes) {
      * So a company can have many currencies
      */
     Company.hasMany(models.Currency, {
-      foreignKey: 'company_id',
+      foreignKey: 'companyID',
       as: 'currencies',
     })
   }
