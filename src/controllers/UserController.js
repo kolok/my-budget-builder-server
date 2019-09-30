@@ -315,7 +315,7 @@ class UserController {
     await delete request['role']
     try {
       let user = await User.create( request )
-      let userCompany = await UserCompany.create({userID: user.id, companyID: ctx.state.company.id, role: 'client_user'})
+      let userCompany = await UserCompany.create({userID: user.id, companyID: ctx.state.company.id, role: role})
 
       ctx.body = await User
         .findOne(
