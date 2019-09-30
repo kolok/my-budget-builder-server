@@ -24,7 +24,7 @@ module.exports  = function(sequelize, DataTypes) {
       field: 'default_language'
     },
     password: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING
     },
     loginCount: {

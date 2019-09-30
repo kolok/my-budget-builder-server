@@ -268,7 +268,8 @@ class UserController {
   async list(ctx) {
     try {
       let result = await User.findAll(
-        { where: { status: {[Op.ne]: 'deleted'} },
+        { attributes: ['id','name','email','defaultLanguage','loginCount','status','createdAt','updatedAt','deletedAt'],
+          where: { status: {[Op.ne]: 'deleted'} },
           include: [ {
             association: 'userCompanies',
             where:  { companyID: ctx.state.company.id}
@@ -291,7 +292,8 @@ class UserController {
     //Find and set that company
     let user = await User
       .findOne(
-        { where: { id: params.id, status : {[Op.ne]: 'deleted'} },
+        { attributes: ['id','name','email','defaultLanguage','loginCount','status','createdAt','updatedAt','deletedAt'],
+          where: { id: params.id, status : {[Op.ne]: 'deleted'} },
           include: [ {
             association: 'userCompanies',
             where:  { companyID: ctx.state.company.id}
@@ -309,11 +311,24 @@ class UserController {
 
     //FIXME: manage right client_admin/client_user
 
+    var role = request.role
+    await delete request['role']
     try {
       let user = await User.create( request )
-      var userCompany = await UserCompany.create({userID: user.id, companyID: ctx.state.company.id, role: 'client_admin'})
-      ctx.body = user
+      let userCompany = await UserCompany.create({userID: user.id, companyID: ctx.state.company.id, role: 'client_user'})
+
+      ctx.body = await User
+        .findOne(
+          { attributes: ['id','name','email','defaultLanguage','loginCount','status','createdAt','updatedAt','deletedAt'],
+            where: { id: user.id, status : {[Op.ne]: 'deleted'} },
+            include: [ {
+              association: 'userCompanies',
+              where:  { companyID: ctx.state.company.id}
+            } ]
+          }
+        )
     } catch (error) {
+      console.log(error)
       ctx.throw(400, 'INVALID_DATA')
     }
   }
@@ -327,7 +342,8 @@ class UserController {
 
     //Find and set that company
     let user = await User.findOne(
-      { where: { id: params.id, status : {[Op.ne]: 'deleted'} },
+      { attributes: ['id','name','email','defaultLanguage','loginCount','status','createdAt','updatedAt','deletedAt'],
+        where: { id: params.id, status : {[Op.ne]: 'deleted'} },
         include: [ {
           association: 'userCompanies',
           where:  { companyID: ctx.state.company.id}
@@ -335,6 +351,10 @@ class UserController {
       }
     )
     if (!user) ctx.throw(400, 'INVALID_DATA')
+
+    var userCompanies = user.userCompanies[0]
+    if (!userCompanies) ctx.throw(400, 'INVALID_DATA')
+    userCompanies.role = request.role
 
     //Add the updated date value
     user.updatedAt = dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss')
@@ -348,6 +368,7 @@ class UserController {
 
     try {
       await user.save()
+      await userCompanies.save()
       ctx.body = user //await User.findOne( { where: { id: user.id} } )
     } catch (error) {
       ctx.throw(400, 'INVALID_DATA')
@@ -362,7 +383,7 @@ class UserController {
 
     //Find and set that company
     let user = await User.findOne(
-      { where: { id: params.id, companyID: ctx.state.company.id, status : {[Op.ne]: 'deleted'} }
+      { where: { id: params.id, status : {[Op.ne]: 'deleted'} }
       }
     )
     if (!user) ctx.throw(400, 'INVALID_DATA')
