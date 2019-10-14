@@ -50,12 +50,8 @@ module.exports  = function(sequelize, DataTypes) {
     }
   }, {underscored: true, tableName: 'companies'})
 
-  /*
-   *FIXME : the relation between company and users should be a many to many
-   * relationship using a typed link to handle the roles of the user in the
-   * company
-   */
   Company.associate = function(models) {
+    /* Relationship with user */
     Company.hasMany(models.UserCompany, {
       foreignKey: 'companyID',
       as: 'userCompanies'
@@ -69,7 +65,7 @@ module.exports  = function(sequelize, DataTypes) {
     /* Relationship with team */
     Company.hasMany(models.Team, {
       foreignKey: 'companyID',
-      as: 'team'
+      as: 'teams'
     })
 
     /*
@@ -89,6 +85,31 @@ module.exports  = function(sequelize, DataTypes) {
       foreignKey: 'companyID',
       as: 'currencies',
     })
+
+    /* Relationship with budget */
+    Company.hasMany(models.Budget, {
+      foreignKey: 'companyID',
+      as: 'budgets'
+    })
+
+    /* Relationship with employee */
+    Company.hasMany(models.Employee, {
+      foreignKey: 'companyID',
+      as: 'employees'
+    })
+
+    /* Relationship with office */
+    Company.hasMany(models.Office, {
+      foreignKey: 'companyID',
+      as: 'offices'
+    })
+
+    /* Relationship with entity */
+    Company.hasMany(models.Entity, {
+      foreignKey: 'companyID',
+      as: 'entities'
+    })
+
   }
 
   return Company
