@@ -101,7 +101,7 @@ class TeamController {
     if (!team) ctx.throw(400, 'INVALID_DATA')
 
     team.subteams.forEach( subteam => {
-      subteam.parent_team_id = team.parent_team_id;
+      subteam.parent_team_id = team.parent_team_id
       subteam.save()
     })
 

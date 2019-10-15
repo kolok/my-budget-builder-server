@@ -260,9 +260,9 @@ class UserController {
     }
   }
 
-  ////////////////////
-  // CRUD for users //
-  ////////////////////
+  /*
+   * CRUD for users
+   */
 
   // List users
   async list(ctx) {
@@ -315,16 +315,26 @@ class UserController {
     await delete request['role']
     try {
       let user = await User.create( request )
-      let userCompany = await UserCompany.create({userID: user.id, companyID: ctx.state.company.id, role: role})
+      await UserCompany.create({userID: user.id, companyID: ctx.state.company.id, role: role})
 
       ctx.body = await User
         .findOne(
-          { attributes: ['id','name','email','defaultLanguage','loginCount','status','createdAt','updatedAt','deletedAt'],
-            where: { id: user.id, status : {[Op.ne]: 'deleted'} },
-            include: [ {
-              association: 'userCompanies',
-              where:  { companyID: ctx.state.company.id}
-            } ]
+          { attributes: [
+            'id',
+            'name',
+            'email',
+            'defaultLanguage',
+            'loginCount',
+            'status',
+            'createdAt',
+            'updatedAt',
+            'deletedAt'
+          ],
+          where: { id: user.id, status : {[Op.ne]: 'deleted'} },
+          include: [ {
+            association: 'userCompanies',
+            where:  { companyID: ctx.state.company.id}
+          } ]
           }
         )
     } catch (error) {

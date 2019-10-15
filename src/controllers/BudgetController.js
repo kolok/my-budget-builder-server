@@ -42,10 +42,10 @@ class BudgetController {
     const request = ctx.request.body
     // force the company id with the user one
     request.companyID = ctx.state.company.id
-    if (request.startDate == "") {
+    if (request.startDate == '') {
       delete request.startDate
     }
-    if (request.endDate == "") {
+    if (request.endDate == '') {
       delete request.endDate
     }
     try {
