@@ -42,6 +42,7 @@ class EmployeeController {
     const request = ctx.request.body
     // force the company id with the user one
     request.companyID = ctx.state.company.id
+    request.status = 'active'
 
     try {
       console.log('request',request)
