@@ -1,7 +1,7 @@
 {
-  "name": "komber-server",
+  "name": "pipauls-server",
   "version": "1.0.0",
-  "description": "Komber frontend server",
+  "description": "Pipauls frontend server",
   "author": "Nicolas Oudard",
   "license": "Private",
   "main": "src/server.js",

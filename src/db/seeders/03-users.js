@@ -24,7 +24,7 @@ module.exports = {
       {
         id: 1,
         name: 'Admin1',
-        email: 'admin1@komber.io',
+        email: 'admin1@pipauls.com',
         password: password,
         status: 'active',
         created_at: new Date(),
@@ -33,7 +33,7 @@ module.exports = {
       {
         id: 2,
         name: 'Admin2',
-        email: 'admin2@komber.io',
+        email: 'admin2@pipauls.com',
         password: password,
         status: 'active',
         created_at: new Date(),
@@ -42,7 +42,7 @@ module.exports = {
       {
         id: 3,
         name: 'Admin3',
-        email: 'admin3@komber.io',
+        email: 'admin3@pipauls.com',
         password: password,
         status: 'active',
         created_at: new Date(),
@@ -51,7 +51,7 @@ module.exports = {
       {
         id: 4,
         name: 'User1',
-        email: 'user1@komber.io',
+        email: 'user1@pipauls.com',
         password: password,
         status: 'active',
         created_at: new Date(),
@@ -60,7 +60,7 @@ module.exports = {
       {
         id: 5,
         name: 'User2',
-        email: 'user2@komber.io',
+        email: 'user2@pipauls.com',
         password: password,
         status: 'active',
         created_at: new Date(),

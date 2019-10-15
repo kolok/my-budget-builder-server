@@ -1,9 +1,9 @@
-# Komber Server side
+# Pipauls Server side
 
-Komber is a SAAS product to manage Hiring planning and budget. It allows CEO, CFO and HR to plan, share and execute their Hiring plan.
+Pipauls is a SAAS product to manage Hiring planning and budget. It allows CEO, CFO and HR to plan, share and execute their Hiring plan.
 
 This repository is the server side of the App and is linked to another repository :
-https://gitlab.com/komber/komber-client
+https://gitlab.com/pipauls/pipauls-client
 
 ### technologies
 ##### Vue.js, Koa.js, Node.js, Postgresql
@@ -22,18 +22,18 @@ Specific to the Server
 
 ### Demo:
 The Demo is not available yet.
-TODO: Click [here](http://demo.komber.io) to see our demo website.
+TODO: Click [here](http://demo.pipauls.com) to see our demo website.
 
 You can sign up or use the following access:
 <pre>
-  email: admin1@komber.io
+  email: admin1@pipauls.com
   password: azerty
 </pre>
 
 
 ### Architecture
 
-    komber-server                  # server folder
+    pipauls-server                  # server folder
      ├─src                  # server src
      │  ├─controllers
      │  │  └─_Controllers_  # by objects/routes

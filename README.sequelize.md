@@ -2,11 +2,11 @@
 
 ## Connexion to DB
 
-$ docker-compose exec db psql -p 5432 -h 127.0.0.1 -U komber-admin
+$ docker-compose exec db psql -p 5432 -h 127.0.0.1 -U pipauls-admin
 
 if the DB doesn't exists, you should create it first :
 
-$ docker-compose exec db psql -p 5432 -h 127.0.0.1 -U komber-admin -c 'CREATE DATABASE komberdb_dev;'
+$ docker-compose exec db psql -p 5432 -h 127.0.0.1 -U pipauls-admin -c 'CREATE DATABASE pipaulsdb_dev;'
 
 ## Launch migration
 

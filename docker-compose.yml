@@ -4,7 +4,7 @@ services:
 
 # Server docker
   server:
-    container_name: komber-server
+    container_name: pipauls-server
 # server sources are locatted into ./server, we need to set the root ./server for the Docker builder
     build:
       context: .
@@ -38,14 +38,14 @@ services:
 #      - 5432:5432
     environment:
 # Use a dedicate user for this pproject with a complex password
-      POSTGRES_USER: komber-admin
+      POSTGRES_USER: pipauls-admin
       POSTGRES_PASSWORD: Aek8Aegaloh1jaD0Rah6ieghOosh9ree
 # PGDATA is the volume where the postgresql data file will be stored
-      PGDATA: /var/lib/postgresql/data/komberdata
+      PGDATA: /var/lib/postgresql/data/pipaulsdata
 # mount posgresql volume on your own computer to persist the data
     volumes:
-        - ./data/komberdata:/var/lib/postgresql/data/komberdata:rw
-    container_name: komber-db
+        - ./data/pipaulsdata:/var/lib/postgresql/data/pipaulsdata:rw
+    container_name: pipauls-db
 
 # This is an interface to admininstrate db in your docker envirnment on port 8080
 # To access it, open a browser on the url http://localhost:8080
@@ -55,4 +55,4 @@ services:
     restart: always
     ports:
       - 8081:8080
-    container_name: komber-adminer
+    container_name: pipauls-adminer
