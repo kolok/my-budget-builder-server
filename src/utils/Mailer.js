@@ -41,6 +41,28 @@ class Mailer {
     })
   }
 
+  async updatePasswordMail(email, name, token) {
+
+    const signupHTML = pug.compileFile(path.join(__dirname,'emailTemplates','updatePassword','html.pug'))
+    const signupText = pug.compileFile(path.join(__dirname,'emailTemplates','updatePassword','text.pug'))
+    const signupSubject = pug.compileFile(path.join(__dirname,'emailTemplates','updatePassword','subject.pug'))
+
+    let mailOptions = {
+      from: '"Joe Oudard" <joe@oudard.org>', // sender address
+      to: email, // list of receivers
+      subject: signupSubject({name: name}), // Subject line
+      text: signupText({name: name, token: token}), // plain text body
+      html: signupHTML({name: name, token: token}) // html body
+    }
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return console.log(error)
+      }
+      console.log('Message %s sent: %s', info.messageId, info.response)
+    })
+  }
+
 }
 
 export default Mailer

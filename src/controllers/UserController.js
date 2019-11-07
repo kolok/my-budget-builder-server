@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt'
 import jsonwebtoken from 'jsonwebtoken'
 import dateFormat from 'date-fns/format'
 import dateAddMonths from 'date-fns/add_months'
+import dateAddHours from 'date-fns/add_hours'
 import dateCompareAsc from 'date-fns/compare_asc'
 
 // Mailer instance to proxify the mail sending
@@ -28,7 +29,7 @@ const RefreshToken = db.RefreshToken
 const Op = db.Sequelize.Op
 
 class UserController {
-  constructor() {}
+  constructor() { }
 
   async signup(ctx) {
     /*
@@ -40,14 +41,14 @@ class UserController {
 
     //Now let's check for a duplicate company
     let companyByName = await Company.findOne(
-      { where: {name: request.companyname} }).then( company => { return company }
-    )
+      { where: { name: request.companyname } }).then(company => { return company }
+      )
     if (companyByName !== null) {
       return ctx.throw(400, 'DUPLICATE_COMPANY')
     }
 
     //Now let's check for a duplicate email
-    let userbyemail = await User.findOne({ where: {email: request.email} })
+    let userbyemail = await User.findOne({ where: { email: request.email } })
     if (userbyemail !== null) {
       ctx.throw(400, 'DUPLICATE_EMAIL')
     }
@@ -65,12 +66,12 @@ class UserController {
        *FIXME: make the 3 following creations in a transaction
        * Create the new company
        */
-      var company = await Company.create({name: request.companyname, subdomain: request.subdomain})
+      var company = await Company.create({ name: request.companyname, subdomain: request.subdomain })
       // create the user
       console.log(request)
       var user = await User.create(request)
       // create the link between user and company with client_admin role
-      var userCompany = await UserCompany.create({userID: user.id, companyID: company.id, role: 'client_admin'})
+      var userCompany = await UserCompany.create({ userID: user.id, companyID: company.id, role: 'client_admin' })
 
       //Let's send a welcome email.
       if (process.env.NODE_ENV !== 'testing') {
@@ -78,10 +79,10 @@ class UserController {
       }
 
       //Generate the refreshToken data
-      let refreshTokenData = await this.generateRefreshToken(ctx,user)
+      let refreshTokenData = await this.generateRefreshToken(ctx, user)
 
       //increment the login count of the user
-      User.incrementLoginCount(user.id )
+      User.incrementLoginCount(user.id)
 
       //Ok, they've made it, send them their jsonwebtoken with their data, accessToken and refreshToken
       const accessToken = jsonwebtoken.sign(
@@ -98,7 +99,7 @@ class UserController {
 
     } catch (error) {
       console.log(error)
-      ctx.throw(400, 'INVALID_DATA: '. error)
+      ctx.throw(400, 'INVALID_DATA: '.error)
     }
   }
 
@@ -112,7 +113,7 @@ class UserController {
     console.log('signin')
 
     //Let's find that user and its company associated to him
-    let userbyemail = await User.findOne({ where: {email: request.email}, include: ['userCompanies', 'companies'] })
+    let userbyemail = await User.findOne({ where: { email: request.email }, include: ['userCompanies', 'companies'] })
     if (userbyemail === null) {
       console.log('INVALID_CREDENTIALS')
       ctx.throw(401, 'INVALID_CREDENTIALS')
@@ -151,11 +152,11 @@ class UserController {
     delete userbyemail.password
 
     //Generate the refreshToken data
-    let refreshTokenData = await this.generateRefreshToken(ctx,userbyemail)
+    let refreshTokenData = await this.generateRefreshToken(ctx, userbyemail)
 
     //increment the login count of the user
     try {
-      User.incrementLoginCount(userbyemail.id )
+      User.incrementLoginCount(userbyemail.id)
     } catch (error) {
       console.log(error)
       ctx.throw(400, 'INVALID_DATA')
@@ -184,18 +185,64 @@ class UserController {
     }
   }
 
-  //FIXME: manage refreshtoken
-  async refreshAccessToken(ctx) {
-    const request = ctx.request.body
-    if (!request.refreshToken) {
-      ctx.throw(401, 'NO_REFRESH_TOKEN')
+  //Send a email to update the password
+  async updatePasswordRequest(ctx) {
+    //user can come from ctx.state.user or a email address if it is a forget password
+    let user = ctx.state.user
+    //FIXME: manage the forget password case
+
+    // save a update password token
+    //Generate the refreshToken data
+    let refreshTokenData = await this.generateRefreshToken(ctx, user, 1)
+
+    // send email with the password
+    if (process.env.NODE_ENV !== 'testing') {
+      await mailer.updatePasswordMail(user.email, user.name, refreshTokenData.refreshToken)
     }
+
+    // FIXME: return a 201 status
+    //ctx.status(201)
+    ctx.body = {
+      result: "success"
+    }
+  }
+
+  //Update the password of a user
+  async updatePassword(ctx) {
+    let refreshTokenData = await this.getRefreshTokenData(ctx, ctx.request.body.passwordToken)
+
+    //Let's find that user
+    let userbyemail = await User.findOne({ where: { email: refreshTokenData.email }, include: ['userCompanies', 'companies'] })
+
+    if (userbyemail === null) {
+      ctx.throw(401, 'INVALID_REFRESH_TOKEN')
+    }
+
+    //Ok now let's hash their password.
+    try {
+      userbyemail.password = await bcrypt.hash(ctx.request.body.password, 12)
+      userbyemail.save()
+    } catch (error) {
+      ctx.throw(400, 'INVALID_DATA')
+    }
+
+
+
+    ctx.body = {
+      status: "success"
+    }
+  }
+
+  // get the refresh token from database and check its validity
+  async getRefreshTokenData(ctx, refreshToken) {
     //Let's find that user
     let refreshTokenDatabaseData = await RefreshToken
-      .findOne({ where: {
-        refreshToken: request.refreshToken,
-        isValid: true,} })
-      .then( refreshtoken => { return refreshtoken })
+      .findOne({
+        where: {
+          refreshToken: refreshToken,
+          isValid: true
+        }
+      })
 
     if (refreshTokenDatabaseData === null) {
       ctx.throw(400, 'INVALID_REFRESH_TOKEN')
@@ -210,6 +257,17 @@ class UserController {
       ctx.throw(400, 'REFRESH_TOKEN_EXPIRED')
     }
 
+    return refreshTokenDatabaseData
+  }
+
+  //Manage refreshtoken
+  async refreshAccessToken(ctx) {
+    const request = ctx.request.body
+    if (!request.refreshToken) {
+      ctx.throw(401, 'NO_REFRESH_TOKEN')
+    }
+    //Let's find that user
+    let refreshTokenDatabaseData = await this.getRefreshTokenData(ctx, request.refreshToken)
     let email = refreshTokenDatabaseData.email
 
     /*
@@ -223,7 +281,7 @@ class UserController {
     }
 
     //Let's find that user
-    let userbyemail = await User.findOne({ where: {email: email}, include: ['userCompanies', 'companies'] })
+    let userbyemail = await User.findOne({ where: { email: email }, include: ['userCompanies', 'companies'] })
 
     if (userbyemail === null) {
       ctx.throw(401, 'INVALID_REFRESH_TOKEN')
@@ -244,7 +302,7 @@ class UserController {
     await delete userbyemail['userCompanies']
 
     //Generate the refreshToken data
-    let refreshTokenData = await this.generateRefreshToken(ctx,userbyemail)
+    let refreshTokenData = await this.generateRefreshToken(ctx, userbyemail)
 
     //Ok, they've made it, send them their jsonwebtoken with their data, accessToken and refreshToken
     const accessToken = jsonwebtoken.sign(
@@ -268,12 +326,13 @@ class UserController {
   async list(ctx) {
     try {
       let result = await User.findAll(
-        { attributes: ['id','name','email','defaultLanguage','loginCount','status','createdAt','updatedAt','deletedAt'],
-          where: { status: {[Op.ne]: 'deleted'} },
-          include: [ {
+        {
+          attributes: ['id', 'name', 'email', 'defaultLanguage', 'loginCount', 'status', 'createdAt', 'updatedAt', 'deletedAt'],
+          where: { status: { [Op.ne]: 'deleted' } },
+          include: [{
             association: 'userCompanies',
-            where:  { companyID: ctx.state.company.id}
-          } ]
+            where: { companyID: ctx.state.company.id }
+          }]
         }
       )
       ctx.body = result
@@ -292,12 +351,13 @@ class UserController {
     //Find and set that company
     let user = await User
       .findOne(
-        { attributes: ['id','name','email','defaultLanguage','loginCount','status','createdAt','updatedAt','deletedAt'],
-          where: { id: params.id, status : {[Op.ne]: 'deleted'} },
-          include: [ {
+        {
+          attributes: ['id', 'name', 'email', 'defaultLanguage', 'loginCount', 'status', 'createdAt', 'updatedAt', 'deletedAt'],
+          where: { id: params.id, status: { [Op.ne]: 'deleted' } },
+          include: [{
             association: 'userCompanies',
-            where:  { companyID: ctx.state.company.id}
-          } ]
+            where: { companyID: ctx.state.company.id }
+          }]
         }
       )
     if (!user) ctx.throw(400, 'INVALID_DATA')
@@ -314,27 +374,28 @@ class UserController {
     var role = request.role
     await delete request['role']
     try {
-      let user = await User.create( request )
-      await UserCompany.create({userID: user.id, companyID: ctx.state.company.id, role: role})
+      let user = await User.create(request)
+      await UserCompany.create({ userID: user.id, companyID: ctx.state.company.id, role: role })
 
       ctx.body = await User
         .findOne(
-          { attributes: [
-            'id',
-            'name',
-            'email',
-            'defaultLanguage',
-            'loginCount',
-            'status',
-            'createdAt',
-            'updatedAt',
-            'deletedAt'
-          ],
-          where: { id: user.id, status : {[Op.ne]: 'deleted'} },
-          include: [ {
-            association: 'userCompanies',
-            where:  { companyID: ctx.state.company.id}
-          } ]
+          {
+            attributes: [
+              'id',
+              'name',
+              'email',
+              'defaultLanguage',
+              'loginCount',
+              'status',
+              'createdAt',
+              'updatedAt',
+              'deletedAt'
+            ],
+            where: { id: user.id, status: { [Op.ne]: 'deleted' } },
+            include: [{
+              association: 'userCompanies',
+              where: { companyID: ctx.state.company.id }
+            }]
           }
         )
     } catch (error) {
@@ -352,12 +413,13 @@ class UserController {
 
     //Find and set that company
     let user = await User.findOne(
-      { attributes: ['id','name','email','defaultLanguage','loginCount','status','createdAt','updatedAt','deletedAt'],
-        where: { id: params.id, status : {[Op.ne]: 'deleted'} },
-        include: [ {
+      {
+        attributes: ['id', 'name', 'email', 'defaultLanguage', 'loginCount', 'status', 'createdAt', 'updatedAt', 'deletedAt'],
+        where: { id: params.id, status: { [Op.ne]: 'deleted' } },
+        include: [{
           association: 'userCompanies',
-          where:  { companyID: ctx.state.company.id}
-        } ]
+          where: { companyID: ctx.state.company.id }
+        }]
       }
     )
     if (!user) ctx.throw(400, 'INVALID_DATA')
@@ -372,7 +434,7 @@ class UserController {
     //FIXME: manage right client_admin/client_user
 
     //Replace the note data with the new updated note data
-    Object.keys(request).forEach(function(parameter) {
+    Object.keys(request).forEach(function (parameter) {
       user[parameter] = request[parameter]
     })
 
@@ -393,7 +455,8 @@ class UserController {
 
     //Find and set that company
     let user = await User.findOne(
-      { where: { id: params.id, status : {[Op.ne]: 'deleted'} }
+      {
+        where: { id: params.id, status: { [Op.ne]: 'deleted' } }
       }
     )
     if (!user) ctx.throw(400, 'INVALID_DATA')
@@ -422,7 +485,7 @@ class UserController {
    *          user => user to who we need to generate a refresh token
    *   Output: refreshToken
    */
-  async generateRefreshToken(ctx,user) {
+  async generateRefreshToken(ctx, user, expiredInHours) {
     //Generate the refreshToken data
     let refreshTokenData = {
       email: user.email,
@@ -435,7 +498,8 @@ class UserController {
         ctx.userAgent.browser,
       ipAddress: ctx.request.ip,
       // does it means that refresh token is valid during 1 month
-      expiration: dateAddMonths(new Date(), 1),
+      //expiration: dateAddMonths(new Date(), expiredInHours || 1),
+      expiration: dateAddHours(new Date(), expiredInHours || 30 * 24),
       isValid: true,
     }
 
