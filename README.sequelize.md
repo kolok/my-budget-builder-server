@@ -52,3 +52,8 @@ $ docker-compose exec server npx sequelize db:seed:undo:all --config src/db/conf
 Using environment "test".
 == companies: reverting =======
 == companies: reverted (0.007s)
+
+## Useful link for production
+
+https://cloud.google.com/sql/docs/postgres/connect-admin-ip
+
