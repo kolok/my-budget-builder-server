@@ -187,17 +187,22 @@ class UserController {
 
   //Send a email to update the password
   async updatePasswordRequest(ctx) {
-    //user can come from ctx.state.user or a email address if it is a forget password
+
     let user = ctx.state.user
-    //FIXME: manage the forget password case
+    if (ctx.request.body.email !== undefined) {
+      //Let's find that user
+      user = await User.findOne({ where: { email: ctx.request.body.email }, include: ['userCompanies', 'companies'] })
+    }
 
-    // save a update password token
-    //Generate the refreshToken data
-    let refreshTokenData = await this.generateRefreshToken(ctx, user, 1)
-
-    // send email with the password
-    if (process.env.NODE_ENV !== 'testing') {
-      await mailer.updatePasswordMail(user.email, user.name, refreshTokenData.refreshToken)
+    if (user !== undefined) {
+      // save a update password token
+      //Generate the refreshToken data
+      let refreshTokenData = await this.generateRefreshToken(ctx, user, 1)
+  
+      // send email with the password
+      if (process.env.NODE_ENV !== 'testing') {
+        await mailer.updatePasswordMail(user.email, user.name, refreshTokenData.refreshToken)
+      }
     }
 
     // FIXME: return a 201 status

@@ -39,6 +39,11 @@ router.post('/api/v1/users/me/updatePasswordRequest', jwtMiddleware, async (ctx/
   await userController.updatePasswordRequest(ctx)
 })
 
+// updatePasswordRequest request to get a renew password email
+router.post('/api/v1/users/updatePasswordRequest', async (ctx/*, next*/) => {
+  await userController.updatePasswordRequest(ctx)
+})
+
 // updatePassword will update the password of the user
 router.post('/api/v1/users/updatePassword', async (ctx/*, next*/) => {
   console.log('router /api/v1/users/updatePassword')
