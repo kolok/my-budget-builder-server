@@ -12,16 +12,18 @@ import error from 'koa-json-error'
  */
 
 //Routes
-import defaultRouter from './routes/default'
+import budgetRouter from './routes/budget'
 import companyRouter from './routes/company'
 import countryRouter from './routes/country'
 import currencyRouter from './routes/currency'
-import userRouter from './routes/user'
-import entityRouter from './routes/entity'
-import officeRouter from './routes/office'
-import teamRouter from './routes/team'
-import budgetRouter from './routes/budget'
+import defaultRouter from './routes/default'
 import employeeRouter from './routes/employee'
+import entityRouter from './routes/entity'
+import expenseRouter from './routes/expense'
+import officeRouter from './routes/office'
+import positionRouter from './routes/position'
+import teamRouter from './routes/team'
+import userRouter from './routes/user'
 
 //Initialize app
 const app = new Koa()
@@ -94,25 +96,29 @@ app.use(userAgent)
 app.use(bodyParser({ enableTypes: ['json'] }))
 
 //For router
-app.use(defaultRouter.routes())
-app.use(defaultRouter.allowedMethods())
-app.use(companyRouter.routes())
-app.use(companyRouter.allowedMethods())
-app.use(countryRouter.routes())
-app.use(countryRouter.allowedMethods())
-app.use(currencyRouter.routes())
-app.use(currencyRouter.allowedMethods())
-app.use(userRouter.routes())
-app.use(userRouter.allowedMethods())
-app.use(entityRouter.routes())
-app.use(entityRouter.allowedMethods())
-app.use(officeRouter.routes())
-app.use(officeRouter.allowedMethods())
-app.use(teamRouter.routes())
-app.use(teamRouter.allowedMethods())
-app.use(budgetRouter.routes())
 app.use(budgetRouter.allowedMethods())
-app.use(employeeRouter.routes())
+app.use(budgetRouter.routes())
+app.use(companyRouter.allowedMethods())
+app.use(companyRouter.routes())
+app.use(countryRouter.allowedMethods())
+app.use(countryRouter.routes())
+app.use(currencyRouter.allowedMethods())
+app.use(currencyRouter.routes())
+app.use(defaultRouter.allowedMethods())
+app.use(defaultRouter.routes())
 app.use(employeeRouter.allowedMethods())
+app.use(employeeRouter.routes())
+app.use(entityRouter.allowedMethods())
+app.use(entityRouter.routes())
+app.use(expenseRouter.allowedMethods())
+app.use(expenseRouter.routes())
+app.use(officeRouter.allowedMethods())
+app.use(officeRouter.routes())
+app.use(positionRouter.allowedMethods())
+app.use(positionRouter.routes())
+app.use(teamRouter.allowedMethods())
+app.use(teamRouter.routes())
+app.use(userRouter.allowedMethods())
+app.use(userRouter.routes())
 
 export default app

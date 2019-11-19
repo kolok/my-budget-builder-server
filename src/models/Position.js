@@ -1,7 +1,7 @@
 'use strict'
 
-module.exports  = function(sequelize, DataTypes) {
-  var Employee = sequelize.define('Employee', {
+module.exports = function (sequelize, DataTypes) {
+  var Position = sequelize.define('Position', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -12,40 +12,29 @@ module.exports  = function(sequelize, DataTypes) {
       allowNull: false,
       type: DataTypes.STRING
     },
-    email: {
-      allowNull: false,
-      type: DataTypes.STRING,
-      unique: true
-    },
     companyID: {
       type: DataTypes.INTEGER,
       allowNull: false,
       field: 'company_id'
     },
-    officeID: {
+    teamID: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      field: 'office_id'
+      field: 'team_id'
     },
-    birthDate: {
+    employeeID: {
+      type: DataTypes.INTEGER,
       allowNull: true,
-      type: DataTypes.DATE,
-      field: 'birth_date'
+      field: 'employee_id'
     },
-    startDate: {
+    parttime: {
+      type: DataTypes.INTEGER,
       allowNull: true,
-      type: DataTypes.DATE,
-      field: 'start_date'
-    },
-    endDate: {
-      allowNull: true,
-      type: DataTypes.DATE,
-      field: 'end_date'
     },
     status: {
       allowNull: false,
       defaultValue: 'active',
-      type: DataTypes.ENUM(['active','deleted'])
+      type: DataTypes.ENUM(['active', 'deleted'])
     },
     createdAt: {
       allowNull: false,
@@ -65,27 +54,27 @@ module.exports  = function(sequelize, DataTypes) {
       type: DataTypes.DATE,
       field: 'deleted_at'
     }
-  }, {underscored: true, tableName: 'employees'})
+  }, { underscored: true, tableName: 'positions' })
 
-  Employee.associate = function(models) {
-    Employee.belongsTo(models.Company, {
+  Position.associate = function (models) {
+    Position.belongsTo(models.Company, {
       foreignKey: 'companyID',
       as: 'company'
     })
-    Employee.belongsTo(models.Office, {
-      foreignKey: 'officeID',
-      as: 'office'
+    Position.belongsTo(models.Team, {
+      foreignKey: 'teamID',
+      as: 'team'
     })
-    Employee.hasMany(models.Position, {
+    Position.belongsTo(models.Employee, {
       foreignKey: 'employeeID',
-      as: 'positions'
+      as: 'employee'
     })
-    Employee.hasMany(models.Expense, {
-      foreignKey: 'employeeID',
+    Position.hasMany(models.Expense, {
+      foreignKey: 'positionID',
       as: 'expenses'
     })
 
   }
 
-  return Employee
+  return Position
 }

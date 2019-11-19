@@ -60,6 +60,10 @@ module.exports  = function(sequelize, DataTypes) {
       foreignKey: 'parentTeamID',
       as: 'subteams'
     })
+    Team.hasMany(models.Position, {
+      foreignKey: 'teamID',
+      as: 'positions'
+    })
   }
 
   return Team

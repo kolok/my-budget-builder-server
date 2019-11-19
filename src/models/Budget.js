@@ -57,6 +57,11 @@ module.exports  = function(sequelize, DataTypes) {
       foreignKey: 'companyID',
       as: 'company'
     })
+    Budget.hasMany(models.Expense, {
+      foreignKey: 'budgetID',
+      as: 'expenses'
+    })
+
   }
 
   return Budget

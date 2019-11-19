@@ -110,6 +110,17 @@ module.exports  = function(sequelize, DataTypes) {
       as: 'entities'
     })
 
+    /* Relationship with positions */
+    Company.hasMany(models.Position, {
+      foreignKey: 'companyID',
+      as: 'positions'
+    })
+
+    /* Relationship with employee */
+    Company.hasMany(models.Expense, {
+      foreignKey: 'companyID',
+      as: 'expenses'
+    })
   }
 
   return Company
