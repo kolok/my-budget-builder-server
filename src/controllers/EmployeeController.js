@@ -2,17 +2,19 @@ import dateFormat from 'date-fns/format'
 
 import db from '../models'
 const Employee = db.Employee
+const Expense = db.Expense
+const Position = db.Position
 const Op = db.Sequelize.Op
 
 class EmployeeController {
 
-// CRUD
+  // CRUD
 
-// List employees
+  // List employees
   async list(ctx) {
     try {
       let result = await Employee.findAll(
-        { where: { companyID: ctx.state.company.id, status: {[Op.ne]: 'deleted'} } }
+        { where: { companyID: ctx.state.company.id, status: { [Op.ne]: 'deleted' } } }
       )
       ctx.body = result
     } catch (error) {
@@ -30,7 +32,7 @@ class EmployeeController {
     //Find and set that company
     let employee = await Employee
       .findOne(
-        { where: { id: params.id, companyID: ctx.state.company.id, status : {[Op.ne]: 'deleted'} } }
+        { where: { id: params.id, companyID: ctx.state.company.id, status: { [Op.ne]: 'deleted' } }, include: ['positions', 'expenses'] }
       )
     if (!employee) ctx.throw(400, 'INVALID_DATA')
 
@@ -45,10 +47,26 @@ class EmployeeController {
     request.status = 'active'
 
     try {
-      console.log('request',request)
-      let employee = await Employee.create( request )
+      console.log('request', request)
+      let expensesToCreate = request.expenses
+      delete request.expenses
+      delete request.salary
+      delete request.bonus
+      console.log('request', request)
+      let employee = await Employee.create(request)
+
+      let expenses = []
+      await expensesToCreate.forEach( expense => {
+        expense.companyID = ctx.state.company.id
+        expense.employeeID = employee.id
+        var newExpense = Expense.create(expense)
+        expenses.push(newExpense)
+      })
+      employee.expenses = expenses
+
       ctx.body = employee
     } catch (error) {
+      console.log(error)
       ctx.throw(400, 'INVALID_DATA')
     }
   }
@@ -62,7 +80,7 @@ class EmployeeController {
 
     //Find and set that company
     let employee = await Employee.findOne(
-      { where: { id: params.id, companyID: ctx.state.company.id, status : {[Op.ne]: 'deleted'} } }
+      { where: { id: params.id, companyID: ctx.state.company.id, status: { [Op.ne]: 'deleted' } } }
     )
     if (!employee) ctx.throw(400, 'INVALID_DATA')
 
@@ -70,7 +88,7 @@ class EmployeeController {
     employee.updatedAt = dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss')
 
     //Replace the note data with the new updated note data
-    Object.keys(request).forEach(function(parameter) {
+    Object.keys(request).forEach(function (parameter) {
       employee[parameter] = request[parameter]
     })
 
@@ -90,7 +108,7 @@ class EmployeeController {
 
     //Find and set that company
     let employee = await Employee.findOne(
-      { where: { id: params.id, companyID: ctx.state.company.id, status : {[Op.ne]: 'deleted'} } }
+      { where: { id: params.id, companyID: ctx.state.company.id, status: { [Op.ne]: 'deleted' } } }
     )
     if (!employee) ctx.throw(400, 'INVALID_DATA')
 
