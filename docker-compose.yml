@@ -5,7 +5,7 @@ services:
 # Server docker
   server:
     container_name: pipauls-server
-# server sources are locatted into ./server, we need to set the root ./server for the Docker builder
+# Server sources are locatted into ., we need to set the root . for the Docker builder
     build:
       context: .
       dockerfile: Dockerfile
@@ -14,6 +14,8 @@ services:
 # FIXME: this should be replaced by nginx-proxy
     ports:
       - "3000:5000" # container port: server port
+# Restart the container when it fails
+    restart: always
     environment:
       NODE_ENV: development
 # Mount root to taken into account code updates
@@ -30,6 +32,7 @@ services:
 # Here is the postgreSQL engine exposed on 5431
   db:
     image: postgres
+# Restart the container when it fails
     restart: always
 # opened port 5432 to be able to connect to the db using a postgresql client direct in a shell
 # Ex: psql -p 5432 -h 127.0.0.1 -U myuser
@@ -52,6 +55,7 @@ services:
 # This is only t help developers but will not be used in MyITS project
   adminer:
     image: adminer
+# Restart the container when it fails
     restart: always
     ports:
       - 8081:8080
