@@ -74,7 +74,7 @@ class EmployeeController {
     this.updateOrCreateExpense(ctx, request, employee, 'bonus')
 
     delete request.expenses
-    delete request.salary
+    delete request.payroll
     delete request.bonus
 
     //Add the updated date value
