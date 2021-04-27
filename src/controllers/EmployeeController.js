@@ -47,23 +47,9 @@ class EmployeeController {
     request.status = 'active'
 
     try {
-      console.log('request', request)
-      let expensesToCreate = request.expenses
-      delete request.expenses
-      delete request.salary
-      delete request.bonus
-      console.log('request', request)
       let employee = await Employee.create(request)
-
-      let expenses = []
-      await expensesToCreate.forEach( expense => {
-        expense.companyID = ctx.state.company.id
-        expense.employeeID = employee.id
-        var newExpense = Expense.create(expense)
-        expenses.push(newExpense)
-      })
-      employee.expenses = expenses
-
+      this.updateOrCreateExpense(ctx, request, employee, 'payroll')
+      this.updateOrCreateExpense(ctx, request, employee, 'bonus')
       ctx.body = employee
     } catch (error) {
       console.log(error)
@@ -80,14 +66,20 @@ class EmployeeController {
 
     //Find and set that company
     let employee = await Employee.findOne(
-      { where: { id: params.id, companyID: ctx.state.company.id, status: { [Op.ne]: 'deleted' } } }
+      { where: { id: params.id, companyID: ctx.state.company.id, status: { [Op.ne]: 'deleted' } }, include: ['positions', 'expenses'] }
     )
     if (!employee) ctx.throw(400, 'INVALID_DATA')
+
+    this.updateOrCreateExpense(ctx, request, employee, 'payroll')
+    this.updateOrCreateExpense(ctx, request, employee, 'bonus')
+
+    delete request.expenses
+    delete request.salary
+    delete request.bonus
 
     //Add the updated date value
     employee.updatedAt = dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss')
 
-    //Replace the note data with the new updated note data
     Object.keys(request).forEach(function (parameter) {
       employee[parameter] = request[parameter]
     })
@@ -123,6 +115,25 @@ class EmployeeController {
     } catch (error) {
       ctx.throw(400, 'INVALID_DATA')
     }
+  }
+
+  async updateOrCreateExpense(ctx, request, employee, expense_type) {
+    let requestExpense = request.expenses.find(expense => expense.expense_type == expense_type)
+    let employeeExpense = employee.expenses !== undefined ? employee.expenses.find(expense => expense.expense_type == expense_type) : undefined
+    if (employeeExpense === undefined) {
+      var expense = {
+        companyID: ctx.state.company.id,
+        employeeID: employee.id,
+        expense_type: expense_type,
+        amount: requestExpense ? requestExpense.amount : 0,
+      }
+      Expense.create(expense)
+    }
+    else {
+      employeeExpense.amount = requestExpense ? requestExpense.amount : 0
+      employeeExpense.save()
+    }
+
   }
 
 }
