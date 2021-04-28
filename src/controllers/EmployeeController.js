@@ -14,7 +14,7 @@ class EmployeeController {
   async list(ctx) {
     try {
       let result = await Employee.findAll(
-        { where: { companyID: ctx.state.company.id, status: { [Op.ne]: 'deleted' } } }
+        { where: { companyID: ctx.state.company.id, status: { [Op.ne]: 'deleted' } }, include: ['positions', 'expenses'] }
       )
       ctx.body = result
     } catch (error) {
