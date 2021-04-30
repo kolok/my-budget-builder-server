@@ -73,6 +73,26 @@ class EmployeeController {
     this.updateOrCreateExpense(ctx, request, employee, 'payroll')
     this.updateOrCreateExpense(ctx, request, employee, 'bonus')
 
+    // C'est pas beau mais ça marche
+    if (employee.positions.length) {
+      console.log(request.positions[0])
+      employee.positions[0].name = request.positions[0].name
+      employee.positions[0].teamID = request.positions[0].teamID
+      employee.positions[0].save()
+    }
+    else {
+      request.positions.forEach(p => {
+        var position = {
+          companyID: ctx.state.company.id,
+          employeeID: employee.id,
+          teamID: p.teamID,
+          name: p.name,
+        }
+        Position.create(position)
+      })
+  
+    }
+
     delete request.expenses
     delete request.payroll
     delete request.bonus
