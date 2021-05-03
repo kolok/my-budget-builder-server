@@ -45,11 +45,15 @@ class EmployeeController {
     // force the company id with the user one
     request.companyID = ctx.state.company.id
     request.status = 'active'
+    if (request.email == "") {
+      delete request.email
+    }
 
     try {
       let employee = await Employee.create(request)
-      this.updateOrCreateExpense(ctx, request, employee, 'payroll')
-      this.updateOrCreateExpense(ctx, request, employee, 'bonus')
+      await this.updateOrCreateExpenses(ctx, request, employee, 'payroll')
+      await this.updateOrCreateExpenses(ctx, request, employee, 'bonus')
+      await this.updateOrCreatePositions(ctx, request, employee)
       ctx.body = employee
     } catch (error) {
       console.log(error)
@@ -70,36 +74,12 @@ class EmployeeController {
     )
     if (!employee) ctx.throw(400, 'INVALID_DATA')
 
-    this.updateOrCreateExpense(ctx, request, employee, 'payroll')
-    this.updateOrCreateExpense(ctx, request, employee, 'bonus')
-
-
-
-// A factoriser
-    for (const ep of employee.positions) {
-      //delete positions
-      if (request.positions.find( rp => rp.id == ep.id ) === undefined) {
-        console.log("to be removed:",ep)
-        ep.destroy()
-      }
-    }
-    for (const rp of request.positions) {
-      //create or update positions
-      if (rp.id) {
-        // update
-        let ep = await Position.findByPk(rp.id)
-        ep.name = rp.name
-        ep.teamID = rp.teamID.length !== undefined ? rp.teamID[rp.teamID.length - 1 ] || 0 : rp.teamID
-        ep.parttime = rp.parttime
-        ep.save()
-      }
-      else {
-        //create
-        rp['companyID'] = ctx.state.company.id;
-        rp['employeeID'] = employee.id;
-        rp.teamID = rp.teamID.length !== undefined ? rp.teamID[rp.teamID.length - 1 ] || 0 : rp.teamID
-        Position.create(rp)
-      }
+    try {
+      await this.updateOrCreateExpenses(ctx, request, employee, 'payroll')
+      await this.updateOrCreateExpenses(ctx, request, employee, 'bonus')
+      await this.updateOrCreatePositions(ctx, request, employee)
+    } catch (error) {
+      ctx.throw(400, 'INVALID_DATA')
     }
 
     delete request.createdAt
@@ -143,7 +123,39 @@ class EmployeeController {
     }
   }
 
-  async updateOrCreateExpense(ctx, request, employee, expense_type) {
+  async updateOrCreatePositions(ctx, request, employee) {
+    console.log('updateOrCreatePositions')
+    if (employee.positions !== undefined) {
+      for (const ep of employee.positions) {
+        //delete positions
+        if (request.positions.find( rp => rp.id == ep.id ) === undefined) {
+          ep.destroy()
+        }
+      }
+    }
+    for (const rp of request.positions) {
+      //create or update positions
+      if (rp.id) {
+        // update
+        let ep = await Position.findByPk(rp.id)
+        ep.name = rp.name
+        ep.teamID = rp.teamID.length !== undefined ? rp.teamID[rp.teamID.length - 1 ] || 0 : rp.teamID
+        ep.parttime = rp.parttime
+        ep.save()
+      }
+      else {
+        console.log('create position')
+        //create
+        rp['companyID'] = ctx.state.company.id;
+        rp['employeeID'] = employee.id;
+        rp.teamID = rp.teamID.length !== undefined ? rp.teamID[rp.teamID.length - 1 ] || 0 : rp.teamID
+        console.log('create position', rp)
+        Position.create(rp)
+      }
+    }
+  }
+
+  async updateOrCreateExpenses(ctx, request, employee, expense_type) {
     let requestExpense = request.expenses.find(expense => expense.expense_type == expense_type)
     let employeeExpense = employee.expenses !== undefined ? employee.expenses.find(expense => expense.expense_type == expense_type) : undefined
     if (employeeExpense === undefined) {
