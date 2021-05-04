@@ -45,9 +45,7 @@ class EmployeeController {
     // force the company id with the user one
     request.companyID = ctx.state.company.id
     request.status = 'active'
-    if (request.email == "") {
-      delete request.email
-    }
+    request.email = request.email || null
 
     try {
       let employee = await Employee.create(request)
@@ -87,6 +85,7 @@ class EmployeeController {
     Object.keys(request).forEach(function (parameter) {
       employee[parameter] = request[parameter]
     })
+    employee.email = request.email || null
     //Add the updated date value
     employee.updatedAt = dateFormat(new Date(), 'YYYY-MM-DD HH:mm:ss')
 
