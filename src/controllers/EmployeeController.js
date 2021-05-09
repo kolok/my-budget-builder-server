@@ -1,6 +1,7 @@
 import dateFormat from 'date-fns/format'
 
 import db from '../models'
+const BudgetEmployee = db.BudgetEmployee
 const Employee = db.Employee
 const Expense = db.Expense
 const Position = db.Position
@@ -12,9 +13,17 @@ class EmployeeController {
 
   // List employees
   async list(ctx) {
+    const params = ctx.params
+    console.log('params', ctx.query)
     try {
       let result = await Employee.findAll(
-        { where: { companyID: ctx.state.company.id, status: { [Op.ne]: 'deleted' } }, include: ['positions', 'expenses'] }
+        { where: { 
+            companyID: ctx.state.company.id, 
+            status: { [Op.ne]: 'deleted' }, 
+            '$budgetEmployees.budget_id$': 1 
+          }, 
+//          include: ['positions', 'expenses', { model: BudgetEmployee, as: 'budgetEmployees' }] }
+          include: ['positions', 'expenses', 'budgetEmployees' ] }
       )
       ctx.body = result
     } catch (error) {
@@ -52,6 +61,9 @@ class EmployeeController {
       await this.updateOrCreateExpenses(ctx, request, employee, 'payroll')
       await this.updateOrCreateExpenses(ctx, request, employee, 'bonus')
       await this.updateOrCreatePositions(ctx, request, employee)
+      if (request.budgetID) {
+        await BudgetEmployee.create({employeeID: employee.id, budgetID: request.budgetID})
+      }
       ctx.body = employee
     } catch (error) {
       console.log(error)
