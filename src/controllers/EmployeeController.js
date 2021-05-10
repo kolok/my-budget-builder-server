@@ -14,7 +14,6 @@ class EmployeeController {
   // List employees
   async list(ctx) {
     const params = ctx.params
-    console.log('params', ctx.query)
     try {
       let result = await Employee.findAll(
         { where: { 
@@ -135,7 +134,6 @@ class EmployeeController {
   }
 
   async updateOrCreatePositions(ctx, request, employee) {
-    console.log('updateOrCreatePositions')
     if (employee.positions !== undefined) {
       for (const ep of employee.positions) {
         //delete positions
@@ -155,12 +153,10 @@ class EmployeeController {
         ep.save()
       }
       else {
-        console.log('create position')
         //create
         rp['companyID'] = ctx.state.company.id;
         rp['employeeID'] = employee.id;
         rp.teamID = rp.teamID.length !== undefined ? rp.teamID[rp.teamID.length - 1 ] || 0 : rp.teamID
-        console.log('create position', rp)
         Position.create(rp)
       }
     }

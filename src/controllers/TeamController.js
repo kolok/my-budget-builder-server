@@ -47,7 +47,6 @@ class TeamController {
     }
 
     try {
-      console.log('request',request)
       let team = await Team.create( request )
       ctx.body = team
     } catch (error) {

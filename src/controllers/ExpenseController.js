@@ -45,7 +45,6 @@ class ExpenseController {
     request.status = 'active'
 
     try {
-      console.log('request',request)
       let expense = await Expense.create( request )
       ctx.body = expense
     } catch (error) {

@@ -67,8 +67,6 @@ class UserController {
        * Create the new company
        */
       var company = await Company.create({ name: request.companyname, subdomain: request.subdomain })
-      // create the user
-      console.log(request)
       var user = await User.create(request)
       // create the link between user and company with client_admin role
       var userCompany = await UserCompany.create({ userID: user.id, companyID: company.id, role: 'client_admin' })
@@ -107,24 +105,19 @@ class UserController {
     const request = ctx.request.body
 
     if (!request.email || !request.password) {
-      console.log('error1')
       ctx.throw(404, 'INVALID_DATA')
     }
-    console.log('signin')
 
     //Let's find that user and its company associated to him
     let userbyemail = await User.findOne({ where: { email: request.email }, include: ['userCompanies', 'companies'] })
     if (userbyemail === null) {
-      console.log('INVALID_CREDENTIALS')
       ctx.throw(401, 'INVALID_CREDENTIALS')
     }
 
     if (userbyemail.userCompanies === undefined || userbyemail.userCompanies.length != 1) {
-      console.log('WRONG_ASSOCIATION 1')
       ctx.throw(401, 'WRONG_ASSOCIATION')
     }
     if (userbyemail.companies === undefined || userbyemail.companies.length != 1) {
-      console.log('WRONG_ASSOCIATION 2')
       ctx.throw(401, 'WRONG_ASSOCIATION')
     }
 
@@ -140,8 +133,6 @@ class UserController {
         userbyemail.password
       )
       if (!correct) {
-        console.log('error3')
-
         ctx.throw(400, 'INVALID_CREDENTIALS')
       }
     } catch (error) {
@@ -293,11 +284,9 @@ class UserController {
     }
 
     if (userbyemail.userCompanies === undefined || userbyemail.userCompanies.length != 1) {
-      console.log('WRONG_ASSOCIATION 1')
       ctx.throw(401, 'WRONG_ASSOCIATION')
     }
     if (userbyemail.companies === undefined || userbyemail.companies.length != 1) {
-      console.log('WRONG_ASSOCIATION 2')
       ctx.throw(401, 'WRONG_ASSOCIATION')
     }
 

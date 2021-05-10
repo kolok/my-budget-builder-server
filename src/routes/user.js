@@ -46,7 +46,6 @@ router.post('/api/v1/users/updatePasswordRequest', async (ctx/*, next*/) => {
 
 // updatePassword will update the password of the user
 router.post('/api/v1/users/updatePassword', async (ctx/*, next*/) => {
-  console.log('router /api/v1/users/updatePassword')
   await userController.updatePassword(ctx)
 })
 
