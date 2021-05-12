@@ -153,7 +153,7 @@ class EmployeeController {
         // update
         let ep = await Position.findByPk(rp.id)
         ep.name = rp.name
-        ep.teamID = rp.teamID.length !== undefined ? rp.teamID[rp.teamID.length - 1 ] || 0 : rp.teamID
+        ep.teamID = Array.isArray(rp.teamID) ? rp.teamID[rp.teamID.length - 1 ] || 0 : rp.teamID
         ep.parttime = rp.parttime
         ep.save()
       }
@@ -161,7 +161,7 @@ class EmployeeController {
         //create
         rp['companyID'] = ctx.state.company.id
         rp['employeeID'] = employee.id
-        rp.teamID = rp.teamID.length !== undefined ? rp.teamID[rp.teamID.length - 1 ] || 0 : rp.teamID
+        rp.teamID = Array.isArray(rp.teamID) ? rp.teamID[rp.teamID.length - 1 ] || 0 : rp.teamID
         Position.create(rp)
       }
     }
