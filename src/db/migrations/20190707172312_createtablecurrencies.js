@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       company_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: true
       },
       comment: {

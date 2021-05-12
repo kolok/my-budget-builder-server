@@ -4,20 +4,19 @@ module.exports = {
     return queryInterface.createTable('entities', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       name: {
         allowNull: false,
         type: Sequelize.STRING
       },
       country_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false
       },
       company_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false
       },
       defaultCurrencyID: {

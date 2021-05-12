@@ -4,9 +4,9 @@ module.exports  = function(sequelize, DataTypes) {
   var Expense = sequelize.define('Expense', {
     id: {
       allowNull: false,
-      autoIncrement: true,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type: DataTypes.UUID
     },
     expense_type: {
       allowNull: false,
@@ -14,22 +14,22 @@ module.exports  = function(sequelize, DataTypes) {
       type: DataTypes.ENUM(['payroll','bonus','payroll_increase','bonus_increase'])
     },
     companyID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       field: 'company_id'
     },
     budgetID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: true,
       field: 'budget_id'
     },
     employeeID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: true,
       field: 'employee_id'
     },
     positionID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: true,
       field: 'position_id'
     },

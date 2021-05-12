@@ -4,9 +4,8 @@ module.exports = {
     return queryInterface.createTable('refresh_tokens', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       email: {
         allowNull: false,

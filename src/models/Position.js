@@ -4,26 +4,26 @@ module.exports = function (sequelize, DataTypes) {
   var Position = sequelize.define('Position', {
     id: {
       allowNull: false,
-      autoIncrement: true,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type: DataTypes.UUID
     },
     name: {
       allowNull: false,
       type: DataTypes.STRING
     },
     companyID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       field: 'company_id'
     },
     teamID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: true,
       field: 'team_id'
     },
     employeeID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: true,
       field: 'employee_id'
     },

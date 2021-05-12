@@ -4,9 +4,10 @@ module.exports  = function(sequelize, DataTypes) {
 
   var Company = sequelize.define('Company', {
     id: {
-      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      autoIncrement: true
+      type: DataTypes.UUID
     },
     name: {
       type: DataTypes.STRING,

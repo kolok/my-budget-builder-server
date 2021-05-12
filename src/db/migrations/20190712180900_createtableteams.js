@@ -4,20 +4,19 @@ module.exports = {
     return queryInterface.createTable('teams', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       name: {
         allowNull: false,
         type: Sequelize.STRING
       },
       company_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false
       },
       parent_team_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: true
       },
       status: {

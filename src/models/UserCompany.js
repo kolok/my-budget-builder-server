@@ -4,12 +4,12 @@ module.exports  = function(sequelize, DataTypes) {
   var UserCompany = sequelize.define('UserCompany', {
     id: {
       allowNull: false,
-      autoIncrement: true,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type: DataTypes.UUID
     },
     companyID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       references: {
         model: 'Company',
@@ -18,7 +18,7 @@ module.exports  = function(sequelize, DataTypes) {
       field: 'company_id'
     },
     userID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       references: {
         model: 'User',

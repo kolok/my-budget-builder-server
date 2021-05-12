@@ -4,9 +4,9 @@ module.exports  = function(sequelize, DataTypes) {
   var RefreshToken = sequelize.define('RefreshToken', {
     id: {
       allowNull: false,
-      autoIncrement: true,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type: DataTypes.UUID
     },
     email: {
       allowNull: false,

@@ -34,7 +34,6 @@ module.exports = {
         symbol: '$'
       }
     ], {})
-//    await queryInterface.sequelize.query('select setval(\'currencies_id_seq\', (select max(id) from currencies), true)')
     return result
   },
 

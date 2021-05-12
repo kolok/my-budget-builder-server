@@ -4,9 +4,8 @@ module.exports = {
     return queryInterface.createTable('expenses', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       expense_type: {
         allowNull: false,
@@ -14,22 +13,22 @@ module.exports = {
         type: Sequelize.ENUM(['payroll','bonus','payroll_increase','bonus_increase'])
       },
       companyID: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false,
         field: 'company_id'
       },
       budgetID: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: true,
         field: 'budget_id'
       },
       employeeID: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: true,
         field: 'employee_id'
       },
       positionID: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: true,
         field: 'position_id'
       },

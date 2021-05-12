@@ -3,7 +3,7 @@
 module.exports  = function(sequelize, DataTypes) {
   var BudgetEmployee = sequelize.define('BudgetEmployee', {
     employeeID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       references: {
         model: 'Employee',
@@ -12,7 +12,7 @@ module.exports  = function(sequelize, DataTypes) {
       field: 'employee_id'
     },
     budgetID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       references: {
         model: 'Budget',

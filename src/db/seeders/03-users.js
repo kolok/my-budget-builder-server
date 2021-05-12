@@ -1,4 +1,5 @@
 'use strict'
+const uuidv4 = require('uuid/v4');
 
 if (!process.env.NODE_ENV) {
   throw new Error('NODE_ENV not set')
@@ -22,7 +23,7 @@ module.exports = {
     }
     var result = await queryInterface.bulkInsert('users', [
       {
-        id: 1,
+        id: uuidv4(),
         name: 'Admin1',
         email: 'admin1@pipauls.com',
         password: password,
@@ -31,7 +32,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        id: 2,
+        id: uuidv4(),
         name: 'Admin2',
         email: 'admin2@pipauls.com',
         password: password,
@@ -40,7 +41,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        id: 3,
+        id: uuidv4(),
         name: 'Admin3',
         email: 'admin3@pipauls.com',
         password: password,
@@ -49,7 +50,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        id: 4,
+        id: uuidv4(),
         name: 'User1',
         email: 'user1@pipauls.com',
         password: password,
@@ -58,7 +59,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        id: 5,
+        id: uuidv4(),
         name: 'User2',
         email: 'user2@pipauls.com',
         password: password,
@@ -67,7 +68,6 @@ module.exports = {
         updated_at: new Date()
       },
     ], {})
-    await queryInterface.sequelize.query('select setval(\'users_id_seq\', (select max(id) from users), true)')
     return result
   },
 

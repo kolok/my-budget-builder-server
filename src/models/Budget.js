@@ -4,16 +4,16 @@ module.exports  = function(sequelize, DataTypes) {
   var Budget = sequelize.define('Budget', {
     id: {
       allowNull: false,
-      autoIncrement: true,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type: DataTypes.UUID
     },
     name: {
       allowNull: false,
       type: DataTypes.STRING
     },
     companyID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       field: 'company_id'
     },

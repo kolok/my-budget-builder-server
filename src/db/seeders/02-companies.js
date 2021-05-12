@@ -1,4 +1,5 @@
 'use strict'
+const uuidv4 = require('uuid/v4');
 
 if (!process.env.NODE_ENV) {
   throw new Error('NODE_ENV not set')
@@ -14,7 +15,7 @@ module.exports = {
     var [currencies] = await queryInterface.sequelize.query('select * from currencies')
     var result = await queryInterface.bulkInsert('companies', [
       {
-        id: 1,
+        id: uuidv4(),
         name: 'Company 1',
         status: 'active',
         subdomain: 'company1',
@@ -24,7 +25,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        id: 2,
+        id: uuidv4(),
         name: 'Company 2',
         status: 'active',
         subdomain: 'company2',
@@ -34,7 +35,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        id: 3,
+        id: uuidv4(),
         name: 'Company 3',
         status: 'active',
         subdomain: 'company3',
@@ -44,7 +45,6 @@ module.exports = {
         updated_at: new Date()
       }
     ], {})
-    await queryInterface.sequelize.query('select setval(\'companies_id_seq\', (select max(id) from companies), true)')
     return result
   },
 

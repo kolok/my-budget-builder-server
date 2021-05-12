@@ -1,4 +1,5 @@
 'use strict'
+const uuidv4 = require('uuid/v4');
 
 if (!process.env.NODE_ENV) {
   throw new Error('NODE_ENV not set')
@@ -18,22 +19,21 @@ module.exports = {
   up: async function(queryInterface/*, Sequelize*/) {
     var result = await queryInterface.bulkInsert('countries', [
       {
-        id: 1,
+        id: uuidv4(),
         name: 'Unites States',
         code2: 'US'
       },
       {
-        id: 2,
+        id: uuidv4(),
         name: 'United Kingdom',
         code2: 'UK'
       },
       {
-        id: 3,
+        id: uuidv4(),
         name: 'France',
         code2: 'FR'
       }
     ], {})
-    await queryInterface.sequelize.query('select setval(\'countries_id_seq\', (select max(id) from countries), true)')
     return result
   },
 

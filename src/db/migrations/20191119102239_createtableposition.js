@@ -4,26 +4,25 @@ module.exports = {
     return queryInterface.createTable('positions', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       name: {
         allowNull: false,
         type: Sequelize.STRING
       },
       companyID: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false,
         field: 'company_id'
       },
       teamID: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: true,
         field: 'team_id'
       },
       employeeID: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: true,
         field: 'employee_id'
       },

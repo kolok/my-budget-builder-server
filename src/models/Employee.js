@@ -4,9 +4,9 @@ module.exports  = function(sequelize, DataTypes) {
   var Employee = sequelize.define('Employee', {
     id: {
       allowNull: false,
-      autoIncrement: true,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type: DataTypes.UUID
     },
     name: {
       allowNull: false,
@@ -18,12 +18,12 @@ module.exports  = function(sequelize, DataTypes) {
       unique: false
     },
     companyID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       field: 'company_id'
     },
     officeID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: true,
       field: 'office_id'
     },

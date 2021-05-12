@@ -1,4 +1,5 @@
 'use strict'
+const uuidv4 = require('uuid/v4');
 
 if (!process.env.NODE_ENV) {
   throw new Error('NODE_ENV not set')
@@ -11,40 +12,41 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   up: async function(queryInterface/*, Sequelize*/) {
+    var [users] = await queryInterface.sequelize.query('select * from users')
+    var [companies] = await queryInterface.sequelize.query('select * from companies')
+
     var result = await queryInterface.bulkInsert('users_companies', [
       {
-        id: 1,
-        company_id: 1,
-        user_id: 1,
+        id: uuidv4(),
+        company_id: companies.find(c => c.name == 'Company 1').id, 
+        user_id: users.find(c => c.name == 'Admin1').id, 
         role: 'client_admin'
       },
       {
-        id: 2,
-        company_id: 2,
-        user_id: 2,
+        id: uuidv4(),
+        company_id: companies.find(c => c.name == 'Company 2').id, 
+        user_id: users.find(c => c.name == 'Admin2').id, 
         role: 'client_admin'
       },
       {
-        id: 3,
-        company_id: 3,
-        user_id: 3,
+        id: uuidv4(),
+        company_id: companies.find(c => c.name == 'Company 3').id,
+        user_id: users.find(c => c.name == 'Admin3').id, 
         role: 'client_admin'
       },
       {
-        id: 4,
-        company_id: 1,
-        user_id: 4,
+        id: uuidv4(),
+        company_id: companies.find(c => c.name == 'Company 1').id, //Company 1
+        user_id: users.find(c => c.name == 'User1').id, 
         role: 'client_user'
       },
       {
-        id: 5,
-        company_id: 1,
-        user_id: 5,
+        id: uuidv4(),
+        company_id: companies.find(c => c.name == 'Company 1').id, //Company 1
+        user_id: users.find(c => c.name == 'User2').id, 
         role: 'client_user'
       },
     ], {})
-    await queryInterface.sequelize
-      .query('select setval(\'users_companies_id_seq\', (select max(id) from users_companies), true)')
     return result
   },
 

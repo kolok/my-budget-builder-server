@@ -4,9 +4,9 @@ module.exports  = function(sequelize, DataTypes) {
   var Office = sequelize.define('Office', {
     id: {
       allowNull: false,
-      autoIncrement: true,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type: DataTypes.UUID
     },
     name: {
       allowNull: false,
@@ -25,17 +25,17 @@ module.exports  = function(sequelize, DataTypes) {
       type: DataTypes.STRING
     },
     countryID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: true,
       field: 'country_id'
     },
     companyID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       field: 'company_id'
     },
     entityID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       field: 'entity_id'
     },

@@ -4,21 +4,21 @@ module.exports  = function(sequelize, DataTypes) {
   var Entity = sequelize.define('Entity', {
     id: {
       allowNull: false,
-      autoIncrement: true,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type: DataTypes.UUID
     },
     name: {
       allowNull: false,
       type: DataTypes.STRING
     },
     countryID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       field: 'country_id'
     },
     companyID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       field: 'company_id'
     },

@@ -17,7 +17,7 @@ module.exports  = function(sequelize, DataTypes) {
       type: DataTypes.STRING
     },
     companyID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: true,
       field: 'company_id'
     },

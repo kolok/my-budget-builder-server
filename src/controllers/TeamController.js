@@ -79,7 +79,7 @@ class TeamController {
       await team.save()
       ctx.body = team
     } catch (error) {
-      ctx.throw(400, 'INVALID_DATA')
+      ctx.throw(400, 'INVALID_DATA', error)
     }
   }
 

@@ -4,16 +4,15 @@ module.exports = {
     return queryInterface.createTable('budgets', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       name: {
         allowNull: false,
         type: Sequelize.STRING
       },
       company_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false
       },
       startDate: {
