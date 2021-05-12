@@ -11,13 +11,14 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   up: async function(queryInterface/*, Sequelize*/) {
+    var [currencies] = await queryInterface.sequelize.query('select * from currencies')
     var result = await queryInterface.bulkInsert('entities',[
       {
         id: 1,
         name: 'Company1 SA',
         company_id: 1,
         country_id: 1,
-        default_currency_id:1,
+        default_currency_id: currencies.find(c => c.name == 'Euro').id,
         status: 'active',
         created_at: new Date(),
         updated_at: new Date()
@@ -27,7 +28,7 @@ module.exports = {
         name: 'Company1 Limited',
         company_id: 1,
         country_id: 2,
-        default_currency_id:2,
+        default_currency_id: currencies.find(c => c.name == 'Pound sterling').id,
         status: 'active',
         created_at: new Date(),
         updated_at: new Date()
@@ -37,7 +38,7 @@ module.exports = {
         name: 'Company1 Corporation',
         company_id: 1,
         country_id: 3,
-        default_currency_id:3,
+        default_currency_id: currencies.find(c => c.name == 'Dollar').id,
         status: 'active',
         created_at: new Date(),
         updated_at: new Date()
@@ -47,7 +48,7 @@ module.exports = {
         name: 'Company2 SA',
         company_id: 2,
         country_id: 1,
-        default_currency_id:1,
+        default_currency_id: currencies.find(c => c.name == 'Euro').id,
         status: 'active',
         created_at: new Date(),
         updated_at: new Date()
@@ -57,7 +58,7 @@ module.exports = {
         name: 'Company2 Limited',
         company_id: 2,
         country_id: 2,
-        default_currency_id:2,
+        default_currency_id: currencies.find(c => c.name == 'Pound sterling').id,
         status: 'active',
         created_at: new Date(),
         updated_at: new Date()

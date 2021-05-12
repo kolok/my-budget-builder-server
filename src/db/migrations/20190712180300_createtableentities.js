@@ -21,7 +21,7 @@ module.exports = {
         allowNull: false
       },
       defaultCurrencyID: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: true,
         field: 'default_currency_id'
       },

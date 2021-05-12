@@ -23,7 +23,7 @@ module.exports  = function(sequelize, DataTypes) {
       field: 'company_id'
     },
     defaultCurrencyID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: true,
       field: 'default_currency_id'
     },

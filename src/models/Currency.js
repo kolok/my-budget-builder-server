@@ -4,9 +4,9 @@ module.exports  = function(sequelize, DataTypes) {
   var Currency = sequelize.define('Currency', {
     id: {
       allowNull: false,
-      autoIncrement: true,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type: DataTypes.UUID
     },
     name: {
       allowNull: false,

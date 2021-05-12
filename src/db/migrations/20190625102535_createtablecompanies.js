@@ -23,7 +23,7 @@ module.exports = {
         defaultValue: '1'
       },
       defaultCurrencyID: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: true,
         field: 'default_currency_id'
       },

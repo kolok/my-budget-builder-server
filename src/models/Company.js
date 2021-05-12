@@ -25,7 +25,7 @@ module.exports  = function(sequelize, DataTypes) {
       field: 'first_month_fiscal_year'
     },
     defaultCurrencyID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: true,
       field: 'default_currency_id'
     },
