@@ -13,20 +13,21 @@ class EmployeeController {
 
   // List employees
   async list(ctx) {
-    const params = ctx.params
+    const query = ctx.query
     try {
+      let where = { 
+        companyID: ctx.state.company.id, 
+        status: { [Op.ne]: 'deleted' }
+      }
+      if (query.budgetID) {
+        where['$budgetEmployees.budget_id$'] = query.budgetID
+      }
       let result = await Employee.findAll(
-        { where: { 
-            companyID: ctx.state.company.id, 
-            status: { [Op.ne]: 'deleted' }, 
-            '$budgetEmployees.budget_id$': 1 
-          }, 
-//          include: ['positions', 'expenses', { model: BudgetEmployee, as: 'budgetEmployees' }] }
+        { where: where, 
           include: ['positions', 'expenses', 'budgetEmployees' ] }
       )
       ctx.body = result
     } catch (error) {
-      console.log(error)
       ctx.throw(400, 'INVALID_DATA')
     }
   }
