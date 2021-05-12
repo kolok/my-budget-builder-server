@@ -2,7 +2,6 @@ import rand from 'randexp'
 import bcrypt from 'bcrypt'
 import jsonwebtoken from 'jsonwebtoken'
 import dateFormat from 'date-fns/format'
-import dateAddMonths from 'date-fns/add_months'
 import dateAddHours from 'date-fns/add_hours'
 import dateCompareAsc from 'date-fns/compare_asc'
 
@@ -42,7 +41,7 @@ class UserController {
     //Now let's check for a duplicate company
     let companyByName = await Company.findOne(
       { where: { name: request.companyname } }).then(company => { return company }
-      )
+    )
     if (companyByName !== null) {
       return ctx.throw(400, 'DUPLICATE_COMPANY')
     }
@@ -186,8 +185,10 @@ class UserController {
     }
 
     if (user !== undefined) {
-      // save a update password token
-      //Generate the refreshToken data
+      /*
+       * save a update password token
+       *Generate the refreshToken data
+       */
       let refreshTokenData = await this.generateRefreshToken(ctx, user, 1)
   
       // send email with the password
@@ -196,10 +197,12 @@ class UserController {
       }
     }
 
-    // FIXME: return a 201 status
-    //ctx.status(201)
+    /*
+     * FIXME: return a 201 status
+     *ctx.status(201)
+     */
     ctx.body = {
-      result: "success"
+      result: 'success'
     }
   }
 
@@ -208,7 +211,11 @@ class UserController {
     let refreshTokenData = await this.getRefreshTokenData(ctx, ctx.request.body.passwordToken)
 
     //Let's find that user
-    let userbyemail = await User.findOne({ where: { email: refreshTokenData.email }, include: ['userCompanies', 'companies'] })
+    let userbyemail = await User.findOne(
+      { where: { email: refreshTokenData.email }, 
+        include: ['userCompanies', 'companies'] 
+      }
+    )
 
     if (userbyemail === null) {
       ctx.throw(401, 'INVALID_REFRESH_TOKEN')
@@ -222,10 +229,8 @@ class UserController {
       ctx.throw(400, 'INVALID_DATA')
     }
 
-
-
     ctx.body = {
-      status: "success"
+      status: 'success'
     }
   }
 
@@ -321,7 +326,17 @@ class UserController {
     try {
       let result = await User.findAll(
         {
-          attributes: ['id', 'name', 'email', 'defaultLanguage', 'loginCount', 'status', 'createdAt', 'updatedAt', 'deletedAt'],
+          attributes: [
+            'id', 
+            'name', 
+            'email', 
+            'defaultLanguage', 
+            'loginCount', 
+            'status', 
+            'createdAt', 
+            'updatedAt', 
+            'deletedAt'
+          ],
           where: { status: { [Op.ne]: 'deleted' } },
           include: [{
             association: 'userCompanies',
@@ -346,7 +361,17 @@ class UserController {
     let user = await User
       .findOne(
         {
-          attributes: ['id', 'name', 'email', 'defaultLanguage', 'loginCount', 'status', 'createdAt', 'updatedAt', 'deletedAt'],
+          attributes: [
+            'id', 
+            'name', 
+            'email', 
+            'defaultLanguage', 
+            'loginCount', 
+            'status', 
+            'createdAt', 
+            'updatedAt', 
+            'deletedAt'
+          ],
           where: { id: params.id, status: { [Op.ne]: 'deleted' } },
           include: [{
             association: 'userCompanies',
@@ -408,7 +433,17 @@ class UserController {
     //Find and set that company
     let user = await User.findOne(
       {
-        attributes: ['id', 'name', 'email', 'defaultLanguage', 'loginCount', 'status', 'createdAt', 'updatedAt', 'deletedAt'],
+        attributes: [
+          'id', 
+          'name', 
+          'email', 
+          'defaultLanguage', 
+          'loginCount', 
+          'status', 
+          'createdAt', 
+          'updatedAt', 
+          'deletedAt'
+        ],
         where: { id: params.id, status: { [Op.ne]: 'deleted' } },
         include: [{
           association: 'userCompanies',
@@ -491,8 +526,6 @@ class UserController {
         ' ' +
         ctx.userAgent.browser,
       ipAddress: ctx.request.ip,
-      // does it means that refresh token is valid during 1 month
-      //expiration: dateAddMonths(new Date(), expiredInHours || 1),
       expiration: dateAddHours(new Date(), expiredInHours || 30 * 24),
       isValid: true,
     }

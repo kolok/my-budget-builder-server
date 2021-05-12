@@ -62,10 +62,12 @@ module.exports  = function(sequelize, DataTypes) {
       as: 'expenses'
     })
 
-//    Budget.hasMany(models.BudgetEmployee, {
-//      foreignKey: 'budgetID',
-//      as: 'budgetEmployees'
-//    })
+    /*
+     *    Budget.hasMany(models.BudgetEmployee, {
+     *      foreignKey: 'budgetID',
+     *      as: 'budgetEmployees'
+     *    })
+     */
 
     Budget.belongsToMany(models.Employee, {
       through: 'BudgetEmployee',

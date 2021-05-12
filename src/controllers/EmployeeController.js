@@ -41,7 +41,9 @@ class EmployeeController {
     //Find and set that company
     let employee = await Employee
       .findOne(
-        { where: { id: params.id, companyID: ctx.state.company.id, status: { [Op.ne]: 'deleted' } }, include: ['positions', 'expenses'] }
+        { where:  { id: params.id, companyID: ctx.state.company.id, status: { [Op.ne]: 'deleted' } }, 
+          include: ['positions', 'expenses']
+        }
       )
     if (!employee) ctx.throw(400, 'INVALID_DATA')
 
@@ -80,7 +82,9 @@ class EmployeeController {
 
     //Find and set that company
     let employee = await Employee.findOne(
-      { where: { id: params.id, companyID: ctx.state.company.id, status: { [Op.ne]: 'deleted' } }, include: ['positions', 'expenses'] }
+      { where: { id: params.id, companyID: ctx.state.company.id, status: { [Op.ne]: 'deleted' } }, 
+        include: ['positions', 'expenses'] 
+      }
     )
     if (!employee) ctx.throw(400, 'INVALID_DATA')
 
@@ -155,8 +159,8 @@ class EmployeeController {
       }
       else {
         //create
-        rp['companyID'] = ctx.state.company.id;
-        rp['employeeID'] = employee.id;
+        rp['companyID'] = ctx.state.company.id
+        rp['employeeID'] = employee.id
         rp.teamID = rp.teamID.length !== undefined ? rp.teamID[rp.teamID.length - 1 ] || 0 : rp.teamID
         Position.create(rp)
       }
@@ -165,7 +169,9 @@ class EmployeeController {
 
   async updateOrCreateExpenses(ctx, request, employee, expense_type) {
     let requestExpense = request.expenses.find(expense => expense.expense_type == expense_type)
-    let employeeExpense = employee.expenses !== undefined ? employee.expenses.find(expense => expense.expense_type == expense_type) : undefined
+    let employeeExpense = employee.expenses !== undefined ? 
+      employee.expenses.find(expense => expense.expense_type == expense_type) : 
+      undefined
     if (employeeExpense === undefined) {
       var expense = {
         companyID: ctx.state.company.id,

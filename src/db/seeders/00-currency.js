@@ -1,5 +1,5 @@
 'use strict'
-const uuidv4 = require('uuid/v4');
+const uuidv4 = require('uuid/v4')
 
 if (!process.env.NODE_ENV) {
   throw new Error('NODE_ENV not set')
