@@ -11,7 +11,12 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      country_id: {
+      taxeRate: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        field: 'taxe_rate'
+      },
+        country_id: {
         type: Sequelize.UUID,
         allowNull: false
       },

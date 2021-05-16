@@ -12,6 +12,11 @@ module.exports  = function(sequelize, DataTypes) {
       allowNull: false,
       type: DataTypes.STRING
     },
+    taxeRate: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+      field: 'taxe_rate'
+    },
     countryID: {
       type: DataTypes.UUID,
       allowNull: false,

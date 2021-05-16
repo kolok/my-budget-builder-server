@@ -23,6 +23,7 @@ module.exports = {
         company_id: companies.find(c => c.name == 'Company 1').id,
         country_id: countries.find(c => c.name == 'Unites States').id,
         default_currency_id: currencies.find(c => c.name == 'Euro').id,
+        taxe_rate: 42,
         status: 'active',
         created_at: new Date(),
         updated_at: new Date()
@@ -33,6 +34,7 @@ module.exports = {
         company_id: companies.find(c => c.name == 'Company 1').id,
         country_id: countries.find(c => c.name == 'United Kingdom').id,
         default_currency_id: currencies.find(c => c.name == 'Pound sterling').id,
+        taxe_rate: 42,
         status: 'active',
         created_at: new Date(),
         updated_at: new Date()
@@ -43,6 +45,7 @@ module.exports = {
         company_id: companies.find(c => c.name == 'Company 1').id,
         country_id: countries.find(c => c.name == 'France').id,
         default_currency_id: currencies.find(c => c.name == 'Dollar').id,
+        taxe_rate: 42,
         status: 'active',
         created_at: new Date(),
         updated_at: new Date()
@@ -53,6 +56,7 @@ module.exports = {
         company_id: companies.find(c => c.name == 'Company 2').id,
         country_id: countries.find(c => c.name == 'Unites States').id,
         default_currency_id: currencies.find(c => c.name == 'Euro').id,
+        taxe_rate: 42,
         status: 'active',
         created_at: new Date(),
         updated_at: new Date()
@@ -63,6 +67,7 @@ module.exports = {
         company_id: companies.find(c => c.name == 'Company 2').id,
         country_id: countries.find(c => c.name == 'United Kingdom').id,
         default_currency_id: currencies.find(c => c.name == 'Pound sterling').id,
+        taxe_rate: 42,
         status: 'active',
         created_at: new Date(),
         updated_at: new Date()
@@ -72,6 +77,7 @@ module.exports = {
         name: 'Company3 SA',
         company_id: companies.find(c => c.name == 'Company 3').id,
         country_id: countries.find(c => c.name == 'Unites States').id,
+        taxe_rate: 42,
         status: 'active',
         created_at: new Date(),
         updated_at: new Date()
