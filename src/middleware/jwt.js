@@ -12,7 +12,7 @@ module.exports = (opts = {}) => {
     const token = getJwtToken(ctx)
 
     try {
-      //Try and decode the token asynchronously
+      //Try and decode the token synchronously
       const decoded = await jsonwebtoken.verify(
         token,
         process.env.JWT_SECRET

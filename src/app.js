@@ -1,8 +1,4 @@
 'use strict'
-/*
- *const env = process.env.NODE_ENV || 'development';
- *const port = env === 'test' ? 4001 : process.env.PORT || 4000;
- */
 
 const dotenv = require('dotenv')
 const fs = require('fs')
@@ -21,8 +17,8 @@ if (process.env.NODE_ENV === 'test') {
   dotenv.config()
 }
 
-const port =  process.env.PORT || 4000
-const src = process.env.NODE_ENV === 'production' ? '../build/index' : './index'
+const port =  process.env.PORT || 8080
+const src = process.env.NODE_ENV === 'production' ? '../dist/index' : './index'
 
 require('babel-polyfill')
 if (process.env.NODE_ENV === 'development') { require('babel-register') }

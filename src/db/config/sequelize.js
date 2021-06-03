@@ -44,9 +44,8 @@ module.exports = {
     'username': process.env.DB_USER,
     'password': process.env.DB_PASSWORD,
     'database': process.env.DB_DATABASE,
-    'host': process.env.DB_HOST,
+    'host': process.env.DB_SOCKET,
     'dialect': 'postgres',
-    'port': process.env.DB_PORT,
     'pool': { 'max': 5, 'min': 0, 'idle': 10000 },
     'define': { 'freezeTableName': true, 'timestamps': false },
     'logging': false
