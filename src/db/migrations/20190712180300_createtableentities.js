@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         field: 'taxe_rate'
       },
-        country_id: {
+      country_id: {
         type: Sequelize.UUID,
         allowNull: false
       },

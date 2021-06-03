@@ -8,6 +8,8 @@
   "scripts": {
     "watch": "NODE_ENV=development nodemon src/app.js --exec",
     "server": "NODE_ENV=production nodemon src/app.js --exec",
+    "start": "node build/app.js",
+    "build": "npx babel src --out-dir build --copy-files",
     "eslint": "./node_modules/.bin/eslint src/",
     "eslint-fix": "./node_modules/.bin/eslint src/ --fix"
   },
@@ -15,7 +17,7 @@
     "@koa/cors": "^2.2.1",
     "@sendgrid/mail": "^6.5.5",
     "babel-polyfill": "~6.26.0",
-    "bcrypt": "^3.0.8",
+    "bcrypt": "^5.0.1",
     "date-fns": "^1.30.1",
     "dotenv": "^5.0.1",
     "ioredis": "^4.27.1",
@@ -38,16 +40,15 @@
     "nodemailer": "^6.5.0",
     "pg": "^7.18.2",
     "pg-hstore": "^2.3.3",
-    "pug": "^2.0.4",
+    "pug": "^3.0.2",
     "randexp": "^0.5.3",
     "sequelize": "^5.22.4",
     "sequelize-cli": "^5.5.1"
   },
   "devDependencies": {
-    "babel-cli": "~6.26.0",
+    "babel-cli": "^6.18.0",
     "babel-eslint": "^10.1.0",
     "babel-preset-env": "~1.7.0",
-    "babel-register": "~6.26.0",
     "eslint": "^4.19.1",
     "nodemon": "^1.19.4"
   },
