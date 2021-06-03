@@ -8,8 +8,8 @@
   "scripts": {
     "watch": "NODE_ENV=development nodemon src/app.js --exec",
     "server": "NODE_ENV=production nodemon src/app.js --exec",
-    "start": "node build/app.js",
-    "build": "npx babel src --out-dir build --copy-files",
+    "start": "node dist/app.js",
+    "build": "npx babel src --out-dir dist --copy-files",
     "eslint": "./node_modules/.bin/eslint src/",
     "eslint-fix": "./node_modules/.bin/eslint src/ --fix"
   },
