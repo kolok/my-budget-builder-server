@@ -1,5 +1,5 @@
 # Use an node 10 runtime as a parent image
-FROM node:10.16.3-jessie
+FROM node:14
 
 # Set the working directory to /server
 WORKDIR /usr/server
