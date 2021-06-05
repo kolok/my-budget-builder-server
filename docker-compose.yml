@@ -58,5 +58,5 @@ services:
 # Restart the container when it fails
     restart: always
     ports:
-      - 8081:8080
+      - 8080:8080
     container_name: pipauls-adminer
