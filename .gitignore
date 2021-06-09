@@ -52,3 +52,7 @@ stats.json
 
 # VS Code
 .vscode
+
+# terraform
+terraform/.terraform
+terraform/sources

@@ -6,6 +6,8 @@ We use GCP stack
 * Private network to link DB with server ?
 * App engine for the client : to check if we can simplify it to use a CDN like because it is only static files
 
+Here we won't address the client part which is addressed using this [README.devops.md](https://github.com/kolok/my-budget-builder-server/blob/master/README_devops.md)
+
 ## Server Application
 
 ### Build it
@@ -33,6 +35,12 @@ With the following Roles :
 * Compute Network Admin
 
 and get its key locally in json (not saved in configuration for security reason)
+
+## Apply your first terraform
+
+set the variable in terraform.tfvars
+
+```credentials_file = "$HOME/.gcp/my_key_file_downloaded_locally.json"```
 
 ## Tips
 

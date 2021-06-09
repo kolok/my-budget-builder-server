@@ -108,10 +108,11 @@ resource "google_storage_bucket_object" "object" {
 }
 
 resource "google_app_engine_standard_app_version" "server" {
-  version_id = "v1"
-  service    = "server"
-  runtime    = "nodejs14"
-
+  version_id      = var.service_version
+  service         = var.service
+  runtime         = var.runtime
+  threadsafe      = var.threadsafe
+  instance_class  = var.instance_class
 
   deployment {
     zip {
