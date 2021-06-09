@@ -10,6 +10,9 @@
     "server": "NODE_ENV=production nodemon src/app.js --exec",
     "start": "node dist/app.js",
     "build": "npx babel src --out-dir dist --copy-files",
+    "migrate": "npx sequelize db:migrate --config src/db/config/sequelize.js --migrations-path src/db/migrations/",
+    "migrate:prod": "NODE_ENV=production npx sequelize db:migrate --config dist/db/config/sequelize.js --migrations-path dist/db/migrations/",
+    "gcp-build": "npm run build",
     "eslint": "./node_modules/.bin/eslint src/",
     "eslint-fix": "./node_modules/.bin/eslint src/ --fix"
   },
