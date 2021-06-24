@@ -13,15 +13,15 @@ module.exports  = function(sequelize, DataTypes) {
       type: DataTypes.STRING
     },
     address: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING
     },
     zipcode: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING
     },
     town: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING
     },
     countryID: {

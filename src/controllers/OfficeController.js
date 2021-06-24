@@ -13,7 +13,6 @@ class OfficeController {
     const request = ctx.request.body
     request.companyID = ctx.state.company.id
 
-    console.log(request)
     try {
       let office = await Office.create( request )
       ctx.body = office
